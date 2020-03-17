@@ -1,7 +1,7 @@
 package io.github.ceraalex99.petandgo;
 
-import Entities.Usuario;
-import hibernate.BD.UsuariosBD;
+import io.github.ceraalex99.petandgo.Entities.Usuario;
+import io.github.ceraalex99.petandgo.hibernate.BD.UsuariosBD;
 
 import java.util.List;
 

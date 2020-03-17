@@ -1,4 +1,4 @@
-package hibernate;
+package io.github.ceraalex99.petandgo.hibernate;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
