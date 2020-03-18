@@ -6,8 +6,8 @@
         <property name="connection.url">jdbc:postgresql://35.228.86.103:5432/petandgo?useSSl=false</property>
         <property name="connection.username">postgres</property>
         <property name="connection.password">Pet&amp;go123</property>
-        <property name="dialect">org.io.github.ceraalex99.petandgo.hibernate.dialect.PostgreSQL10Dialect</property>
-        <property name="io.github.ceraalex99.petandgo.hibernate.show_sql">true</property>
-        <property name="io.github.ceraalex99.petandgo.hibernate.default_schema">prueba</property>
+        <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
+        <property name="hibernate.show_sql">true</property>
+        <property name="hibernate.default_schema">prueba</property>
     </session-factory>
 </hibernate-configuration>

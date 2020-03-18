@@ -1,4 +1,4 @@
-package io.github.ceraalex99.petandgo.Entities;
+package Entities;
 
 import javax.persistence.*;
 
