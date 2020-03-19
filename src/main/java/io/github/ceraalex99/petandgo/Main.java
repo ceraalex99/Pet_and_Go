@@ -23,6 +23,7 @@ public class Main {
         System.out.println("Hello world");
         System.out.print("hola");
 */
+/*
         UsuariosBD usuariosBD = new UsuariosBD();
 
         //Prueba Add user
@@ -42,6 +43,6 @@ public class Main {
         for (Usuario user1 : usuarios) {
             System.out.println(user1.toString());
         }
-
+*/
     }
 }
