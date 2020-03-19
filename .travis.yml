@@ -20,8 +20,8 @@ env:
 
 
 script:
-  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=ceraalex99_Pet_and_Go
+  - mvn clean org.jacoco:jacoco-maven-plugin:prepare-agent install sonar:sonar -Dsonar.projectKey=ceraalex99_Pet_and_Go -Dsonar.branch.name=staging
 
 after_success:
   - chmod a+x automerge
-  - BRANCHES_TO_MERGE_REGEX='staging' BRANCH_TO_MERGE_INTO=Development GITHUB_REPO=ceraalex99/Pet_and_Go ./automerge
+  - BRANCHES_TO_MERGE_REGEX='staging' BRANCH_TO_MERGE_INTO=develop GITHUB_REPO=ceraalex99/Pet_and_Go ./automerge
