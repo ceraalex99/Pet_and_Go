@@ -3,6 +3,7 @@ package io.github.ceraalex99.petandgo;
 import Entities.Usuario;
 import com.ja.security.PasswordHash;
 import hibernate.BD.UsuariosBD;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
 import java.security.NoSuchAlgorithmException;
@@ -17,21 +18,25 @@ public class GestorUsuariosTest {
     @Test
     public void signUpTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
         GestorUsuarios gu = new GestorUsuarios();
-        gu.signUp("Antonio Garcia Perez","antonio68","123456abc","antoniogp68@gmail.com");
+        String nombre = RandomStringUtils.random(25, true, false);
+        String username = RandomStringUtils.random(10, true, true);
+        String email = RandomStringUtils.random(30, true, true);
+        String password = RandomStringUtils.random(10, true, true);
+        gu.signUp(nombre,username,password,email);
 
 
         Usuario user = new Usuario();
         UsuariosBD usuariosBD = new UsuariosBD();
         List<Usuario> users = usuariosBD.getAll();
         for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getUsername().equals("antonio68")){
+            if(users.get(i).getUsername().equals(username)){
                 user = users.get(i);
             }
         }
 
-        assertEquals("Antonio Garcia Perez", user.getNombre());
-        assertEquals("antonio68", user.getUsername());
-        assertEquals("antoniogp68@gmail.com",user.getEmail());
-        assertTrue(new PasswordHash().validatePassword("123456abc", user.getPassword()));
+        assertEquals(nombre, user.getNombre());
+        assertEquals(username, user.getUsername());
+        assertEquals(email,user.getEmail());
+        assertTrue(new PasswordHash().validatePassword(password, user.getPassword()));
     }
 }
