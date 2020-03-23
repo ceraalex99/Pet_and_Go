@@ -11,9 +11,6 @@ public class UsuariosBD {
     private Session session;
     private static  SessionFactory sessionFactory = Factory.getSession(Usuario.class);
 
-    public UsuariosBD(){
-    }
-
     private void newSession(){
         if (session == null) session = sessionFactory.openSession();
     }
