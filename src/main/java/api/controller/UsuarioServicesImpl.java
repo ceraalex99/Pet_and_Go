@@ -15,16 +15,13 @@ public class UsuarioServicesImpl implements UsuarioServices {
     private UsuarioDAO usuarioDAO;
 
     @Override
-    public void altaUsuario(Usuario usuario) {
-        usuarioDAO.altaUsuario(usuario);
+    public boolean altaUsuario(Usuario usuario) {
+        return usuarioDAO.altaUsuario(usuario);
     }
 
     @Override
-    public void deleteUsuarioByUsername(String username) {
-        Usuario usuario = findByUsername(username);
-        if(usuario != null) {
-            usuarioDAO.deleteUsuarioByUsername(username);
-        }
+    public boolean deleteUsuarioByUsername(String username) {
+        return usuarioDAO.deleteUsuarioByUsername(username);
     }
 
     @Override

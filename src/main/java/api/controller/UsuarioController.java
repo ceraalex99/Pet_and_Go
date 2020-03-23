@@ -38,7 +38,26 @@ public class UsuarioController {
     }
 
 
+    @RequestMapping(value= "", method = RequestMethod.POST)
+    public ResponseEntity addUSER(@RequestBody Usuario user){
+        if(user==null ) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            return new ResponseEntity(usuarioServices.altaUsuario(user), HttpStatus.OK);
+        }
+    }
 
+    @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
+    public ResponseEntity deleteUSER(@PathVariable(name="username") String username){
+
+        if(username == null || username == "") {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            return new ResponseEntity(usuarioServices.deleteUsuarioByUsername(username), HttpStatus.OK);
+        }
+    }
 
 
 
