@@ -3,11 +3,13 @@ package hibernate;
 import java.io.File;
 
 public class HibernateConfig{
-    static File F;
-    public HibernateConfig(){
-        if (F == null) F  = new File("src/hibernate.cfg.xml");
+    static File f = new File ("src/hibernate.cfg.xml");
+
+    private HibernateConfig() {
+        throw new IllegalStateException("Utility class");
     }
+
     public static File getConfigFile() {
-        return F;
+        return f;
     }
 }

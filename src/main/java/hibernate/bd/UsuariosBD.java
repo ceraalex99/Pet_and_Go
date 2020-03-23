@@ -1,6 +1,6 @@
-package hibernate.BD;
+package hibernate.bd;
 
-import Entities.Usuario;
+import entities.Usuario;
 import hibernate.Factory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,10 +9,9 @@ import java.util.List;
 public class UsuariosBD {
 
     private Session session;
-    private static  SessionFactory sessionFactory;
+    private static  SessionFactory sessionFactory = Factory.getSession(Usuario.class);
 
     public UsuariosBD(){
-        sessionFactory = new Factory().getSession(Usuario.class);
     }
 
     private void newSession(){
@@ -35,10 +34,10 @@ public class UsuariosBD {
 
     }
 
-    public Usuario get(Integer pId){
+    public Usuario get(String username){
         newSession();
 
-        return session.get(Usuario.class, pId);
+        return session.get(Usuario.class, username);
     }
 
     public List<Usuario> getAll(){

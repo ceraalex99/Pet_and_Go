@@ -1,6 +1,6 @@
 package api.services;
 
-import Entities.Usuario;
+import entities.Usuario;
 import api.dao.UsuarioDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,10 +21,10 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
 
     @Override
-    public void deleteUsuarioByUsername(String Username) {
-        Usuario usuario = findByUsername(Username);
+    public void deleteUsuarioByUsername(String username) {
+        Usuario usuario = findByUsername(username);
         if(usuario != null) {
-            usuarioDAO.deleteUsuarioByUsername(Username);
+            usuarioDAO.deleteUsuarioByUsername(username);
         }
     }
 
@@ -39,7 +39,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
 
     @Override
-    public Usuario findByUsername(String Username) {
-        return usuarioDAO.findByUsername(Username);
+    public Usuario findByUsername(String username) {
+        return usuarioDAO.findByUsername(username);
     }
 }

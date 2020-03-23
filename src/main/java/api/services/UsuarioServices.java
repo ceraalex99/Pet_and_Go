@@ -1,13 +1,13 @@
 package api.services;
 
-import Entities.Usuario;
+import entities.Usuario;
 
 import java.util.List;
 
 public interface UsuarioServices {
     public void altaUsuario(Usuario usuario);
-    public void deleteUsuarioByUsername(String Username);
+    public void deleteUsuarioByUsername(String username);
     public void updateUsuario(Usuario usuario);
     public List<Usuario> findAllUsuario();
-    public Usuario findByUsername(String Username);
+    public Usuario findByUsername(String username);
 }

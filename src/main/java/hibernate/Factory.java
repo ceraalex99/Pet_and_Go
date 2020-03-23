@@ -7,9 +7,13 @@ import java.io.File;
 
 public class Factory {
 
-    public static SessionFactory getSession(Class TipoEntity){
-        File F = new HibernateConfig().getConfigFile();
-        return new Configuration().configure(F).addAnnotatedClass(TipoEntity).buildSessionFactory();
+    private Factory(){
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static SessionFactory getSession(Class tipoEntity){
+        File f = HibernateConfig.getConfigFile();
+        return new Configuration().configure(f).addAnnotatedClass(tipoEntity).buildSessionFactory();
     }
 
 }

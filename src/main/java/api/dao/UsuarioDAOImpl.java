@@ -1,6 +1,6 @@
 package api.dao;
 
-import Entities.Usuario;
+import entities.Usuario;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -17,8 +17,8 @@ public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO {
     }
 
     @Override
-    public void deleteUsuarioByUsername(String Username) {
-        Usuario usuario = findByUsername(Username);
+    public void deleteUsuarioByUsername(String username) {
+        Usuario usuario = findByUsername(username);
         if(usuario != null) {
             getSession().delete(usuario);
         }
@@ -35,7 +35,7 @@ public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO {
     }
 
     @Override
-    public Usuario findByUsername(String Username) {
-        return (Usuario) getSession().get(Usuario.class, Username);
+    public Usuario findByUsername(String username) {
+        return getSession().get(Usuario.class, username);
     }
 }

@@ -1,8 +1,8 @@
 package io.github.ceraalex99.petandgo;
 
-import Entities.Usuario;
+import entities.Usuario;
 import com.ja.security.PasswordHash;
-import hibernate.BD.UsuariosBD;
+import hibernate.bd.UsuariosBD;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
@@ -10,8 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class GestorUsuariosTest {
 
@@ -28,9 +27,9 @@ public class GestorUsuariosTest {
         Usuario user = new Usuario();
         UsuariosBD usuariosBD = new UsuariosBD();
         List<Usuario> users = usuariosBD.getAll();
-        for(int i = 0; i < users.size(); i++){
-            if(users.get(i).getUsername().equals(username)){
-                user = users.get(i);
+        for (Usuario usuario : users) {
+            if (usuario.getUsername().equals(username)) {
+                user = usuario;
             }
         }
 
@@ -38,5 +37,35 @@ public class GestorUsuariosTest {
         assertEquals(username, user.getUsername());
         assertEquals(email,user.getEmail());
         assertTrue(new PasswordHash().validatePassword(password, user.getPassword()));
+    }
+
+    @Test (expected = javax.persistence.PersistenceException.class)
+    public void signUpRepeatedEmail() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gu = new GestorUsuarios();
+        gu.signUp("Antonio", RandomStringUtils.random(10,true,true),"1234","antoniogp68@gmail.com");
+    }
+
+    @Test (expected = javax.persistence.PersistenceException.class)
+    public void signUpRepeatedUsername () throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gu = new GestorUsuarios();
+        gu.signUp("Antonio", "antonio68","1234",RandomStringUtils.random(10,true,true));
+    }
+
+    @Test
+    public void correctLoginTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gu = new GestorUsuarios();
+        assertTrue(gu.login("antonio68","123456abc"));
+    }
+
+    @Test
+    public void loginBadPassTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gu = new GestorUsuarios();
+        assertFalse(gu.login("antonio68","patata"));
+    }
+
+    @Test
+    public void loginNonexistentUsername() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gu = new GestorUsuarios();
+        assertFalse(gu.login("idfnidnijnvdfvjdjdnkjvdfbv","patata"));
     }
 }

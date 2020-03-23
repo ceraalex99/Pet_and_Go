@@ -1,8 +1,8 @@
 package io.github.ceraalex99.petandgo;
 
 import com.ja.security.PasswordHash;
-import Entities.Usuario;
-import hibernate.BD.UsuariosBD;
+import entities.Usuario;
+import hibernate.bd.UsuariosBD;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -13,5 +13,16 @@ public class GestorUsuarios {
         Usuario user = new Usuario(nombre, username, hashedPassword, email);
         UsuariosBD usuariosBD = new UsuariosBD();
         usuariosBD.add(user);
+    }
+
+    public boolean login(String id, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        Usuario user = new UsuariosBD().get(id);
+        try {
+            return new PasswordHash().validatePassword(password, user.getPassword());
+        }
+        catch (NullPointerException e){
+            return false;
+        }
+
     }
 }
