@@ -1,24 +1,22 @@
 package api.controller;
 
 import entities.Usuario;
-import api.services.UsuarioServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/v1")
-@Controller
+
+@RestController
+@RequestMapping(value="/api/usuarios")
 public class UsuarioController {
     @Autowired
     UsuarioServices usuarioServices;
 
     // - Get todos los Usuarios
-    @GetMapping(value="/usuarios", headers="Accept= application/json")
+    @RequestMapping(value= "", method = RequestMethod.GET)
     public ResponseEntity getUsuarios( ) {
         List<Usuario> usuarios = usuarioServices.findAllUsuario();
         if(usuarios==null ) {
@@ -27,4 +25,24 @@ public class UsuarioController {
             return new ResponseEntity<List<Usuario>>(usuarios,HttpStatus.OK);
         }
     }
+
+    @RequestMapping(value= "/{username}", method = RequestMethod.GET)
+    public ResponseEntity getUSER(@PathVariable(name="username") String username){
+        Usuario usuario= usuarioServices.findByUsername(username);
+        if(usuario==null ) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            return new ResponseEntity(usuario, HttpStatus.OK);
+        }
+    }
+
+
+
+
+
+
+
+
+
 }

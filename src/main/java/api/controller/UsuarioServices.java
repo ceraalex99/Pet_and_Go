@@ -1,10 +1,10 @@
-package api.dao;
+package api.controller;
 
 import entities.Usuario;
 
 import java.util.List;
 
-public interface UsuarioDAO {
+public interface UsuarioServices {
     public void altaUsuario(Usuario usuario);
     public void deleteUsuarioByUsername(String username);
     public void updateUsuario(Usuario usuario);

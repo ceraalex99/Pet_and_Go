@@ -1,41 +1,44 @@
-package api.dao;
+package api.controller;
 
 import entities.Usuario;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import org.springframework.stereotype.Repository;
 
-@Repository
+@Service("UsuarioServices")
 @Transactional
 
-public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO {
+public class UsuarioServicesImpl implements UsuarioServices {
+    @Autowired
+    private UsuarioDAO usuarioDAO;
 
     @Override
     public void altaUsuario(Usuario usuario) {
-        getSession().persist(usuario);
+        usuarioDAO.altaUsuario(usuario);
     }
 
     @Override
     public void deleteUsuarioByUsername(String username) {
         Usuario usuario = findByUsername(username);
         if(usuario != null) {
-            getSession().delete(usuario);
+            usuarioDAO.deleteUsuarioByUsername(username);
         }
     }
 
     @Override
     public void updateUsuario(Usuario usuario) {
-        getSession().update(usuario);
+        usuarioDAO.updateUsuario(usuario);
     }
 
     @Override
     public List<Usuario> findAllUsuario() {
-        return getSession().createQuery("from Usuario").list();
+        return usuarioDAO.findAllUsuario();
     }
 
     @Override
     public Usuario findByUsername(String username) {
-        return getSession().get(Usuario.class, username);
+        return usuarioDAO.findByUsername(username);
     }
 }

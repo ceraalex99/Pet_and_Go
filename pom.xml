@@ -93,8 +93,8 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>io.github.ceraalex99.petandgo.Main</mainClass>
-                        </manifest>
+                            <mainClass>api.controller.MainController</mainClass>
+                        </manifest>S
                     </archive>
                 </configuration>
                 <executions>
