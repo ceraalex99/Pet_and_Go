@@ -8,14 +8,18 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
 public class GestorUsuarios {
-    public void signUp(String nombre, String username, String password, String email) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    private GestorUsuarios(){
+        throw new IllegalStateException("Utility class");
+    }
+
+    public static void signUp(String nombre, String username, String password, String email) throws InvalidKeySpecException, NoSuchAlgorithmException {
         String hashedPassword = new PasswordHash().createHash(password);
         Usuario user = new Usuario(nombre, username, hashedPassword, email);
         UsuariosBD usuariosBD = new UsuariosBD();
         usuariosBD.add(user);
     }
 
-    public boolean login(String id, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public static boolean login(String id, String password) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Usuario user = new UsuariosBD().get(id);
         try {
             return new PasswordHash().validatePassword(password, user.getPassword());

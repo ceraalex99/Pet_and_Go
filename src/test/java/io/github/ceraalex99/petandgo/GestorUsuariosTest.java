@@ -16,12 +16,11 @@ public class GestorUsuariosTest {
 
     @Test
     public void signUpTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios gu = new GestorUsuarios();
         String nombre = RandomStringUtils.random(25, true, false);
         String username = RandomStringUtils.random(10, true, true);
         String email = RandomStringUtils.random(30, true, true);
         String password = RandomStringUtils.random(10, true, true);
-        gu.signUp(nombre,username,password,email);
+        GestorUsuarios.signUp(nombre,username,password,email);
 
 
         Usuario user = new Usuario();
@@ -41,31 +40,26 @@ public class GestorUsuariosTest {
 
     @Test (expected = javax.persistence.PersistenceException.class)
     public void signUpRepeatedEmail() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios gu = new GestorUsuarios();
-        gu.signUp("Antonio", RandomStringUtils.random(10,true,true),"1234","antoniogp68@gmail.com");
+        GestorUsuarios.signUp("Antonio", RandomStringUtils.random(10,true,true),"1234","antoniogp68@gmail.com");
     }
 
     @Test (expected = javax.persistence.PersistenceException.class)
     public void signUpRepeatedUsername () throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios gu = new GestorUsuarios();
-        gu.signUp("Antonio", "antonio68","1234",RandomStringUtils.random(10,true,true));
+        GestorUsuarios.signUp("Antonio", "antonio68","1234",RandomStringUtils.random(10,true,true));
     }
 
     @Test
     public void correctLoginTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios gu = new GestorUsuarios();
-        assertTrue(gu.login("antonio68","123456abc"));
+        assertTrue(GestorUsuarios.login("antonio68","123456abc"));
     }
 
     @Test
     public void loginBadPassTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios gu = new GestorUsuarios();
-        assertFalse(gu.login("antonio68","patata"));
+        assertFalse(GestorUsuarios.login("antonio68","patata"));
     }
 
     @Test
     public void loginNonexistentUsername() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios gu = new GestorUsuarios();
-        assertFalse(gu.login("idfnidnijnvdfvjdjdnkjvdfbv","patata"));
+        assertFalse(GestorUsuarios.login("idfnidnijnvdfvjdjdnkjvdfbv","patata"));
     }
 }
