@@ -61,7 +61,7 @@ public class UsuarioController {
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
     public ResponseEntity deleteUsuario(@PathVariable(name="username") String username){
 
-        if(username == null || username == "") {
+        if(username == null || username.isEmpty()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         else {
