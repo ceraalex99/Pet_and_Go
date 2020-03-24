@@ -26,9 +26,9 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping(value= "/{username}")
-    public ResponseEntity getUsuarioByUsername(@PathVariable(name="username") String username){
-        Usuario usuario= usuarioServices.findByUsername(username);
+    @GetMapping(value= "/{email}")
+    public ResponseEntity getUsuarioByEmail(@PathVariable(name="email") String email){
+        Usuario usuario= usuarioServices.findByEmail(email);
         if(usuario==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }

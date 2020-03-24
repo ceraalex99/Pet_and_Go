@@ -50,12 +50,12 @@ public class GestorUsuariosTest {
 
     @Test
     public void correctLoginTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        assertTrue(GestorUsuarios.login("antonio68","123456abc"));
+        assertTrue(GestorUsuarios.login("antoniogp68@gmail.com","123456abc"));
     }
 
     @Test
     public void loginBadPassTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        assertFalse(GestorUsuarios.login("antonio68","patata"));
+        assertFalse(GestorUsuarios.login("antoniogp68@gmail.com","patata"));
     }
 
     @Test
