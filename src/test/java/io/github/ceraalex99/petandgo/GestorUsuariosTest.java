@@ -54,13 +54,13 @@ public class GestorUsuariosTest {
     @Test
     public void correctLoginTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
         GestorUsuarios gu = new GestorUsuarios();
-        assertTrue(gu.login("antonio68","123456abc"));
+        assertTrue(gu.login("antoniogp68@gmail.com","123456abc"));
     }
 
     @Test
     public void loginBadPassTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
         GestorUsuarios gu = new GestorUsuarios();
-        assertFalse(gu.login("antonio68","patata"));
+        assertFalse(gu.login("antoniogp68@gmail.com","patata"));
     }
 
     @Test
