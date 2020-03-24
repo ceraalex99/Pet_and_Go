@@ -47,6 +47,14 @@ public class UsuarioController {
             return new ResponseEntity(usuarioServices.altaUsuario(user), HttpStatus.OK);
         }
     }
+    @PostMapping(value= "/login")
+    public ResponseEntity login(@RequestBody Usuario user){
+
+        if(usuarioServices.findByEmail(user.getEmail()) != null){
+            return new ResponseEntity("okey", HttpStatus.OK);
+        }
+        else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    }
 
     @DeleteMapping(value = "/{username}")
     public ResponseEntity deleteUsuario(@PathVariable(name="username") String username){
