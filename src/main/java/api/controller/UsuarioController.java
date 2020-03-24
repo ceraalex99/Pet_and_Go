@@ -2,7 +2,6 @@ package api.controller;
 
 import com.ja.security.PasswordHash;
 import entities.Usuario;
-import io.github.ceraalex99.petandgo.GestorUsuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
