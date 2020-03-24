@@ -36,6 +36,7 @@ public class GestorUsuariosTest {
         assertEquals(username, user.getUsername());
         assertEquals(email,user.getEmail());
         assertTrue(new PasswordHash().validatePassword(password, user.getPassword()));
+        GestorUsuarios.delete(user);
     }
 
     @Test (expected = javax.persistence.PersistenceException.class)

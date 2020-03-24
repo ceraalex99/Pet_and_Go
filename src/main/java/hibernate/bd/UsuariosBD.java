@@ -4,6 +4,8 @@ import entities.Usuario;
 import hibernate.Factory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
+
 import java.util.List;
 
 public class UsuariosBD {
@@ -40,6 +42,18 @@ public class UsuariosBD {
     public List<Usuario> getAll(){
         newSession();
         return session.createQuery("FROM Usuario").getResultList();
+    }
+
+    public boolean delete(Usuario user){
+        boolean result = false;
+        newSession();
+        if(user != null) {
+            session.beginTransaction();
+            session.delete(user);
+            session.getTransaction().commit();
+            result = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        }
+        return result;
     }
 
 }

@@ -29,4 +29,9 @@ public class GestorUsuarios {
         }
 
     }
+
+    public static void delete(Usuario user) {
+        UsuariosBD usuariosBD = new UsuariosBD();
+        usuariosBD.delete(user);
+    }
 }

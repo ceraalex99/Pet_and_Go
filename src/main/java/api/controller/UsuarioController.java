@@ -39,7 +39,6 @@ public class UsuarioController {
 
     @PostMapping(value= "")
     public ResponseEntity addUsuario(@RequestBody Usuario user){
-
         if(user==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -47,23 +46,22 @@ public class UsuarioController {
             return new ResponseEntity(usuarioServices.altaUsuario(user), HttpStatus.OK);
         }
     }
-    @PostMapping(value= "/login")
-    public ResponseEntity login(@RequestBody Usuario user){
 
+    @GetMapping(value= "/login")
+    public ResponseEntity login(@RequestBody Usuario user){
         if(usuarioServices.findByEmail(user.getEmail()) != null){
             return new ResponseEntity("okey", HttpStatus.OK);
         }
         else return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping(value = "/{username}")
-    public ResponseEntity deleteUsuario(@PathVariable(name="username") String username){
-
-        if(username == null || username.isEmpty()) {
+    @DeleteMapping(value = "/{email}")
+    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email){
+        if(email == null || email.isEmpty()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         else {
-            return new ResponseEntity(usuarioServices.deleteUsuarioByUsername(username), HttpStatus.OK);
+            return new ResponseEntity(usuarioServices.deleteUsuarioByUsername(email), HttpStatus.OK);
         }
     }
 }
