@@ -27,7 +27,7 @@ public class UsuarioController {
     }
 
     @RequestMapping(value= "/{username}", method = RequestMethod.GET)
-    public ResponseEntity getUSER(@PathVariable(name="username") String username){
+    public ResponseEntity getUsuario(@PathVariable(name="username") String username){
         Usuario usuario= usuarioServices.findByUsername(username);
         if(usuario==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -39,7 +39,7 @@ public class UsuarioController {
 
 
     @RequestMapping(value= "", method = RequestMethod.POST)
-    public ResponseEntity addUSER(@RequestBody Usuario user){
+    public ResponseEntity addUsuario(@RequestBody Usuario user){
         if(user==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -49,7 +49,7 @@ public class UsuarioController {
     }
 
     @RequestMapping(value = "/{username}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteUSER(@PathVariable(name="username") String username){
+    public ResponseEntity deleteUsuario(@PathVariable(name="username") String username){
 
         if(username == null || username == "") {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -58,10 +58,4 @@ public class UsuarioController {
             return new ResponseEntity(usuarioServices.deleteUsuarioByUsername(username), HttpStatus.OK);
         }
     }
-
-
-
-
-
-
 }
