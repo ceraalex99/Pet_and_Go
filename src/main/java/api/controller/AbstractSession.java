@@ -4,7 +4,6 @@ import entities.Usuario;
 import hibernate.Factory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 public class AbstractSession {
 
