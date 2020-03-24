@@ -38,4 +38,9 @@ public class UsuarioServicesImpl implements UsuarioServices {
     public Usuario findByUsername(String username) {
         return usuarioDAO.findByUsername(username);
     }
+
+    @Override
+    public Usuario findByEmail(String email) {
+        return usuarioDAO.findByEmail(email);
+    }
 }

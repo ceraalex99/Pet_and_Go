@@ -27,7 +27,7 @@ public class UsuarioController {
     }
 
     @RequestMapping(value= "/{username}", method = RequestMethod.GET)
-    public ResponseEntity getUsuario(@PathVariable(name="username") String username){
+    public ResponseEntity getUsuarioByUsername(@PathVariable(name="username") String username){
         Usuario usuario= usuarioServices.findByUsername(username);
         if(usuario==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -37,6 +37,16 @@ public class UsuarioController {
         }
     }
 
+    @RequestMapping(value= "/{email}", method = RequestMethod.GET)
+    public ResponseEntity getUsuarioByEmail(@PathVariable(name="email") String email){
+        Usuario usuario= usuarioServices.findByEmail(email);
+        if(usuario==null ) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else {
+            return new ResponseEntity(usuario, HttpStatus.OK);
+        }
+    }
 
     @RequestMapping(value= "", method = RequestMethod.POST)
     public ResponseEntity addUsuario(@RequestBody Usuario user){

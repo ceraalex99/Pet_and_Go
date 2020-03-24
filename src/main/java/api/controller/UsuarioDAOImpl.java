@@ -48,4 +48,9 @@ public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO {
     public Usuario findByUsername(String username) {
         return getSession().get(Usuario.class, username);
     }
+
+    @Override
+    public Usuario findByEmail(String email) {
+        return getSession().get(Usuario.class, email);
+    }
 }

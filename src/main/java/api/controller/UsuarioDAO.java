@@ -10,4 +10,5 @@ public interface UsuarioDAO {
     public void updateUsuario(Usuario usuario);
     public List<Usuario> findAllUsuario();
     public Usuario findByUsername(String username);
+    public Usuario findByEmail(String email);
 }
