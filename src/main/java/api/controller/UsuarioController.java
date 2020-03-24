@@ -1,11 +1,15 @@
 package api.controller;
 
+import com.ja.security.PasswordHash;
 import entities.Usuario;
+import io.github.ceraalex99.petandgo.GestorUsuarios;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
 
@@ -48,11 +52,16 @@ public class UsuarioController {
     }
 
     @GetMapping(value= "/login")
-    public ResponseEntity login(@RequestBody Usuario user){
-        if(usuarioServices.findByEmail(user.getEmail()) != null){
-            return new ResponseEntity("okey", HttpStatus.OK);
+    public ResponseEntity login(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        Usuario userbd= usuarioServices.findByEmail(user.getEmail());
+        if( userbd != null){
+            boolean coincidenpasswords = new PasswordHash().validatePassword(user.getPassword(),userbd.getPassword());
+            if(coincidenpasswords){
+                return new ResponseEntity(userbd, HttpStatus.OK);
+            }
+            else return new ResponseEntity("Password incorrecto", HttpStatus.BAD_REQUEST);
         }
-        else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity("El email no existe",HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping(value = "/{email}")
