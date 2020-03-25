@@ -50,7 +50,7 @@ public class UsuarioController {
         }
     }
 
-    @GetMapping(value= "/login")
+    @PostMapping(value= "/login")
     public ResponseEntity login(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Usuario userbd= usuarioServices.findByEmail(user.getEmail());
         if( userbd != null){
