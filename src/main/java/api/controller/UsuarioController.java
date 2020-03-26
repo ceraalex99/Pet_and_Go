@@ -48,10 +48,15 @@ public class UsuarioController {
         if(user==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        else {
+        Usuario usuarioExsitente = usuarioServices.findByEmail(user.getEmail());
+        if(usuarioExsitente==null) {
+            if(usuarioServices.findByUsername(user.getUsername()) != null){
+                return new ResponseEntity("Username en uso", HttpStatus.BAD_REQUEST);
+            }
             signUp(user.getNombre(),user.getUsername(),user.getPassword(),user.getEmail()); //Llamada a gestorUsuarios
             return new ResponseEntity("Usuario creado con exito", HttpStatus.OK);
         }
+        return new ResponseEntity("Email en uso", HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping(value= "/login")
