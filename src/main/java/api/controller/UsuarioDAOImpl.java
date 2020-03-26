@@ -22,7 +22,7 @@ public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO {
     }
 
     @Override
-    public boolean deleteUsuarioByUsername(String username) {
+    public boolean deleteUsuarioByEmail(String username) {
         boolean result = false;
         Usuario usuario = findByUsername(username);
         if(usuario != null) {

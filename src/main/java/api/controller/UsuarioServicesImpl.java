@@ -20,8 +20,8 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
 
     @Override
-    public boolean deleteUsuarioByUsername(String username) {
-        return usuarioDAO.deleteUsuarioByUsername(username);
+    public boolean deleteUsuarioByEmail(String username) {
+        return usuarioDAO.deleteUsuarioByEmail(username);
     }
 
     @Override

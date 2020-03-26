@@ -11,6 +11,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
+import static io.github.ceraalex99.petandgo.GestorUsuarios.login;
+import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
+
 
 @RestController
 @RequestMapping(value="/api/usuarios")
@@ -41,21 +44,21 @@ public class UsuarioController {
     }
 
     @PostMapping(value= "")
-    public ResponseEntity addUsuario(@RequestBody Usuario user){
+    public ResponseEntity addUsuario(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
         if(user==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         else {
-            return new ResponseEntity(usuarioServices.altaUsuario(user), HttpStatus.OK);
+            signUp(user.getNombre(),user.getUsername(),user.getPassword(),user.getEmail()); //Llamada a gestorUsuarios
+            return new ResponseEntity("Usuario creado con exito", HttpStatus.OK);
         }
     }
 
     @PostMapping(value= "/login")
-    public ResponseEntity login(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ResponseEntity loginRequest(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
         Usuario userbd= usuarioServices.findByEmail(user.getEmail());
         if( userbd != null){
-            boolean coincidenpasswords = new PasswordHash().validatePassword(user.getPassword(),userbd.getPassword());
-            if(coincidenpasswords){
+            if(login(user.getEmail(),user.getPassword())){ // Llamada a gestorUsuarios
                 return new ResponseEntity(userbd, HttpStatus.OK);
             }
             else return new ResponseEntity("Password incorrecto", HttpStatus.BAD_REQUEST);
@@ -69,7 +72,7 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         else {
-            return new ResponseEntity(usuarioServices.deleteUsuarioByUsername(email), HttpStatus.OK);
+            return new ResponseEntity(usuarioServices.deleteUsuarioByEmail(email), HttpStatus.OK);
         }
     }
 }
