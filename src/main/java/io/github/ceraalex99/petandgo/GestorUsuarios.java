@@ -1,7 +1,7 @@
 package io.github.ceraalex99.petandgo;
 
-import api.controller.UsuarioDAO;
-import api.controller.UsuarioDAOImpl;
+import api.dao.UsuarioDAO;
+import api.dao.UsuarioDAOImpl;
 import com.ja.security.PasswordHash;
 import entities.Usuario;
 import hibernate.bd.UsuariosBD;

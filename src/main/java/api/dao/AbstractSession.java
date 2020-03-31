@@ -1,4 +1,4 @@
-package api.controller;
+package api.dao;
 
 import entities.Usuario;
 import hibernate.Factory;

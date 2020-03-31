@@ -1,6 +1,6 @@
 package api.controller;
 
-import com.ja.security.PasswordHash;
+import api.services.UsuarioServices;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

@@ -1,5 +1,6 @@
-package api.controller;
+package api.services;
 
+import api.dao.UsuarioDAO;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
