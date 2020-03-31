@@ -1,19 +1,17 @@
-package io.github.ceraalex99.petandgo.hibernate.BD;
+package hibernate.bd;
 
-import io.github.ceraalex99.petandgo.Entities.Usuario;
-import io.github.ceraalex99.petandgo.hibernate.Factory;
+import entities.Usuario;
+import hibernate.Factory;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
+
 import java.util.List;
 
 public class UsuariosBD {
 
     private Session session;
-    private static  SessionFactory sessionFactory;
-
-    public UsuariosBD(){
-        sessionFactory = new Factory().getSession(Usuario.class);
-    }
+    private static  SessionFactory sessionFactory = Factory.getSession(Usuario.class);
 
     private void newSession(){
         if (session == null) session = sessionFactory.openSession();
@@ -35,15 +33,27 @@ public class UsuariosBD {
 
     }
 
-    public Usuario get(Integer pId){
+    public Usuario get(String username){
         newSession();
 
-        return session.get(Usuario.class, pId);
+        return session.get(Usuario.class, username);
     }
 
     public List<Usuario> getAll(){
         newSession();
         return session.createQuery("FROM Usuario").getResultList();
+    }
+
+    public boolean delete(Usuario user){
+        boolean result = false;
+        newSession();
+        if(user != null) {
+            session.beginTransaction();
+            session.delete(user);
+            session.getTransaction().commit();
+            result = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        }
+        return result;
     }
 
 }
