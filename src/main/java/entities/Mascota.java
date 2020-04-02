@@ -1,37 +1,33 @@
 package entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name= "mascotas"  )
-public class Mascota  {
+public class Mascota implements Serializable {
 
 
-    @Id
-    @Column(name="nombre")
-    private String nombre;
+    @EmbeddedId
+    private MascotaId id;
 
     @Column(name="edad")
     private int edad;
 
-    @Column(name="emailAmo")
-    private String emailAmo;
-
     public Mascota() {
     }
 
-    public Mascota(String nombre,int edad,String emailAmo) {
-        this.nombre = nombre;
+    public Mascota(MascotaId id,int edad) {
+        this.id = id;
         this.edad = edad;
-        this.emailAmo = emailAmo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public MascotaId getId() {
+        return id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setId(MascotaId id) {
+        this.id = id;
     }
 
     public int getEdad() {
@@ -42,20 +38,13 @@ public class Mascota  {
         this.edad = edad;
     }
 
-    public String getEmailAmo() {
-        return emailAmo;
-    }
-
-    public void setEmailAmo(String emailAmo) {
-        this.emailAmo = emailAmo;
-    }
 
     @Override
     public String toString() {
-        return "Mascota{" +
-                ", nombre='" + nombre + '\'' +
+        return "Usuario{" +
+                ", nombre='" + id.getNombre() + '\'' +
                 ", edad='" + edad + '\'' +
-                ", emailAmo='" + emailAmo + '\'' +
+                ", emailAmo='" + id.getAmo().getEmail() + '\'' +
                 '}';
     }
 }
