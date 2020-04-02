@@ -54,10 +54,12 @@ public class UsuarioController {
         user.setEmail(userDTO.getEmail());
         user.setNombre(userDTO.getNombre());
 
-
+/*
         if(userDTO==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+
+ */
         Usuario usuarioExsitente = usuarioServices.findByEmail(user.getEmail());
         if(usuarioExsitente==null) {
             if(usuarioServices.findByUsername(user.getUsername()) != null){
