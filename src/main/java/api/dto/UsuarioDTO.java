@@ -1,28 +1,18 @@
-package entities;
+package api.dto;
 
-import javax.persistence.*;
-
-@Entity
-@Table(name= "usuarios"  )
-public class Usuario  {
-
-    @Column(name="username")
+public class UsuarioDTO {
     private String username;
 
-    @Column(name="password")
     private String password;
 
-    @Id
-    @Column(name="email")
     private String email;
 
-    @Column(name="nombre")
     private String nombre;
 
-    public Usuario() {
+    public UsuarioDTO() {
     }
 
-    public Usuario(String nombre,String username,String password,String email) {
+    public UsuarioDTO(String nombre,String username,String password,String email) {
         this.nombre = nombre;
         this.username = username;
         this.password = password;
@@ -61,13 +51,4 @@ public class Usuario  {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" +
-                ", nombre='" + nombre + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                '}';
-    }
 }

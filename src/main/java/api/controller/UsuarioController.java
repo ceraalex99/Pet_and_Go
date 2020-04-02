@@ -1,5 +1,6 @@
 package api.controller;
 
+import api.dto.UsuarioDTO;
 import api.services.UsuarioServices;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,17 @@ public class UsuarioController {
     }
 
     @PostMapping(value= "")
-    public ResponseEntity addUsuario(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if(user==null ) {
+    public ResponseEntity addUsuario(@RequestBody UsuarioDTO userDTO) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        Usuario user = new Usuario();
+
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        user.setNombre(userDTO.getNombre());
+
+
+        if(userDTO==null ) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         Usuario usuarioExsitente = usuarioServices.findByEmail(user.getEmail());
@@ -60,7 +70,15 @@ public class UsuarioController {
     }
 
     @PostMapping(value= "/login")
-    public ResponseEntity loginRequest(@RequestBody Usuario user) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ResponseEntity loginRequest(@RequestBody UsuarioDTO userDTO) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        Usuario user = new Usuario();
+
+        user.setUsername(userDTO.getUsername());
+        user.setPassword(userDTO.getPassword());
+        user.setEmail(userDTO.getEmail());
+        user.setNombre(userDTO.getNombre());
+
         Usuario userbd= usuarioServices.findByEmail(user.getEmail());
         if( userbd != null){
             if(login(user.getEmail(),user.getPassword())){ // Llamada a gestorUsuarios
