@@ -1,7 +1,5 @@
 package api.dao;
 
-import api.dao.AbstractSession;
-import api.dao.UsuarioDAO;
 import entities.Usuario;
 
 import javax.transaction.Transactional;
