@@ -1,10 +1,12 @@
 package entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name= "mascotas"  )
-public class Mascota  {
+@IdClass(MascotaId.class)
+public class Mascota implements Serializable {
 
 
     @Id
@@ -14,16 +16,17 @@ public class Mascota  {
     @Column(name="edad")
     private int edad;
 
-    @Column(name="emailAmo")
-    private String emailAmo;
+    @Id
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name="emailAmo")
+    private Usuario amo;
 
     public Mascota() {
     }
 
-    public Mascota(String nombre,int edad,String emailAmo) {
+    public Mascota(String nombre,int edad) {
         this.nombre = nombre;
         this.edad = edad;
-        this.emailAmo = emailAmo;
     }
 
     public String getNombre() {
@@ -42,12 +45,12 @@ public class Mascota  {
         this.edad = edad;
     }
 
-    public String getEmailAmo() {
-        return emailAmo;
+    public Usuario getAmo() {
+        return amo;
     }
 
-    public void setEmailAmo(String emailAmo) {
-        this.emailAmo = emailAmo;
+    public void setAmo(Usuario amo) {
+        this.amo = amo;
     }
 
     @Override
@@ -55,7 +58,7 @@ public class Mascota  {
         return "Usuario{" +
                 ", nombre='" + nombre + '\'' +
                 ", edad='" + edad + '\'' +
-                ", emailAmo='" + emailAmo + '\'' +
+                ", emailAmo='" + amo.getEmail() + '\'' +
                 '}';
     }
 }
