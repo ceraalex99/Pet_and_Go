@@ -52,7 +52,7 @@ public class Mascota  {
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "Mascota{" +
                 ", nombre='" + nombre + '\'' +
                 ", edad='" + edad + '\'' +
                 ", emailAmo='" + emailAmo + '\'' +
