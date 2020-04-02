@@ -23,9 +23,9 @@ public class Usuario implements Serializable {
     @Column(name="nombre")
     private String nombre;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="usuarios")
+    /*@OneToMany(cascade=CascadeType.ALL, mappedBy="usuarios")
     @JsonIgnore
-    private Set<Mascota> mascotas;
+    private Set<Mascota> mascotas;*/
 
 
     public Usuario() {
@@ -70,13 +70,13 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    public Set<Mascota> getMascotas() {
+    /*public Set<Mascota> getMascotas() {
         return mascotas;
     }
 
     public void setMascotas(Set<Mascota> mascotas) {
         this.mascotas = mascotas;
-    }
+    }*/
 
     @Override
     public String toString() {
