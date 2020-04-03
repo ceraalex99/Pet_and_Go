@@ -1,20 +1,22 @@
 package api.dto;
 
+import java.util.Date;
+
 public class MascotaDTO {
 
     private String nombre;
 
-    private int edad;
+    private String fechaNacimiento;
 
-    private String emailAmo;
+    private String emailUsuario;
 
     public MascotaDTO() {
     }
 
-    public MascotaDTO(String nombre,int edad,String emailAmo) {
+    public MascotaDTO(String nombre,String emailUsuario,String fechaNacimiento) {
         this.nombre = nombre;
-        this.edad = edad;
-        this.emailAmo = emailAmo;
+        this.fechaNacimiento = fechaNacimiento;
+        this.emailUsuario = emailUsuario;
     }
 
     public String getNombre() {
@@ -25,19 +27,19 @@ public class MascotaDTO {
         this.nombre = nombre;
     }
 
-    public int getEdad() {
-        return edad;
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setEdad(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getEmailAmo() {
-        return emailAmo;
+    public String getEmailUsuario() {
+        return emailUsuario;
     }
 
-    public void setEmailAmo(String emailAmo) {
-        this.emailAmo = emailAmo;
+    public void setEmailUsuario(String emailUsuario) {
+        this.emailUsuario = emailUsuario;
     }
 }

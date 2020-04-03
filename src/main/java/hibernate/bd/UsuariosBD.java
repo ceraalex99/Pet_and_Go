@@ -11,7 +11,7 @@ import java.util.List;
 public class UsuariosBD {
 
     private Session session;
-    private static  SessionFactory sessionFactory = Factory.getSession(Usuario.class);
+    private static  SessionFactory sessionFactory = Factory.getSessionFactory(Usuario.class);
 
     private void newSession(){
         if (session == null) session = sessionFactory.openSession();

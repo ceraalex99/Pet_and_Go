@@ -1,6 +1,8 @@
 package entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name= "usuarios"  )
@@ -18,6 +20,11 @@ public class Usuario  {
 
     @Column(name="nombre")
     private String nombre;
+
+
+    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+    private List<Mascota> mascotaList = new ArrayList<Mascota>();
+
 
     public Usuario() {
     }
@@ -61,6 +68,14 @@ public class Usuario  {
         this.email = email;
     }
 
+    public List<Mascota> getMascotaList() {
+        return mascotaList;
+    }
+
+    public void setMascotaList(List<Mascota> mascotaList) {
+        this.mascotaList = mascotaList;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -70,4 +85,5 @@ public class Usuario  {
                 ", email='" + email + '\'' +
                 '}';
     }
+
 }

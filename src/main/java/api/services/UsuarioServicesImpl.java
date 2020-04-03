@@ -26,6 +26,11 @@ public class UsuarioServicesImpl implements UsuarioServices {
     }
 
     @Override
+    public boolean deleteUsuario(Usuario usuario) {
+        return usuarioDAO.deleteUsuario(usuario);
+    }
+
+    @Override
     public void updateUsuario(Usuario usuario) {
         usuarioDAO.updateUsuario(usuario);
     }

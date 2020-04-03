@@ -1,61 +1,58 @@
 package entities;
 
+import entities.KeysComposites.MascotaPK;
+
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
-@Table(name= "mascotas"  )
+@Table(name="mascotas")
 public class Mascota  {
 
+    @EmbeddedId
+    private MascotaPK key;
 
-    @Id
-    @Column(name="nombre")
-    private String nombre;
+    public MascotaPK getKey() {
+        return key;
+    }
 
-    @Column(name="edad")
-    private int edad;
+    @Column(name="fechanacimiento")
+    private String fechaNacimiento;
 
-    @Column(name="emailAmo")
-    private String emailAmo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "emailUsuario" ,insertable=false)
+    private Usuario usuario;
 
     public Mascota() {
     }
 
-    public Mascota(String nombre,int edad,String emailAmo) {
-        this.nombre = nombre;
-        this.edad = edad;
-        this.emailAmo = emailAmo;
+    public Mascota(String nombre,String fechaNacimiento,String emailUsuario) {
+        this.fechaNacimiento = fechaNacimiento;
+        this.key = new MascotaPK(nombre,emailUsuario);
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public int getEdad() {
-        return edad;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
-
-    public String getEmailAmo() {
-        return emailAmo;
-    }
-
-    public void setEmailAmo(String emailAmo) {
-        this.emailAmo = emailAmo;
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 
     @Override
     public String toString() {
-        return "Usuario{" +
-                ", nombre='" + nombre + '\'' +
-                ", edad='" + edad + '\'' +
-                ", emailAmo='" + emailAmo + '\'' +
+        return "Mascota{" +
+                "key=" + key +
+                ", fechaNacimiento='" + fechaNacimiento + '\'' +
+                ", usuario=" + usuario +
                 '}';
     }
 }
