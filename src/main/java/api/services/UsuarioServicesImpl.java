@@ -1,5 +1,6 @@
-package api.controller;
+package api.services;
 
+import api.dao.UsuarioDAO;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,11 @@ public class UsuarioServicesImpl implements UsuarioServices {
     @Override
     public boolean deleteUsuarioByEmail(String username) {
         return usuarioDAO.deleteUsuarioByEmail(username);
+    }
+
+    @Override
+    public boolean deleteUsuario(Usuario usuario) {
+        return usuarioDAO.deleteUsuario(usuario);
     }
 
     @Override

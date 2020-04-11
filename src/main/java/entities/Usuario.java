@@ -1,12 +1,12 @@
 package entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name= "usuarios"  )
-public class Usuario  {
-
-
+public class Usuario implements Serializable {
 
     @Column(name="username")
     private String username;
@@ -20,6 +20,11 @@ public class Usuario  {
 
     @Column(name="nombre")
     private String nombre;
+
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="emailusuario")
+    private Set<Mascota> mascotas;
+
 
     public Usuario() {
     }
@@ -61,6 +66,18 @@ public class Usuario  {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public Set<Mascota> getMascotas() {
+        return mascotas;
+    }
+
+    public void addMascota(Mascota mascota) {
+        this.mascotas.add(mascota);
+    }
+
+    public void removeMascota(Mascota mascota) {
+        this.mascotas.remove(mascota);
     }
 
     @Override
