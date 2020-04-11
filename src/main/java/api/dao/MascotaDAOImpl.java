@@ -2,6 +2,7 @@ package api.dao;
 
 import entities.Mascota;
 import entities.MascotaId;
+import org.hibernate.Session;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-public class MascotaDAOImpl extends AbstractSession implements MascotaDAO  {
+public class MascotaDAOImpl extends AbstractSession implements MascotaDAO, SessionBD  {
     @Override
     public boolean altaMascota(Mascota mascota) {
         getSession().beginTransaction();
@@ -48,4 +49,8 @@ public class MascotaDAOImpl extends AbstractSession implements MascotaDAO  {
     }
 
 
+    @Override
+    public Session getSession() {
+        return getSession(Mascota.class);
+    }
 }
