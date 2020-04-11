@@ -1,7 +1,11 @@
 package api.controller;
 
+import api.dto.MascotaDTO;
 import api.dto.UsuarioDTO;
+import api.services.MascotaServices;
 import api.services.UsuarioServices;
+import entities.Mascota;
+import entities.MascotaId;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +25,8 @@ import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
 public class UsuarioController {
     @Autowired
     private UsuarioServices usuarioServices;
+    @Autowired
+    private MascotaServices mascotaServices;
 
     // - Get todos los Usuarios
     @GetMapping(value= "")
@@ -99,5 +105,34 @@ public class UsuarioController {
         else {
             return new ResponseEntity(usuarioServices.deleteUsuarioByEmail(email), HttpStatus.OK);
         }
+    }
+
+    @GetMapping(value="/{email}/mascotas")
+    public ResponseEntity getMascotasUsuario(@PathVariable(name="email") String email){
+        if(email==null || email.isEmpty()){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else{
+            Usuario usuario = usuarioServices.findByEmail(email);
+            if(usuario==null ) {
+                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            }
+            else {
+                return new ResponseEntity(usuario.getMascotas(), HttpStatus.OK);
+            }
+        }
+    }
+
+    @PostMapping(value="/{email}/mascotas")
+    public ResponseEntity addMascotaUsuario(MascotaDTO mascotaDTO){
+        Usuario amo = usuarioServices.findByEmail(mascotaDTO.getEmailAmo());
+        Mascota mascota = new Mascota();
+        mascota.setId(new MascotaId(mascotaDTO.getNombre(),mascotaDTO.getEmailAmo()));
+        mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
+        mascotaServices.altaMascota(mascota);
+        amo.addMascota(mascota);
+        usuarioServices.updateUsuario(amo);
+
+        return new ResponseEntity(HttpStatus.OK);
     }
 }

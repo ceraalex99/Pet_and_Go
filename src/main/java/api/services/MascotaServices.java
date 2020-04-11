@@ -1,15 +1,14 @@
 package api.services;
 
 import entities.Mascota;
+import entities.MascotaId;
 
 import java.util.List;
 
-
 public interface MascotaServices {
-    boolean altaMascota(Mascota Mascota);
-    boolean deleteMascota(String name,String emailUsername);
-    boolean deleteMascota(Mascota Mascota);
-    void updateMascota(Mascota Mascota);
-    List<Mascota> findAllMascota();
-    Mascota find(String nombre,String emailUsuario);
+    boolean altaMascota(Mascota mascota);
+    boolean deleteMascotaById(MascotaId id);
+    void updateMascota(Mascota mascota);
+    List findAllMascota();
+    Mascota findById(MascotaId id);
 }

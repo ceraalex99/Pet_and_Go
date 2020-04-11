@@ -4,7 +4,6 @@ import entities.Usuario;
 
 import java.util.List;
 
-
 public interface UsuarioServices {
     boolean altaUsuario(Usuario usuario);
     boolean deleteUsuarioByEmail(String username);

@@ -1,58 +1,50 @@
 package entities;
 
-import entities.KeysComposites.MascotaPK;
-
 import javax.persistence.*;
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
-@Table(name="mascotas")
-public class Mascota  {
+@Table(name= "mascotas"  )
+public class Mascota implements Serializable {
+
 
     @EmbeddedId
-    private MascotaPK key;
-
-    public MascotaPK getKey() {
-        return key;
-    }
+    private MascotaId id;
 
     @Column(name="fechanacimiento")
-    private String fechaNacimiento;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "emailUsuario" ,insertable=false)
-    private Usuario usuario;
+    private LocalDate fechaNacimiento;
 
     public Mascota() {
     }
 
-    public Mascota(String nombre,String fechaNacimiento,String emailUsuario) {
+    public Mascota(MascotaId id,LocalDate fechaNacimiento) {
+        this.id = id;
         this.fechaNacimiento = fechaNacimiento;
-        this.key = new MascotaPK(nombre,emailUsuario);
     }
 
-    public String getFechaNacimiento() {
+    public MascotaId getId() {
+        return id;
+    }
+
+    public void setId(MascotaId id) {
+        this.id = id;
+    }
+
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFechaNacimiento(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
 
     @Override
     public String toString() {
-        return "Mascota{" +
-                "key=" + key +
-                ", fechaNacimiento='" + fechaNacimiento + '\'' +
-                ", usuario=" + usuario +
+        return "Usuario{" +
+                ", nombre='" + id.getNombre() + '\'' +
+                ", fecha de nacimiento='" + fechaNacimiento + '\'' +
                 '}';
     }
 }

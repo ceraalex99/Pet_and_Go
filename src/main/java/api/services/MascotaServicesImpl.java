@@ -2,18 +2,18 @@ package api.services;
 
 import api.dao.MascotaDAO;
 import entities.Mascota;
+import entities.MascotaId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service("MascotaServices")
+@Service("mascotaServices")
 @Transactional
-
 public class MascotaServicesImpl implements MascotaServices {
     @Autowired
-    private MascotaDAO mascotaDAO;
+    MascotaDAO mascotaDAO;
 
     @Override
     public boolean altaMascota(Mascota mascota) {
@@ -21,13 +21,8 @@ public class MascotaServicesImpl implements MascotaServices {
     }
 
     @Override
-    public boolean deleteMascota(String name,String emailUsuario) {
-        return mascotaDAO.deleteMascota(name,emailUsuario);
-    }
-
-    @Override
-    public boolean deleteMascota(Mascota mascota) {
-        return mascotaDAO.deleteMascota(mascota);
+    public boolean deleteMascotaById(MascotaId id) {
+        return mascotaDAO.deleteMascotaById(id);
     }
 
     @Override
@@ -36,12 +31,12 @@ public class MascotaServicesImpl implements MascotaServices {
     }
 
     @Override
-    public List<Mascota> findAllMascota() {
+    public List findAllMascota() {
         return mascotaDAO.findAllMascota();
     }
 
     @Override
-    public Mascota find(String nombre,String emailUsuario) {
-        return mascotaDAO.find(nombre,emailUsuario);
+    public Mascota findById(MascotaId id) {
+        return mascotaDAO.findById(id);
     }
 }

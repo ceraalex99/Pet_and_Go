@@ -1,12 +1,12 @@
 package entities;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name= "usuarios"  )
-public class Usuario  {
+public class Usuario implements Serializable {
 
     @Column(name="username")
     private String username;
@@ -21,9 +21,9 @@ public class Usuario  {
     @Column(name="nombre")
     private String nombre;
 
-
-    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
-    private List<Mascota> mascotaList = new ArrayList<Mascota>();
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="emailusuario")
+    private Set<Mascota> mascotas;
 
 
     public Usuario() {
@@ -68,12 +68,16 @@ public class Usuario  {
         this.email = email;
     }
 
-    public List<Mascota> getMascotaList() {
-        return mascotaList;
+    public Set<Mascota> getMascotas() {
+        return mascotas;
     }
 
-    public void setMascotaList(List<Mascota> mascotaList) {
-        this.mascotaList = mascotaList;
+    public void addMascota(Mascota mascota) {
+        this.mascotas.add(mascota);
+    }
+
+    public void removeMascota(Mascota mascota) {
+        this.mascotas.remove(mascota);
     }
 
     @Override
@@ -85,5 +89,4 @@ public class Usuario  {
                 ", email='" + email + '\'' +
                 '}';
     }
-
 }

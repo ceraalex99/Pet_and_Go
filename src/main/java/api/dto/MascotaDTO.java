@@ -1,22 +1,25 @@
 package api.dto;
 
-import java.util.Date;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 public class MascotaDTO {
 
     private String nombre;
 
-    private String fechaNacimiento;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaNacimiento;
 
-    private String emailUsuario;
+    private String emailAmo;
 
     public MascotaDTO() {
     }
 
-    public MascotaDTO(String nombre,String emailUsuario,String fechaNacimiento) {
+    public MascotaDTO(String nombre,LocalDate fechaNacimiento,String emailAmo) {
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
-        this.emailUsuario = emailUsuario;
+        this.emailAmo = emailAmo;
     }
 
     public String getNombre() {
@@ -27,19 +30,20 @@ public class MascotaDTO {
         this.nombre = nombre;
     }
 
-    public String getFechaNacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setEdad(String fechaNacimiento) {
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getEmailUsuario() {
-        return emailUsuario;
+
+    public String getEmailAmo() {
+        return emailAmo;
     }
 
-    public void setEmailUsuario(String emailUsuario) {
-        this.emailUsuario = emailUsuario;
+    public void setEmailAmo(String emailAmo) {
+        this.emailAmo = emailAmo;
     }
 }

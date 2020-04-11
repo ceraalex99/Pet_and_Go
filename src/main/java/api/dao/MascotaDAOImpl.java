@@ -1,7 +1,7 @@
 package api.dao;
 
-import entities.KeysComposites.MascotaPK;
 import entities.Mascota;
+import entities.MascotaId;
 import org.hibernate.Session;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
 import org.springframework.stereotype.Repository;
@@ -11,9 +11,7 @@ import java.util.List;
 
 @Repository
 @Transactional
-
-public class MascotaDAOImpl extends  AbstractSession implements MascotaDAO,SessionBD {
-
+public class MascotaDAOImpl extends AbstractSession implements MascotaDAO, SessionBD  {
     @Override
     public boolean altaMascota(Mascota mascota) {
         getSession().beginTransaction();
@@ -23,22 +21,15 @@ public class MascotaDAOImpl extends  AbstractSession implements MascotaDAO,Sessi
     }
 
     @Override
-    public boolean deleteMascota(String username,String emailUsuario) {
+    public boolean deleteMascotaById(MascotaId id) {
         boolean result = false;
-        Mascota mascota = find(username,emailUsuario);
-        if(mascota != null) result = deleteMascota(mascota);
-        return result;
-    }
-
-    @Override
-    public boolean deleteMascota(Mascota mascota) {
-        boolean result = false;
-
-        getSession().beginTransaction();
-        getSession().delete(mascota);
-        getSession().getTransaction().commit();
-        result = getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
-
+        Mascota mascota = findById(id);
+        if(mascota != null) {
+            getSession().beginTransaction();
+            getSession().delete(mascota);
+            getSession().getTransaction().commit();
+            result = getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        }
         return result;
     }
 
@@ -53,9 +44,10 @@ public class MascotaDAOImpl extends  AbstractSession implements MascotaDAO,Sessi
     }
 
     @Override
-    public Mascota find(String nombre,String emailUsuario) {
-        return getSession().get(Mascota.class, new MascotaPK(nombre,emailUsuario));
+    public Mascota findById(MascotaId id) {
+        return getSession().get(Mascota.class, id);
     }
+
 
     @Override
     public Session getSession() {
