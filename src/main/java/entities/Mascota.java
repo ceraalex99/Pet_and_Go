@@ -2,6 +2,7 @@ package entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name= "mascotas"  )
@@ -11,15 +12,15 @@ public class Mascota implements Serializable {
     @EmbeddedId
     private MascotaId id;
 
-    @Column(name="edad")
-    private int edad;
+    @Column(name="fechanacimiento")
+    private LocalDate fechaNacimiento;
 
     public Mascota() {
     }
 
-    public Mascota(MascotaId id,int edad) {
+    public Mascota(MascotaId id,LocalDate fechaNacimiento) {
         this.id = id;
-        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public MascotaId getId() {
@@ -30,12 +31,12 @@ public class Mascota implements Serializable {
         this.id = id;
     }
 
-    public int getEdad() {
-        return edad;
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
 
@@ -43,8 +44,7 @@ public class Mascota implements Serializable {
     public String toString() {
         return "Usuario{" +
                 ", nombre='" + id.getNombre() + '\'' +
-                ", edad='" + edad + '\'' +
-                ", emailAmo='" + id.getAmo().getEmail() + '\'' +
+                ", fecha de nacimiento='" + fechaNacimiento + '\'' +
                 '}';
     }
 }

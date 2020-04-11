@@ -13,14 +13,13 @@ public class MascotaId implements Serializable {
     @Column(name="nombre")
     private String nombre;
 
-    @ManyToOne
-    @JoinColumn(name="emailAmo")
-    private Usuario amo;
+    @Column(name="emailusuario")
+    private String amo;
 
     public MascotaId(){
     }
 
-    public MascotaId(String nombre, Usuario amo) {
+    public MascotaId(String nombre, String amo) {
         this.nombre = nombre;
         this.amo = amo;
     }
@@ -29,7 +28,7 @@ public class MascotaId implements Serializable {
         return nombre;
     }
 
-    public Usuario getAmo() {
+    public String getAmo() {
         return amo;
     }
 

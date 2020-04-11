@@ -1,7 +1,5 @@
 package entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -23,9 +21,9 @@ public class Usuario implements Serializable {
     @Column(name="nombre")
     private String nombre;
 
-    /*@OneToMany(cascade=CascadeType.ALL, mappedBy="usuarios")
-    @JsonIgnore
-    private Set<Mascota> mascotas;*/
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="emailusuario")
+    private Set<Mascota> mascotas;
 
 
     public Usuario() {
@@ -70,13 +68,17 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    /*public Set<Mascota> getMascotas() {
+    public Set<Mascota> getMascotas() {
         return mascotas;
     }
 
-    public void setMascotas(Set<Mascota> mascotas) {
-        this.mascotas = mascotas;
-    }*/
+    public void addMascota(Mascota mascota) {
+        this.mascotas.add(mascota);
+    }
+
+    public void removeMascota(Mascota mascota) {
+        this.mascotas.remove(mascota);
+    }
 
     @Override
     public String toString() {
