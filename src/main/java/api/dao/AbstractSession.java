@@ -8,14 +8,14 @@ import org.hibernate.SessionFactory;
 public class AbstractSession {
 
     private Session session;
-    private static  SessionFactory sessionFactory = Factory.getSession(Usuario.class);
 
-    private void newSession(){
-        if (session == null) session = sessionFactory.openSession();
+    private void newSession(Class tipoClase){
+        if (session == null) session = Factory.getSessionFactory(tipoClase).openSession();
     }
 
-    protected Session getSession() {
-        newSession();
+    protected Session getSession(Class tipoClase) {
+        newSession(tipoClase);
         return session;
     }
+
 }
