@@ -141,4 +141,16 @@ public class UsuarioController {
 
         return new ResponseEntity( HttpStatus.CREATED);
     }
+
+    @DeleteMapping(value = "/{email}/mascotas/{mascota}")
+    public ResponseEntity deleteMascota(@PathVariable(name="email") String email,@PathVariable(name="mascota") String mascota ) {
+        MascotaId id = new MascotaId(mascota,email);
+        boolean deleted = mascotaServices.deleteMascotaById(id);
+        if(deleted){
+            return new ResponseEntity(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
