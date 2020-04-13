@@ -1,5 +1,6 @@
 package api.controller;
 
+import api.dto.LoginBody;
 import api.dto.MascotaDTO;
 import api.dto.UsuarioDTO;
 import api.services.MascotaServices;
@@ -7,11 +8,14 @@ import api.services.UsuarioServices;
 import entities.Mascota;
 import entities.MascotaId;
 import entities.Usuario;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -43,7 +47,7 @@ public class UsuarioController {
     public ResponseEntity getUsuarioByEmail(@PathVariable(name="email") String email){
         Usuario usuario= usuarioServices.findByEmail(email);
         if(usuario==null ) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else {
             return new ResponseEntity(usuario, HttpStatus.OK);
@@ -60,12 +64,6 @@ public class UsuarioController {
         user.setEmail(userDTO.getEmail());
         user.setNombre(userDTO.getNombre());
 
-/*
-        if(userDTO==null ) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
- */
         Usuario usuarioExsitente = usuarioServices.findByEmail(user.getEmail());
         if(usuarioExsitente==null) {
             if(usuarioServices.findByUsername(user.getUsername()) != null){
@@ -78,29 +76,23 @@ public class UsuarioController {
     }
     //LOGIN
     @PostMapping(value= "/login")
-    public ResponseEntity loginRequest(@RequestBody UsuarioDTO userDTO) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
-        Usuario user = new Usuario();
 
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setEmail(userDTO.getEmail());
-        user.setNombre(userDTO.getNombre());
-
-        Usuario userbd= usuarioServices.findByEmail(user.getEmail());
-        if( userbd != null){
-            if(login(user.getEmail(),user.getPassword())){ // Llamada a gestorUsuarios
-                return new ResponseEntity(userbd, HttpStatus.OK);
-            }
-            else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        if(login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
+            return new ResponseEntity(usuarioServices.findByEmail(login.getEmail()), HttpStatus.OK);
         }
         else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
     }
     //DELETE USER
     @DeleteMapping(value = "/{email}")
     public ResponseEntity deleteUsuario(@PathVariable(name="email") String email){
         if(email == null || email.isEmpty()) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if(usuarioServices.findByEmail(email) == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else {
             boolean delete = usuarioServices.deleteUsuarioByEmail(email);
@@ -116,7 +108,7 @@ public class UsuarioController {
     @GetMapping(value="/{email}/mascotas")
     public ResponseEntity getMascotasUsuario(@PathVariable(name="email") String email){
         if(email==null || email.isEmpty()){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else{
             Usuario usuario = usuarioServices.findByEmail(email);
@@ -135,10 +127,14 @@ public class UsuarioController {
         Mascota mascota = new Mascota();
         mascota.setId(new MascotaId(mascotaDTO.getId().getNombre(),mascotaDTO.getId().getAmo()));
         mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
-        mascotaServices.altaMascota(mascota);
-        amo.addMascota(mascota);
-        usuarioServices.updateUsuario(amo);
-
-        return new ResponseEntity( HttpStatus.CREATED);
+        try {
+            mascotaServices.altaMascota(mascota);
+            amo.addMascota(mascota);
+            usuarioServices.updateUsuario(amo);
+        }
+        catch(PersistenceException e){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 }

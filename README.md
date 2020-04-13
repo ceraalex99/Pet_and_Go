@@ -14,6 +14,18 @@
 
 #### Usuarios
 
+##### Login ✔
+
+- `POST /api/usuarios/login`
+
+**Request body:**
+```json
+{
+"email": "antoniogp68@gmail.com",
+"password": "123456abc"
+}
+```
+
 ##### Create ✔
 
 - `POST /api/usuarios `
@@ -29,48 +41,66 @@
 ```
 
 **Response body:**
+
+Successful:
 ```
-Usuario creado con exito
+HTTP 201
 ```
+Username repetido:
+```
+username
+HTTP 400
+```
+Email repetido:
+```
+email
+HTTP 400
+```
+
 
 ##### Read ✔
 
 - `GET /api/usuarios/<email>`
 
 **Response body:**
+
+Successful:
 ```json
 {
   "nombre": "Antonio Ruiz",
   "username": "antonioruiz83",
   "email": "antonio@ruiz.com"
 }
+HTTP 200
+``` 
+User not found:
+```
+HTTP 404
 ```
 
 ##### Update ❌
 
 - `PUT /api/usuarios/<email>`
 
-**Request body:**
-```json
-{
-  "nombre": "Antonio Ruiz",
-  "username": "antonioruiz83",
-  "email": "antonio@ruiz.com"
-}
-```
 
-**Response body:**
-```
-Usuario modificado con exito
-```
 
 ##### Delete ✔
 
 - `DELETE /api/usuarios/<email>`
 
 **Response body:**
+
+Successful:
 ```
-true
+HTTP 200
+```
+User not found:
+```
+HTTP 404
+```
+Error BD:
+```
+HTTP 500
 ```
 
 #### Mascotas
