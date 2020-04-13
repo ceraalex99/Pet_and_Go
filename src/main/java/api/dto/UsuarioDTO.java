@@ -1,13 +1,16 @@
 package api.dto;
 
 public class UsuarioDTO {
+
+    private String nombre;
+
     private String username;
 
     private String password;
 
     private String email;
 
-    private String nombre;
+
 
 
     public UsuarioDTO() {

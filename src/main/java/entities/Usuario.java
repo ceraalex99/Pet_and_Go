@@ -1,5 +1,7 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
@@ -8,21 +10,26 @@ import java.util.Set;
 @Table(name= "usuarios"  )
 public class Usuario implements Serializable {
 
+    @Column(name="nombre")
+    private String nombre;
+
     @Column(name="username")
     private String username;
-
-    @Column(name="password")
-    private String password;
 
     @Id
     @Column(name="email")
     private String email;
 
-    @Column(name="nombre")
-    private String nombre;
+    @Column(name="password")
+    @JsonIgnore
+    private String password;
+
+
+
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name="emailusuario")
+    @JsonIgnore
     private Set<Mascota> mascotas;
 
 
