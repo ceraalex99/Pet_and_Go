@@ -26,6 +26,22 @@
 }
 ```
 
+**Response body and status:**
+
+Successful:
+```json
+{
+  "nombre": "Antonio Garcia Perez",
+  "username": "antonio68",
+  "email": "antoniogp68@gmail.com",
+}
+HTTP 200
+```
+Bad login:
+```
+HTTP 400
+```
+
 ##### Create ✔
 
 - `POST /api/usuarios `
@@ -40,7 +56,7 @@
 }
 ```
 
-**Response body:**
+**Response body and status:**
 
 Successful:
 ```
@@ -62,7 +78,7 @@ HTTP 400
 
 - `GET /api/usuarios/<email>`
 
-**Response body:**
+**Response body and status:**
 
 Successful:
 ```json
@@ -88,7 +104,7 @@ HTTP 404
 
 - `DELETE /api/usuarios/<email>`
 
-**Response body:**
+**Response body and status:**
 
 Successful:
 ```
@@ -118,7 +134,7 @@ HTTP 500
 "fechaNacimiento":"2020-01-30"}
 ```
 
-**Response body:**
+**Response body and status:**
 ```
 
 ```
