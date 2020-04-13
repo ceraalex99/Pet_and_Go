@@ -144,6 +144,9 @@ public class UsuarioController {
 
     @DeleteMapping(value = "/{email}/mascotas/{mascota}")
     public ResponseEntity deleteMascota(@PathVariable(name="email") String email,@PathVariable(name="mascota") String mascota ) {
+        if(email==null || email.isEmpty() || mascota == null || mascota.isEmpty()){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
         MascotaId id = new MascotaId(mascota,email);
         boolean deleted = mascotaServices.deleteMascotaById(id);
         if(deleted){
