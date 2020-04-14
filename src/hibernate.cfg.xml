@@ -9,5 +9,9 @@
         <property name="dialect">org.hibernate.dialect.PostgreSQL10Dialect</property>
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.default_schema">prueba</property>
+
+
+        <mapping class="entities.Usuario"/>
+        <mapping class="entities.Mascota"/>
     </session-factory>
 </hibernate-configuration>

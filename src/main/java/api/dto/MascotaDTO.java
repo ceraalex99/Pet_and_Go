@@ -1,43 +1,42 @@
 package api.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+
 public class MascotaDTO {
 
-    private String nombre;
 
-    private int edad;
 
-    private String emailAmo;
+    private MascotaIdDTO id;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate fechaNacimiento;
+
 
     public MascotaDTO() {
     }
 
-    public MascotaDTO(String nombre,int edad,String emailAmo) {
-        this.nombre = nombre;
-        this.edad = edad;
-        this.emailAmo = emailAmo;
+    public MascotaDTO(MascotaIdDTO id,LocalDate fechaNacimiento) {
+        this.id = id;
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getNombre() {
-        return nombre;
+    public MascotaIdDTO getId() {
+        return id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setId(MascotaIdDTO id) {
+        this.id = id;
     }
 
-    public int getEdad() {
-        return edad;
+    public LocalDate getFechaNacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getEmailAmo() {
-        return emailAmo;
-    }
 
-    public void setEmailAmo(String emailAmo) {
-        this.emailAmo = emailAmo;
-    }
+
 }

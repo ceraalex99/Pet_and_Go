@@ -10,22 +10,27 @@ import java.util.Set;
 @Table(name= "usuarios"  )
 public class Usuario implements Serializable {
 
+    @Column(name="nombre")
+    private String nombre;
+
     @Column(name="username")
     private String username;
-
-    @Column(name="password")
-    private String password;
 
     @Id
     @Column(name="email")
     private String email;
 
-    @Column(name="nombre")
-    private String nombre;
-
-    /*@OneToMany(cascade=CascadeType.ALL, mappedBy="usuarios")
+    @Column(name="password")
     @JsonIgnore
-    private Set<Mascota> mascotas;*/
+    private String password;
+
+
+
+
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="emailusuario")
+    @JsonIgnore
+    private Set<Mascota> mascotas;
 
 
     public Usuario() {
@@ -70,13 +75,17 @@ public class Usuario implements Serializable {
         this.email = email;
     }
 
-    /*public Set<Mascota> getMascotas() {
+    public Set<Mascota> getMascotas() {
         return mascotas;
     }
 
-    public void setMascotas(Set<Mascota> mascotas) {
-        this.mascotas = mascotas;
-    }*/
+    public void addMascota(Mascota mascota) {
+        this.mascotas.add(mascota);
+    }
+
+    public void removeMascota(Mascota mascota) {
+        this.mascotas.remove(mascota);
+    }
 
     @Override
     public String toString() {
