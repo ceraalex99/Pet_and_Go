@@ -8,14 +8,12 @@ import api.services.UsuarioServices;
 import entities.Mascota;
 import entities.MascotaId;
 import entities.Usuario;
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
-import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -113,7 +111,7 @@ public class UsuarioController {
         else{
             Usuario usuario = usuarioServices.findByEmail(email);
             if(usuario==null ) {
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
             else {
                 return new ResponseEntity(usuario.getMascotas(), HttpStatus.OK);
