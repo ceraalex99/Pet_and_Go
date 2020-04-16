@@ -51,7 +51,7 @@ public class UsuarioController {
             return new ResponseEntity<List<Usuario>>(usuarios,HttpStatus.OK);
         }
     }
-    //READ USER
+    //READ USER 
     @GetMapping(value= "/{email}")
     public ResponseEntity getUsuarioByEmail(@PathVariable(name="email") String email){
         Usuario usuario= usuarioServices.findByEmail(email);
