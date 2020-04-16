@@ -32,7 +32,6 @@ public class GestorUsuarios {
         }
 
     }
-
     public static void delete(Usuario user) {
         usuariosBD.deleteUsuario(user);
     }
@@ -40,4 +39,7 @@ public class GestorUsuarios {
     public static void deleteByEmail(String email) {
         usuariosBD.deleteUsuarioByEmail(email);
     }
+
+
+
 }

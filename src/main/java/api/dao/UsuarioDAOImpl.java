@@ -1,6 +1,5 @@
 package api.dao;
 
-import entities.Mascota;
 import entities.Usuario;
 
 import javax.transaction.Transactional;

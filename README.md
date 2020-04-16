@@ -33,7 +33,7 @@ Successful:
 {
   "nombre": "Antonio Garcia Perez",
   "username": "antonio68",
-  "email": "antoniogp68@gmail.com",
+  "email": "antoniogp68@gmail.com"
 }
 HTTP 200
 ```
@@ -121,7 +121,7 @@ HTTP 500
 
 #### Mascotas
 
-##### Create
+##### Create ✔
 
 - `POST /api/usuarios/<email>/mascotas`
 
@@ -136,5 +136,44 @@ HTTP 500
 
 **Response body and status:**
 ```
+HTTP 201
+```
 
+##### Read ❌
+
+- `GET /api/usuarios/<email>/mascotas/<nombre>`
+
+**Response body:**
+Successful:
+```json
+{"id": {
+	"nombre":"Pepito",
+	"amo":"antoniogp68@gmail.com"
+	},
+"fechaNacimiento":"2020-01-30"}
+HTTP 200
+```
+
+##### Read (all) ✔
+
+- `GET /api/usuarios/<email>/mascotas`
+
+**Response body:**
+Successful:
+```json
+[{"id": {
+	"nombre":"Pepito",
+	"amo":"antoniogp68@gmail.com"
+	},
+"fechaNacimiento":"2020-01-30"},
+  {"id": {
+    "nombre":"Manolito",
+    "amo":"antoniogp68@gmail.com"
+    },
+"fechaNacimiento":"2020-01-02"}]
+HTTP 200
+```
+User not found:
+```
+HTTP 404
 ```

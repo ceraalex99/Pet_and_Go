@@ -9,11 +9,14 @@ import entities.Mascota;
 import entities.MascotaId;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -21,6 +24,10 @@ import java.util.List;
 
 import static io.github.ceraalex99.petandgo.GestorUsuarios.login;
 import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
+
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 
 
 @RestController
@@ -31,6 +38,9 @@ public class UsuarioController {
     @Autowired
     private MascotaServices mascotaServices;
 
+    public static final String HEADER_AUTHORIZACION_KEY = "Authorization";
+
+    
     // - Get todos los Usuarios
     @GetMapping(value= "")
     public ResponseEntity getUsuarios( ) {
@@ -76,10 +86,12 @@ public class UsuarioController {
     //LOGIN
     @PostMapping(value= "/login")
     public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
-
-
         if(login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
-            return new ResponseEntity(usuarioServices.findByEmail(login.getEmail()), HttpStatus.OK);
+            String token = Jwts.builder().setSubject("Autorizado a " +login.getEmail()).signWith(SignatureAlgorithm.HS512,"1234").compact();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HEADER_AUTHORIZACION_KEY,token);
+            ResponseEntity response = new ResponseEntity(usuarioServices.findByEmail(login.getEmail()), headers, HttpStatus.OK);
+            return response;
         }
         else return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
@@ -112,7 +124,7 @@ public class UsuarioController {
         else{
             Usuario usuario = usuarioServices.findByEmail(email);
             if(usuario==null ) {
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
             else {
                 return new ResponseEntity(usuario.getMascotas(), HttpStatus.OK);
