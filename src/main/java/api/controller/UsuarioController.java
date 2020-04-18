@@ -32,10 +32,8 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class UsuarioController {
     @Autowired
     private UsuarioServices usuarioServices;
-    @Autowired
-    private MascotaServices mascotaServices;
 
-    public static final String HEADER_AUTHORIZACION_KEY = "Authorization";
+    public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
 
     
     // - Get todos los Usuarios
@@ -86,7 +84,7 @@ public class UsuarioController {
         if(login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
             String token = Jwts.builder().setSubject("Autorizado a " +login.getEmail()).signWith(SignatureAlgorithm.HS512,"1234").compact();
             HttpHeaders headers = new HttpHeaders();
-            headers.add(HEADER_AUTHORIZACION_KEY,token);
+            headers.add(HEADER_AUTHORIZATION_KEY,token);
             ResponseEntity response = new ResponseEntity(usuarioServices.findByEmail(login.getEmail()), headers, HttpStatus.OK);
             return response;
         }
