@@ -139,7 +139,7 @@ HTTP 500
 HTTP 201
 ```
 
-##### Read ❌
+##### Read ✔
 
 - `GET /api/usuarios/<email>/mascotas/<nombre>`
 
@@ -152,6 +152,11 @@ Successful:
 	},
 "fechaNacimiento":"2020-01-30"}
 HTTP 200
+```
+
+Mascota not found:
+```
+HTTP 404
 ```
 
 ##### Read (all) ✔
@@ -176,4 +181,50 @@ HTTP 200
 User not found:
 ```
 HTTP 404
+```
+
+##### Update ✔
+
+- `PUT /api/usuarios/<email>/mascotas/<nombre>`
+
+**Request body:**
+```json
+{"id": {
+	"nombre":"Pepito",
+	"amo":"antoniogp68@gmail.com"
+	},
+"fechaNacimiento":"2020-01-30"}
+```
+
+**Response body:**
+Successful:
+```
+HTTP 200
+```
+Mascota not found:
+```
+HTTP 404
+```
+No coinciden URL y body:
+```
+HTTP 400
+```
+
+##### Delete ✔
+
+- `DELETE /api/usuarios/<email>/mascotas/<nombre>`
+
+**Response body and status:**
+
+Successful:
+```
+HTTP 200
+```
+Mascota not found:
+```
+HTTP 404
+```
+Error BD:
+```
+HTTP 500
 ```

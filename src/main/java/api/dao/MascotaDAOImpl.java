@@ -15,7 +15,7 @@ public class MascotaDAOImpl extends AbstractSession implements MascotaDAO, Sessi
     @Override
     public boolean altaMascota(Mascota mascota) {
         getSession().beginTransaction();
-        getSession().save(mascota);
+            getSession().save(mascota);
         getSession().getTransaction().commit();
         return getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
     }

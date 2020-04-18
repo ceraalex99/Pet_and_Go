@@ -1,7 +1,6 @@
 package api.controller;
 
 import api.dto.MascotaDTO;
-import api.dto.MascotaIdDTO;
 import api.services.MascotaServices;
 import api.services.UsuarioServices;
 import entities.Mascota;
@@ -76,12 +75,35 @@ public class MascotaController {
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @DeleteMapping(value = "{mascota}")
-    public ResponseEntity deleteMascota(@PathVariable(name="email") String email,@PathVariable(name="mascota") String mascota ) {
-        if(email==null || email.isEmpty() || mascota == null || mascota.isEmpty()){
+    //UPDATE
+    @PutMapping(value= "{nombre}")
+    public ResponseEntity updateMascota(@RequestBody MascotaDTO mascotaDTO, @PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre){
+        if(!nombre.equals(mascotaDTO.getId().getNombre()) || !email.equals(mascotaDTO.getId().getAmo())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        MascotaId id = new MascotaId(mascota,email);
+
+        MascotaId mascotaId = new MascotaId(nombre, email);
+        Mascota mascota = mascotaServices.findById(mascotaId);
+
+        if(mascota == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
+
+    //DELETE
+    @DeleteMapping(value = "{nombre}")
+    public ResponseEntity deleteMascota(@PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre ) {
+        if(email==null || email.isEmpty() || nombre == null || nombre.isEmpty()){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        MascotaId id = new MascotaId(nombre,email);
+
+        if(mascotaServices.findById(id) == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         boolean deleted = mascotaServices.deleteMascotaById(id);
         if(deleted){
             return new ResponseEntity(HttpStatus.OK);
