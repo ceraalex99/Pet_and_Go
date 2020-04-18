@@ -118,6 +118,10 @@ Error BD:
 ```
 HTTP 500
 ```
+No autorizado:
+```
+HTTP 403
+```
 
 #### Mascotas
 
