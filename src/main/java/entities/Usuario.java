@@ -32,6 +32,10 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private Set<Mascota> mascotas;
 
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name="emailusuario")
+    @JsonIgnore
+    private Set<PerreParada> perreParadas;
 
     public Usuario() {
     }
@@ -85,6 +89,22 @@ public class Usuario implements Serializable {
 
     public void removeMascota(Mascota mascota) {
         this.mascotas.remove(mascota);
+    }
+
+    public Set<PerreParada> getPerreParadas() {
+        return perreParadas;
+    }
+
+    public void setPerreParadas(Set<PerreParada> perreParadas) {
+        this.perreParadas = perreParadas;
+    }
+
+    public void addPerreParadas(PerreParada perreParada) {
+        this.perreParadas.add(perreParada);
+    }
+
+    public void removePerreParadas(PerreParada perreParada) {
+        this.perreParadas.remove(perreParada);
     }
 
     @Override

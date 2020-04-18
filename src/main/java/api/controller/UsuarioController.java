@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
+
 import static io.github.ceraalex99.petandgo.GestorUsuarios.login;
 import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
+
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
