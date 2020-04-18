@@ -15,9 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -113,54 +110,6 @@ public class UsuarioController {
             else{
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }
-    }
-    //READ MASCOTAS
-    @GetMapping(value="/{email}/mascotas")
-    public ResponseEntity getMascotasUsuario(@PathVariable(name="email") String email){
-        if(email==null || email.isEmpty()){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else{
-            Usuario usuario = usuarioServices.findByEmail(email);
-            if(usuario==null ) {
-                return new ResponseEntity(HttpStatus.NOT_FOUND);
-            }
-            else {
-                return new ResponseEntity(usuario.getMascotas(), HttpStatus.OK);
-            }
-        }
-    }
-    //CREATE MASCOTA
-    @PostMapping(value="/{email}/mascotas")
-    public ResponseEntity addMascotaUsuario(@RequestBody MascotaDTO mascotaDTO){
-        Usuario amo = usuarioServices.findByEmail(mascotaDTO.getId().getAmo());
-        Mascota mascota = new Mascota();
-        mascota.setId(new MascotaId(mascotaDTO.getId().getNombre(),mascotaDTO.getId().getAmo()));
-        mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
-        try {
-            mascotaServices.altaMascota(mascota);
-            amo.addMascota(mascota);
-            usuarioServices.updateUsuario(amo);
-        }
-        catch(PersistenceException e){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
-
-    @DeleteMapping(value = "/{email}/mascotas/{mascota}")
-    public ResponseEntity deleteMascota(@PathVariable(name="email") String email,@PathVariable(name="mascota") String mascota ) {
-        if(email==null || email.isEmpty() || mascota == null || mascota.isEmpty()){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        MascotaId id = new MascotaId(mascota,email);
-        boolean deleted = mascotaServices.deleteMascotaById(id);
-        if(deleted){
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
