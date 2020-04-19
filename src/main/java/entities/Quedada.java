@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -39,8 +40,8 @@ public class Quedada implements Serializable {
     private String lugarFin;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "quedadasPart")
-    Set<Usuario> participantes;
+    @ManyToMany(mappedBy = "quedadasPart", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    Set<Mascota> participantes = new HashSet<>();
 
     public Quedada(){}
 
@@ -97,7 +98,11 @@ public class Quedada implements Serializable {
         this.lugarFin = lugarFin;
     }
 
-    public Set<Usuario> getParticipantes() {
+    public Set<Mascota> getParticipantes() {
         return participantes;
+    }
+
+    public void addParticipante(Mascota mascota){
+        participantes.add(mascota);
     }
 }

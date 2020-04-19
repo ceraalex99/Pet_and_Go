@@ -38,12 +38,6 @@ public class Usuario implements Serializable {
     private Set<Quedada> quedadasAdmin;
 
 
-
-    @ManyToMany
-    @JoinTable(name="participantes_quedadas",joinColumns = @JoinColumn(name="part_id"),
-            inverseJoinColumns = @JoinColumn(name="quedada_id"))
-    private Set<Quedada> quedadasPart;
-
     public Usuario() {
     }
 
@@ -110,17 +104,6 @@ public class Usuario implements Serializable {
         this.quedadasAdmin.remove(quedada);
     }
 
-    public Set<Quedada> getQuedadasPart() {
-        return quedadasPart;
-    }
-
-    public void addQuedadaPart(Quedada quedada) {
-        this.quedadasPart.add(quedada);
-    }
-
-    public void removeQuedadaPart(Quedada quedada) {
-        this.quedadasPart.remove(quedada);
-    }
 
     @Override
     public String toString() {

@@ -1,10 +1,14 @@
 package api.controller;
 
 
+import api.dto.MascotaIdDTO;
 import api.dto.QuedadaDTO;
 import api.dto.UsuarioDTO;
+import api.services.MascotaServices;
 import api.services.QuedadaServices;
 import api.services.UsuarioServices;
+import entities.Mascota;
+import entities.MascotaId;
 import entities.Quedada;
 
 import entities.Usuario;
@@ -32,19 +36,23 @@ public class QuedadaController {
     @Autowired
     private UsuarioServices usuarioServices;
 
+    @Autowired
+    private MascotaServices mascotaServices;
+
     // - Get todos los PerreParadas
     @GetMapping(value= "")
-    public ResponseEntity getPerreParadas(@RequestParam("ubicacion") String ubicacion, @RequestParam("admin") String admin,
+    public ResponseEntity getQuedadas(@RequestParam("ubicacion") String ubicacion, @RequestParam("admin") String admin,
                                           @RequestParam("participante") String participante, @RequestParam("order") String order) {
 
-        List<Quedada> quedadas;
+        List<Quedada> quedadas = new ArrayList<>();
         if(participante != null){
             Usuario user = usuarioServices.findByEmail(participante);
             if(user == null){
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
             else{
-                quedadas = new ArrayList<>(user.getQuedadasPart());
+                Set<Mascota> mascotas = user.getMascotas();
+                for (Mascota masc : mascotas) quedadas.addAll(masc.getQuedadasPart());
             }
         }
         else if(admin != null){
@@ -87,13 +95,16 @@ public class QuedadaController {
 
     //READ USER
     @PostMapping(value= "/{id}/participantes")
-    public ResponseEntity addParticipante(@PathVariable(name="id") Integer id, @RequestBody UsuarioDTO usuarioDTO){
-        Usuario usuario = usuarioServices.findByEmail(usuarioDTO.getEmail());
+    public ResponseEntity addParticipante(@PathVariable(name="id") Integer id, @RequestBody MascotaIdDTO mascotaIdDTO){
+        MascotaId mascotaId = new MascotaId(mascotaIdDTO.getNombre(), mascotaIdDTO.getAmo());
+        Mascota mascota = mascotaServices.findById(mascotaId);
         Quedada quedada = quedadaServices.findById(id);
-        if(usuario==null || quedada==null) {
+        if(mascota==null || quedada==null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        usuario.addQuedadaPart(quedada);
+        mascota.addQuedadaPart(quedada);
+        quedada.addParticipante(mascota);
+
 
         return new ResponseEntity(HttpStatus.CREATED);
 
@@ -105,7 +116,7 @@ public class QuedadaController {
         if(quedada==null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        Set<Usuario> participantes = quedada.getParticipantes();
+        Set<Mascota> participantes = quedada.getParticipantes();
         if(participantes.isEmpty()){
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
