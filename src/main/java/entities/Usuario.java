@@ -33,9 +33,16 @@ public class Usuario implements Serializable {
     private Set<Mascota> mascotas;
 
     @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name="emailusuario")
+    @JoinColumn(name= "admin")
     @JsonIgnore
-    private Set<PerreParada> perreParadas;
+    private Set<Quedada> quedadasAdmin;
+
+
+
+    @ManyToMany
+    @JoinTable(name="participantes_quedadas",joinColumns = @JoinColumn(name="part_id"),
+            inverseJoinColumns = @JoinColumn(name="quedada_id"))
+    private Set<Quedada> quedadasPart;
 
     public Usuario() {
     }
@@ -91,20 +98,28 @@ public class Usuario implements Serializable {
         this.mascotas.remove(mascota);
     }
 
-    public Set<PerreParada> getPerreParadas() {
-        return perreParadas;
+    public Set<Quedada> getQuedadasAdmin() {
+        return quedadasAdmin;
     }
 
-    public void setPerreParadas(Set<PerreParada> perreParadas) {
-        this.perreParadas = perreParadas;
+    public void addQuedadaAdmin(Quedada quedada) {
+        this.quedadasAdmin.add(quedada);
     }
 
-    public void addPerreParadas(PerreParada perreParada) {
-        this.perreParadas.add(perreParada);
+    public void removeQuedadaAdmin(Quedada quedada) {
+        this.quedadasAdmin.remove(quedada);
     }
 
-    public void removePerreParadas(PerreParada perreParada) {
-        this.perreParadas.remove(perreParada);
+    public Set<Quedada> getQuedadasPart() {
+        return quedadasPart;
+    }
+
+    public void addQuedadaPart(Quedada quedada) {
+        this.quedadasPart.add(quedada);
+    }
+
+    public void removeQuedadaPart(Quedada quedada) {
+        this.quedadasPart.remove(quedada);
     }
 
     @Override

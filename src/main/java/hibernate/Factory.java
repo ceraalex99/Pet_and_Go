@@ -1,13 +1,12 @@
 package hibernate;
 
 import entities.Mascota;
-import entities.PerreParada;
+import entities.Quedada;
 import entities.Usuario;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import java.io.File;
-import java.util.List;
 
 public class Factory {
 
@@ -25,7 +24,7 @@ public class Factory {
     }
 
     private static SessionFactory getSessionFactoryUsuario(){
-        if (sessionFactoryUsuario == null)  sessionFactoryUsuario = new Configuration().configure(HibernateConfig.getConfigFile()).addAnnotatedClass(Usuario.class).addAnnotatedClass(Mascota.class).addAnnotatedClass(PerreParada.class).buildSessionFactory();
+        if (sessionFactoryUsuario == null)  sessionFactoryUsuario = new Configuration().configure(HibernateConfig.getConfigFile()).addAnnotatedClass(Usuario.class).addAnnotatedClass(Mascota.class).addAnnotatedClass(Quedada.class).buildSessionFactory();
         return sessionFactoryUsuario;
     }
 
@@ -35,7 +34,7 @@ public class Factory {
     }
 
     private static SessionFactory getSessionFactoryPerreParada(){
-        if (sessionFactoryPerreParada == null)  sessionFactoryPerreParada = new Configuration().configure(HibernateConfig.getConfigFile()).addAnnotatedClass(PerreParada.class).buildSessionFactory();
+        if (sessionFactoryPerreParada == null)  sessionFactoryPerreParada = new Configuration().configure(HibernateConfig.getConfigFile()).addAnnotatedClass(Quedada.class).buildSessionFactory();
         return sessionFactoryPerreParada;
     }
 
@@ -46,7 +45,7 @@ public class Factory {
             sessionFactory = getSessionFactoryUsuario();
         } else if (Mascota.class.equals(tipoClase)) {
             sessionFactory = getSessionFactoryMascota();
-        } else if (PerreParada.class.equals(tipoClase)) {
+        } else if (Quedada.class.equals(tipoClase)) {
             sessionFactory = getSessionFactoryPerreParada();
         }else{
             throw new IllegalStateException("Unexpected value: " + tipoClase.toString());
