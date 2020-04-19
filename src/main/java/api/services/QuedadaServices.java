@@ -1,5 +1,6 @@
 package api.services;
 
+import entities.Mascota;
 import entities.Quedada;
 
 import java.util.List;
@@ -11,4 +12,5 @@ public interface QuedadaServices {
     void updateQuedada(Quedada Quedada);
     List<Quedada> findAllQuedada();
     Quedada findById(Integer id);
+
 }

@@ -1,5 +1,6 @@
 package api.dao;
 
+import entities.Mascota;
 import entities.Quedada;
 import org.hibernate.Session;
 import org.hibernate.resource.transaction.spi.TransactionStatus;
@@ -64,6 +65,7 @@ public class QuedadaDAOImpl extends AbstractSession implements QuedadaDAO,Sessio
     public Quedada findById(Integer id) {
         return getSession().get(Quedada.class, id);
     }
+
 
     @Override
     public Session getSession() {

@@ -102,11 +102,15 @@ public class QuedadaController {
         if(mascota==null || quedada==null) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+
         mascota.addQuedadaPart(quedada);
-        quedada.addParticipante(mascota);
+        mascotaServices.altaMascota(mascota);
+
 
 
         return new ResponseEntity(HttpStatus.CREATED);
+
+
 
     }
 

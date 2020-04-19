@@ -1,6 +1,7 @@
 package api.services;
 
 import api.dao.QuedadaDAO;
+import entities.Mascota;
 import entities.Quedada;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,6 @@ public class QuedadaServicesImpl implements QuedadaServices {
     public Quedada findById(Integer id) {
         return quedadaDAO.findById(id);
     }
+
 
 }
