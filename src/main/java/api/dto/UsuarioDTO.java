@@ -23,6 +23,10 @@ public class UsuarioDTO {
         this.email = email;
     }
 
+    public UsuarioDTO(String email){
+        this.email = email;
+    }
+
     public String getNombre() {
         return nombre;
     }

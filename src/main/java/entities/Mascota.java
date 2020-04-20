@@ -3,6 +3,7 @@ package entities;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name= "mascotas"  )
@@ -14,6 +15,22 @@ public class Mascota implements Serializable {
 
     @Column(name="fechanacimiento")
     private LocalDate fechaNacimiento;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable
+    private Set<Quedada> quedadasPart;
+
+    public Set<Quedada> getQuedadasPart() {
+        return quedadasPart;
+    }
+
+    public void addQuedadaPart(Quedada quedada) {
+        this.quedadasPart.add(quedada);
+    }
+
+    public void removeQuedadaPart(Quedada quedada) {
+        this.quedadasPart.remove(quedada);
+    }
 
     public Mascota() {
     }

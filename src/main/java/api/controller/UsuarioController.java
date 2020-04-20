@@ -1,21 +1,15 @@
 package api.controller;
 
 import api.dto.LoginBody;
-import api.dto.MascotaDTO;
 import api.dto.UsuarioDTO;
-import api.services.MascotaServices;
 import api.services.UsuarioServices;
-import entities.Mascota;
-import entities.MascotaId;
 import entities.Usuario;
-import org.hibernate.exception.ConstraintViolationException;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.persistence.PersistenceException;
-import javax.servlet.http.HttpServletRequest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
@@ -23,15 +17,21 @@ import java.util.List;
 import static io.github.ceraalex99.petandgo.GestorUsuarios.login;
 import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
+import javax.xml.bind.DatatypeConverter;
+
 
 @RestController
 @RequestMapping(value="/api/usuarios")
 public class UsuarioController {
     @Autowired
     private UsuarioServices usuarioServices;
-    @Autowired
-    private MascotaServices mascotaServices;
 
+    public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
+
+    
     // - Get todos los Usuarios
     @GetMapping(value= "")
     public ResponseEntity getUsuarios( ) {
@@ -42,7 +42,7 @@ public class UsuarioController {
             return new ResponseEntity<List<Usuario>>(usuarios,HttpStatus.OK);
         }
     }
-    //READ USER
+    //READ USER 
     @GetMapping(value= "/{email}")
     public ResponseEntity getUsuarioByEmail(@PathVariable(name="email") String email){
         Usuario usuario= usuarioServices.findByEmail(email);
@@ -70,26 +70,34 @@ public class UsuarioController {
                 return new ResponseEntity("username", HttpStatus.BAD_REQUEST);
             }
             signUp(user.getNombre(),user.getUsername(),user.getPassword(),user.getEmail()); //Llamada a gestorUsuarios
-            return new ResponseEntity(HttpStatus.CREATED);
+            String token = Jwts.builder().setSubject("Autorizado a " +user.getEmail()).signWith(SignatureAlgorithm.HS512,"1234").compact();
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(HEADER_AUTHORIZATION_KEY,token);
+            return new ResponseEntity(httpHeaders,HttpStatus.CREATED);
         }
         return new ResponseEntity("email", HttpStatus.BAD_REQUEST);
     }
     //LOGIN
     @PostMapping(value= "/login")
     public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
-
-
         if(login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
-            return new ResponseEntity(usuarioServices.findByEmail(login.getEmail()), HttpStatus.OK);
+            String token = Jwts.builder().setSubject("Autorizado a " +login.getEmail()).signWith(SignatureAlgorithm.HS512,"1234").compact();
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HEADER_AUTHORIZATION_KEY, token);
+            ResponseEntity response = new ResponseEntity(headers, HttpStatus.OK);
+            return response;
         }
         else return new ResponseEntity(HttpStatus.BAD_REQUEST);
 
     }
     //DELETE USER
     @DeleteMapping(value = "/{email}")
-    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email){
+    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email, @RequestHeader(name="Authorization") String token){
         if(email == null || email.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if(!decodeJWT(token).equals(email)){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
         if(usuarioServices.findByEmail(email) == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -104,52 +112,9 @@ public class UsuarioController {
             }
         }
     }
-    //READ MASCOTAS
-    @GetMapping(value="/{email}/mascotas")
-    public ResponseEntity getMascotasUsuario(@PathVariable(name="email") String email){
-        if(email==null || email.isEmpty()){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
-        else{
-            Usuario usuario = usuarioServices.findByEmail(email);
-            if(usuario==null ) {
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
-            }
-            else {
-                return new ResponseEntity(usuario.getMascotas(), HttpStatus.OK);
-            }
-        }
-    }
-    //CREATE MASCOTA
-    @PostMapping(value="/{email}/mascotas")
-    public ResponseEntity addMascotaUsuario(@RequestBody MascotaDTO mascotaDTO){
-        Usuario amo = usuarioServices.findByEmail(mascotaDTO.getId().getAmo());
-        Mascota mascota = new Mascota();
-        mascota.setId(new MascotaId(mascotaDTO.getId().getNombre(),mascotaDTO.getId().getAmo()));
-        mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
-        try {
-            mascotaServices.altaMascota(mascota);
-            amo.addMascota(mascota);
-            usuarioServices.updateUsuario(amo);
-        }
-        catch(PersistenceException e){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        return new ResponseEntity(HttpStatus.CREATED);
-    }
 
-    @DeleteMapping(value = "/{email}/mascotas/{mascota}")
-    public ResponseEntity deleteMascota(@PathVariable(name="email") String email,@PathVariable(name="mascota") String mascota ) {
-        if(email==null || email.isEmpty() || mascota == null || mascota.isEmpty()){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        MascotaId id = new MascotaId(mascota,email);
-        boolean deleted = mascotaServices.deleteMascotaById(id);
-        if(deleted){
-            return new ResponseEntity(HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public static String decodeJWT(String jwt){
+        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("1234")).parseClaimsJws(jwt).getBody();
+        return claims.getSubject().substring(13);
     }
 }
