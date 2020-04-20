@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
 
+import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
+
 @RestController
 @RequestMapping(value="/api/usuarios/{email}/mascotas")
 public class MascotaController {
@@ -40,7 +42,7 @@ public class MascotaController {
 
     //READ
     @GetMapping(value="{nombre}")
-    public ResponseEntity getMascotasUsuario(@PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre){
+    public ResponseEntity getMascotaUsuario(@PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre){
         if(email==null || email.isEmpty() || nombre==null || nombre.isEmpty()){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
@@ -59,15 +61,23 @@ public class MascotaController {
 
     //CREATE
     @PostMapping(value="")
-    public ResponseEntity addMascotaUsuario(@RequestBody MascotaDTO mascotaDTO){
-        Usuario amo = usuarioServices.findByEmail(mascotaDTO.getId().getAmo());
+    public ResponseEntity addMascotaUsuario(@RequestBody MascotaDTO mascotaDTO,
+                                            @RequestHeader(name="Authorization",required = false) String token){
+
+        try{
+            if(!decodeJWT(token).equals(mascotaDTO.getId().getAmo())){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
         Mascota mascota = new Mascota();
         mascota.setId(new MascotaId(mascotaDTO.getId().getNombre(),mascotaDTO.getId().getAmo()));
         mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
         try {
             mascotaServices.altaMascota(mascota);
-            amo.addMascota(mascota);
-            usuarioServices.updateUsuario(amo);
         }
         catch(PersistenceException e){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -77,9 +87,21 @@ public class MascotaController {
 
     //UPDATE
     @PutMapping(value= "{nombre}")
-    public ResponseEntity updateMascota(@RequestBody MascotaDTO mascotaDTO, @PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre){
+    public ResponseEntity updateMascota(@RequestBody MascotaDTO mascotaDTO, @PathVariable(name="email") String email,
+                                        @PathVariable(name="nombre") String nombre,
+                                        @RequestHeader(name="Authorization",required = false) String token){
+
         if(!nombre.equals(mascotaDTO.getId().getNombre()) || !email.equals(mascotaDTO.getId().getAmo())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
         MascotaId mascotaId = new MascotaId(nombre, email);
@@ -89,16 +111,29 @@ public class MascotaController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
+        mascotaServices.altaMascota(mascota);
         return new ResponseEntity(HttpStatus.OK);
 
     }
 
     //DELETE
     @DeleteMapping(value = "{nombre}")
-    public ResponseEntity deleteMascota(@PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre ) {
+    public ResponseEntity deleteMascota(@PathVariable(name="email") String email, @PathVariable(name="nombre") String nombre,
+                                        @RequestHeader(name="Authorization",required = false) String token) {
+
         if(email==null || email.isEmpty() || nombre == null || nombre.isEmpty()){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
         MascotaId id = new MascotaId(nombre,email);
 
         if(mascotaServices.findById(id) == null){

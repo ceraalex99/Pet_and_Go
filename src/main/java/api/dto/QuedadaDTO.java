@@ -3,7 +3,6 @@ package api.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 
@@ -14,7 +13,7 @@ public class QuedadaDTO {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh-mm-ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime fechaQuedada;
+    private Date fechaQuedada;
 
     private String lugarInicio;
 
@@ -24,7 +23,7 @@ public class QuedadaDTO {
     public QuedadaDTO() {
     }
 
-    public QuedadaDTO(String admin, LocalDateTime fechaQuedada, String lugarInicio, String lugarFin) {
+    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, String lugarFin) {
         this.admin = admin;
         this.fechaQuedada = fechaQuedada;
         this.lugarInicio = lugarInicio;
@@ -41,11 +40,11 @@ public class QuedadaDTO {
         this.admin = admin;
     }
 
-    public LocalDateTime getFechaQuedada() {
+    public Date getFechaQuedada() {
         return fechaQuedada;
     }
 
-    public void setFechaQuedada(LocalDateTime fechaQuedada) {
+    public void setFechaQuedada(Date fechaQuedada) {
         this.fechaQuedada = fechaQuedada;
     }
 

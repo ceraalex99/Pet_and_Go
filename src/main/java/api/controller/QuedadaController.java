@@ -13,19 +13,15 @@ import entities.Quedada;
 
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+
+import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
 
 
 @RestController
@@ -39,12 +35,16 @@ public class QuedadaController {
     @Autowired
     private MascotaServices mascotaServices;
 
-    // - Get todos los PerreParadas
+    // - READ QUEDADAS
     @GetMapping(value= "")
-    public ResponseEntity getQuedadas(@RequestParam("ubicacion") String ubicacion, @RequestParam("admin") String admin,
-                                          @RequestParam("participante") String participante, @RequestParam("order") String order) {
+    public ResponseEntity getQuedadas(@RequestParam(value = "ubicacion", required = false) String ubicacion,
+                                      @RequestParam(value = "admin", required = false) String admin,
+                                      @RequestParam(value = "participante", required = false) String participante,
+                                      @RequestParam(value = "order", required = false) String order) {
 
-        List<Quedada> quedadas = new ArrayList<>();
+        Set<Quedada> quedadas = new HashSet<>();
+        if(ubicacion != null){}
+
         if(participante != null){
             Usuario user = usuarioServices.findByEmail(participante);
             if(user == null){
@@ -61,29 +61,31 @@ public class QuedadaController {
                 return new ResponseEntity(HttpStatus.NOT_FOUND);
             }
             else{
-                quedadas = new ArrayList<>(user.getQuedadasAdmin());
+                quedadas = user.getQuedadasAdmin();
             }
         }
         else {
-           quedadas = quedadaServices.findAllQuedada();
-        }
-        if(order.equals("soonest")){
-
-        }
-        else if(order.equals("nearest")){
-
+           quedadas = new HashSet<>(quedadaServices.findAllQuedada());
         }
         if(quedadas.isEmpty() ) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }else {
-
-            return new ResponseEntity(quedadas,HttpStatus.OK);
         }
+        if(order!=null){
+            if(order.equals("time")){
+                List<Quedada> quedadasOrdered = new ArrayList<>(quedadas);
+                quedadasOrdered.sort(Comparator.comparing(Quedada::getFechaQuedada));
+                quedadasOrdered.removeIf(q -> q.getFechaQuedada().compareTo(new Date()) < 0);
+                return new ResponseEntity(quedadasOrdered, HttpStatus.OK);
+            }
+        }
+
+        return new ResponseEntity(quedadas,HttpStatus.OK);
+
     }
 
-    //READ USER
+    //READ QUEDADA
     @GetMapping(value= "/{id}")
-    public ResponseEntity getPerreParadaById(@PathVariable(name="id") Integer id){
+    public ResponseEntity getQuedada(@PathVariable(name="id") Integer id){
         Quedada quedada = quedadaServices.findById(id);
         if(quedada ==null ) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -93,9 +95,19 @@ public class QuedadaController {
         }
     }
 
-    //READ USER
+    //CREATE PARTICIPANTE
     @PostMapping(value= "/{id}/participantes")
-    public ResponseEntity addParticipante(@PathVariable(name="id") Integer id, @RequestBody MascotaIdDTO mascotaIdDTO){
+    public ResponseEntity addParticipante(@PathVariable(name="id") Integer id, @RequestBody MascotaIdDTO mascotaIdDTO,
+                                          @RequestHeader(name="Authorization",required = false) String token){
+
+        try{
+            if(!decodeJWT(token).equals(mascotaIdDTO.getAmo())){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         MascotaId mascotaId = new MascotaId(mascotaIdDTO.getNombre(), mascotaIdDTO.getAmo());
         Mascota mascota = mascotaServices.findById(mascotaId);
         Quedada quedada = quedadaServices.findById(id);
@@ -113,7 +125,7 @@ public class QuedadaController {
 
 
     }
-
+    //READ PARTICIPANTES
     @GetMapping(value="/{id}/participantes")
     public ResponseEntity getParticipantesQuedada(@PathVariable(name="id") Integer id){
         Quedada quedada = quedadaServices.findById(id);
@@ -129,46 +141,49 @@ public class QuedadaController {
         }
     }
 
-    //CREATE USER
+    //CREATE QUEDADA
     @PostMapping(value= "")
-    public ResponseEntity addPerreParada(@RequestBody QuedadaDTO quedadaDTO) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ResponseEntity addQuedada(@RequestBody QuedadaDTO quedadaDTO,
+                                     @RequestHeader(name="Authorization",required = false) String token) {
 
+        try{
+            if(!decodeJWT(token).equals(quedadaDTO.getAdmin())){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         Quedada quedada = new Quedada();
-        ResponseEntity response;
         boolean exito;
 
         quedada.setAdmin(quedadaDTO.getAdmin());
-        quedada.setCreatedAt(LocalDateTime.now());
+        quedada.setCreatedAt(new Date());
         quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
         quedada.setLugarInicio(quedadaDTO.getLugarInicio());
         quedada.setLugarFin(quedadaDTO.getLugarFin());
 
         exito = quedadaServices.altaQuedada(quedada);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
 
-        if (exito) response = new ResponseEntity(httpHeaders,HttpStatus.CREATED);
-        else response = new  ResponseEntity(httpHeaders,HttpStatus.CREATED);
+        if (exito) return new ResponseEntity(HttpStatus.CREATED);
+        else return new  ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 
-        return response;
 
     }
 
-    //DELETE USER
+    //DELETE QUEDADA
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deletePerreParada(@PathVariable(name="id") String sid){
-
-        Integer id;
-
-        try {
-            id = Integer.parseInt(sid);
-        } catch (NumberFormatException nfe) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity deletePerreParada(@PathVariable(name="id") Integer id){
 
         if(id == null || id == 0) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }else {
+
+            if(quedadaServices.findById(id) == null){
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+
             boolean delete = quedadaServices.deleteQuedadaById(id);
             if(delete){
                 return new ResponseEntity(HttpStatus.OK);
