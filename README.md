@@ -142,6 +142,10 @@ HTTP 403
 ```
 HTTP 201
 ```
+Sin permiso:
+```
+HTTP 403
+```
 
 ##### Read ✔
 
@@ -187,6 +191,7 @@ User not found:
 HTTP 404
 ```
 
+
 ##### Update ✔
 
 - `PUT /api/usuarios/<email>/mascotas/<nombre>`
@@ -213,6 +218,10 @@ No coinciden URL y body:
 ```
 HTTP 400
 ```
+Sin permiso:
+```
+HTTP 403
+```
 
 ##### Delete ✔
 
@@ -231,4 +240,113 @@ HTTP 404
 Error BD:
 ```
 HTTP 500
+```
+Sin permiso:
+```
+HTTP 403
+```
+
+#### Quedadas
+
+##### Create ✔
+
+- `POST /api/quedadas`
+
+**Request body:**
+```json
+{
+"admin": "antoniogp68@gmail.com",
+"createdAt": "2020-04-20 11:23:33",
+"fechaQuedada": "2020-05-12 19:20:00",
+"lugarInicio": "F4VX+22 Cerdanyola",
+"lugarFin": "F4RR+C7 Cerdanyola"
+}
+```
+
+**Response body and status:**
+```
+HTTP 201
+```
+
+Sin permiso:
+```
+HTTP 403
+```
+
+##### Read ✔
+
+- `GET /api/quedadas/<id>`
+
+**Response body:**
+Successful:
+```json
+{
+"id": 6,
+"admin": "antoniogp68@gmail.com",
+"createdAt": "2020-04-20 11:23:33",
+"fechaQuedada": "2020-05-12 19:20:00",
+"lugarInicio": "F4VX+22 Cerdanyola",
+"lugarFin": "F4RR+C7 Cerdanyola"
+}
+HTTP 200
+```
+
+Quedada not found:
+```
+HTTP 404
+```
+
+##### Read (all) ✔
+
+- `GET /api/quedadas?admin=<emailAdmin>` ✔
+- `GET /api/quedadas?participante=<emailPart>` ✔
+- `GET /api/quedadas?ubicacion=<ubicacion>` ❌
+- `GET /api/quedadas?order=time` ✔
+- `GET /api/quedadas`
+
+**Response body:**
+Successful:
+```json
+[{"id": {
+	"nombre":"Pepito",
+	"amo":"antoniogp68@gmail.com"
+	},
+"fechaNacimiento":"2020-01-30"},
+  {"id": {
+    "nombre":"Manolito",
+    "amo":"antoniogp68@gmail.com"
+    },
+"fechaNacimiento":"2020-01-02"}]
+HTTP 200
+```
+No hay quedadas:
+```
+HTTP 204
+```
+
+##### Update ❌
+
+- `PUT /api/quedadas/<id>`
+
+##### Delete ✔
+
+- `DELETE /api/quedadas/<id>`
+
+**Response body and status:**
+
+Successful:
+```
+HTTP 200
+```
+Quedada not found:
+```
+HTTP 404
+```
+Error BD:
+```
+HTTP 500
+```
+Sin permiso:
+```
+HTTP 403
 ```

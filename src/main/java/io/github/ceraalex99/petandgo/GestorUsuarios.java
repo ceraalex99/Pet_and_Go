@@ -5,7 +5,11 @@ import api.dao.UsuarioDAOImpl;
 import com.ja.security.PasswordHash;
 import entities.Usuario;
 import hibernate.bd.UsuariosBD;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 
+import javax.xml.bind.DatatypeConverter;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
@@ -38,6 +42,15 @@ public class GestorUsuarios {
 
     public static void deleteByEmail(String email) {
         usuariosBD.deleteUsuarioByEmail(email);
+    }
+
+    public static String decodeJWT(String jwt){
+        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("1234")).parseClaimsJws(jwt).getBody();
+        return claims.getSubject().substring(13);
+    }
+
+    public static String createToken(String email){
+        return Jwts.builder().setSubject("Autorizado a " +email).signWith(SignatureAlgorithm.HS512,"1234").compact();
     }
 
 

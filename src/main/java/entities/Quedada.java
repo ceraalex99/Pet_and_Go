@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,12 +26,12 @@ public class Quedada implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd hh-mm-ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name="created_at")
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd hh-mm-ss")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(name="fechaquedada")
-    private LocalDateTime fechaQuedada;
+    private Date fechaQuedada;
 
     @Column(name="lugarinicio")
     private String lugarInicio;
@@ -45,7 +45,7 @@ public class Quedada implements Serializable {
 
     public Quedada(){}
 
-    public Quedada(String admin, LocalDateTime createdAt, LocalDateTime fechaQuedada, String lugarInicio, String lugarFin) {
+    public Quedada(String admin, Date createdAt, Date fechaQuedada, String lugarInicio, String lugarFin) {
         this.admin = admin;
         this.createdAt = createdAt;
         this.fechaQuedada = fechaQuedada;
@@ -66,19 +66,19 @@ public class Quedada implements Serializable {
         this.admin = admin;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public LocalDateTime getFechaQuedada() {
+    public Date getFechaQuedada() {
         return fechaQuedada;
     }
 
-    public void setFechaQuedada(LocalDateTime fechaQuedada) {
+    public void setFechaQuedada(Date fechaQuedada) {
         this.fechaQuedada = fechaQuedada;
     }
 

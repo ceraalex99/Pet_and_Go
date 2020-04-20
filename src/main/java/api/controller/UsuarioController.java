@@ -4,7 +4,6 @@ import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
 import api.services.UsuarioServices;
 import entities.Usuario;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,13 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 
-import static io.github.ceraalex99.petandgo.GestorUsuarios.login;
-import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-
-import javax.xml.bind.DatatypeConverter;
+import static io.github.ceraalex99.petandgo.GestorUsuarios.*;
 
 
 @RestController
@@ -34,7 +28,13 @@ public class UsuarioController {
     
     // - Get todos los Usuarios
     @GetMapping(value= "")
-    public ResponseEntity getUsuarios( ) {
+    public ResponseEntity getUsuarios(@RequestHeader(name = "Authorization", required = false) String token ) {
+        try{
+            decodeJWT(token);
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         List<Usuario> usuarios = usuarioServices.findAllUsuario();
         if(usuarios==null ) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
@@ -70,7 +70,7 @@ public class UsuarioController {
                 return new ResponseEntity("username", HttpStatus.BAD_REQUEST);
             }
             signUp(user.getNombre(),user.getUsername(),user.getPassword(),user.getEmail()); //Llamada a gestorUsuarios
-            String token = Jwts.builder().setSubject("Autorizado a " +user.getEmail()).signWith(SignatureAlgorithm.HS512,"1234").compact();
+            String token = createToken(user.getEmail());
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(HEADER_AUTHORIZATION_KEY,token);
             return new ResponseEntity(httpHeaders,HttpStatus.CREATED);
@@ -81,7 +81,7 @@ public class UsuarioController {
     @PostMapping(value= "/login")
     public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
         if(login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
-            String token = Jwts.builder().setSubject("Autorizado a " +login.getEmail()).signWith(SignatureAlgorithm.HS512,"1234").compact();
+            String token = createToken(login.getEmail());
             HttpHeaders headers = new HttpHeaders();
             headers.add(HEADER_AUTHORIZATION_KEY, token);
             ResponseEntity response = new ResponseEntity(headers, HttpStatus.OK);
@@ -92,11 +92,16 @@ public class UsuarioController {
     }
     //DELETE USER
     @DeleteMapping(value = "/{email}")
-    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email, @RequestHeader(name="Authorization") String token){
+    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email, @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if(!decodeJWT(token).equals(email)){
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
         if(usuarioServices.findByEmail(email) == null){
@@ -113,8 +118,5 @@ public class UsuarioController {
         }
     }
 
-    public static String decodeJWT(String jwt){
-        Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary("1234")).parseClaimsJws(jwt).getBody();
-        return claims.getSubject().substring(13);
-    }
+
 }

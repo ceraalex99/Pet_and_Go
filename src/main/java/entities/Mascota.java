@@ -1,5 +1,7 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -18,6 +20,7 @@ public class Mascota implements Serializable {
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable
+    @JsonIgnore
     private Set<Quedada> quedadasPart;
 
     public Set<Quedada> getQuedadasPart() {
