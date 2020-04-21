@@ -8,6 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 
@@ -105,4 +106,26 @@ public class Quedada implements Serializable {
     public void addParticipante(Mascota mascota){
         participantes.add(mascota);
     }
+
+    private boolean tieneParticipantes() {
+        return participantes != null && !participantes.isEmpty();
+    }
+
+    public void cambiarAdmin(){
+
+        boolean paricipanteNoAdmin = false;
+        String nombreParticipante;
+        Iterator<Mascota> it = participantes.iterator();
+
+        if (tieneParticipantes()){
+            while(it.hasNext() && !paricipanteNoAdmin){
+                nombreParticipante = it.next().getId().getAmo();
+                if (!admin.equals(nombreParticipante)){
+                    paricipanteNoAdmin = true;
+                    admin = nombreParticipante;
+                }
+            }
+        }
+    }
+
 }
