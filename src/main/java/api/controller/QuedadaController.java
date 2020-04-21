@@ -142,6 +142,35 @@ public class QuedadaController {
         }
     }
 
+    //DESAPUNTARSE QUEDADA
+    @DeleteMapping(value="/{id}/participantes/{email}/mascotas/{nombre}")
+    public ResponseEntity deleteParticipanteQuedada(@PathVariable(name="id") Integer id,
+                                                    @PathVariable(name="email") String email,
+                                                    @PathVariable(name="nombre") String nombre,
+                                                    @RequestHeader(name="Authorization", required = false) String token){
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        Quedada quedada = quedadaServices.findById(id);
+        if(quedada == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Mascota mascota = mascotaServices.findById(new MascotaId(nombre,email));
+        if(mascota == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        mascota.removeQuedadaPart(quedada);
+        mascotaServices.altaMascota(mascota);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     //CREATE QUEDADA
     @PostMapping(value= "")
     public ResponseEntity addQuedada(@RequestBody QuedadaDTO quedadaDTO,
@@ -175,7 +204,7 @@ public class QuedadaController {
 
     //DELETE QUEDADA
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deletePerreParada(@PathVariable(name="id") Integer id){
+    public ResponseEntity deleteQuedada(@PathVariable(name="id") Integer id){
 
         if(id == null || id == 0) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

@@ -39,19 +39,9 @@ public class GestorUsuariosTest {
         GestorUsuarios.deleteByEmail(email);
     }
 
-    @Test (expected = javax.persistence.PersistenceException.class)
-    public void signUpRepeatedEmail() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios.signUp("Antonio", RandomStringUtils.random(10,true,true),"1234","antoniogp68@gmail.com");
-    }
-
-    @Test (expected = javax.persistence.PersistenceException.class)
-    public void signUpRepeatedUsername () throws InvalidKeySpecException, NoSuchAlgorithmException {
-        GestorUsuarios.signUp("Antonio", "antonio68","1234",RandomStringUtils.random(10,true,true));
-    }
-
     @Test
     public void correctLoginTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        assertTrue(GestorUsuarios.login("antoniogp68@gmail.com","123456abc"));
+        assertTrue(GestorUsuarios.login("pepepepote@pepin.com","22222"));
     }
 
     @Test

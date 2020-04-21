@@ -2,6 +2,7 @@ package api.controller;
 
 import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
+import api.dto.UsuarioUpdateDTO;
 import api.services.UsuarioServices;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,29 @@ public class UsuarioController {
 
     public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
 
-    
+    //UPDATE
+    @PutMapping(value= "/{email}")
+    public ResponseEntity updateUsuario(@RequestBody UsuarioUpdateDTO usuarioUpdateDTO, @PathVariable(name="email") String email,
+                                        @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        try{
+            if(!decodeJWT(token).equals(usuarioUpdateDTO.getEmail())){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+
+        if(!login(usuarioUpdateDTO.getEmail(), usuarioUpdateDTO.getOldPassword())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        signUp(usuarioUpdateDTO.getNombre(), usuarioUpdateDTO.getUsername(), usuarioUpdateDTO.getNewPassword(), usuarioUpdateDTO.getEmail());
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
     // - Get todos los Usuarios
     @GetMapping(value= "")
     public ResponseEntity getUsuarios(@RequestHeader(name = "Authorization", required = false) String token ) {

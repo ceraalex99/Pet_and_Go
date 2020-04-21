@@ -22,7 +22,15 @@ public class GestorUsuarios {
 
     public static void signUp(String nombre, String username, String password, String email) throws InvalidKeySpecException, NoSuchAlgorithmException {
         String hashedPassword = new PasswordHash().createHash(password);
-        Usuario user = new Usuario(nombre, username, hashedPassword, email);
+        Usuario user = usuariosBD.findByEmail(email);
+        if(user == null) {
+            user = new Usuario(nombre, username, hashedPassword, email);
+        }
+        else{
+            user.setUsername(username);
+            user.setNombre(nombre);
+            user.setPassword(hashedPassword);
+        }
         usuariosBD.altaUsuario(user);
     }
 
