@@ -27,8 +27,8 @@ public class UsuarioController {
     public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
 
     //UPDATE
-    @PutMapping(value= "{email}")
-    public ResponseEntity updateUsuario(@RequestBody UsuarioUpdateDTO usuarioUpdateDTO,
+    @PutMapping(value= "/{email}")
+    public ResponseEntity updateUsuario(@RequestBody UsuarioUpdateDTO usuarioUpdateDTO, @PathVariable(name="email") String email,
                                         @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         try{
