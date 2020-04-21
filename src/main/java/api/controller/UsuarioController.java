@@ -43,7 +43,7 @@ public class UsuarioController {
 
         Usuario user = usuarioServices.findByEmail(email);
         if (user == null){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         if(!login(email, usuarioUpdateDTO.getOldPassword())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);

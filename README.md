@@ -106,7 +106,6 @@ Successful:
   "nombre": "Antonio Ruiz",
   "username": "antonioruiz83",
   "newPassword": "P4ssw0rd?",
-  "email": "antonio@ruiz.com",
   "oldPassword": "Passw0rd!"
 }
 HTTP 200
@@ -114,6 +113,10 @@ HTTP 200
 Incorrect Old Password:
 ```
 HTTP 400
+```
+Usuario not found:
+```
+HTTP 404
 ```
 No autorizado:
 ```
