@@ -32,7 +32,7 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private Set<Mascota> mascotas;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name= "admin")
     @JsonIgnore
     private Set<Quedada> quedadasAdmin;
