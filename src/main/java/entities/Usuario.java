@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Iterator;
 import java.util.Set;
 
 @Entity
@@ -27,16 +28,27 @@ public class Usuario implements Serializable {
 
 
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name="emailusuario")
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="emailusuario" , nullable=false, insertable=false )
     @JsonIgnore
     private Set<Mascota> mascotas;
 
-    @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name= "admin")
+    @OneToMany()
+    @JoinColumn(name= "admin",nullable=false, insertable=false)
     @JsonIgnore
     private Set<Quedada> quedadasAdmin;
 
+
+    public Set<Quedada> preRemove(){
+        Iterator<Quedada> itr = quedadasAdmin.iterator();
+        Quedada q;
+        while(itr.hasNext()){
+            q = itr.next();
+            q.cambiarAdmin();
+        }
+        return quedadasAdmin;
+    }
+        
 
     public Usuario() {
     }
