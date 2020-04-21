@@ -98,7 +98,27 @@ HTTP 404
 
 - `PUT /api/usuarios/<email>`
 
+**Response body and status:**
 
+Successful:
+```json
+{
+  "nombre": "Antonio Ruiz",
+  "username": "antonioruiz83",
+  "newPassword": "P4ssw0rd?",
+  "email": "antonio@ruiz.com",
+  "oldPassword": "Passw0rd!"
+}
+HTTP 200
+```
+User not found:
+```
+HTTP 404
+```
+Incorrect Old Password
+```
+HTTP 400
+```
 
 ##### Delete ✔
 
