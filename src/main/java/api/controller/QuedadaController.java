@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
 
@@ -141,6 +142,35 @@ public class QuedadaController {
         }
     }
 
+    //DESAPUNTARSE QUEDADA
+    @DeleteMapping(value="/{id}/participantes/{email}/mascotas/{nombre}")
+    public ResponseEntity deleteParticipanteQuedada(@PathVariable(name="id") Integer id,
+                                                    @PathVariable(name="email") String email,
+                                                    @PathVariable(name="nombre") String nombre,
+                                                    @RequestHeader(name="Authorization", required = false) String token){
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        Quedada quedada = quedadaServices.findById(id);
+        if(quedada == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        Mascota mascota = mascotaServices.findById(new MascotaId(nombre,email));
+        if(mascota == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        mascota.removeQuedadaPart(quedada);
+        mascotaServices.altaMascota(mascota);
+
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
     //CREATE QUEDADA
     @PostMapping(value= "")
     public ResponseEntity addQuedada(@RequestBody QuedadaDTO quedadaDTO,
@@ -174,7 +204,7 @@ public class QuedadaController {
 
     //DELETE QUEDADA
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity deletePerreParada(@PathVariable(name="id") Integer id){
+    public ResponseEntity deleteQuedada(@PathVariable(name="id") Integer id){
 
         if(id == null || id == 0) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
@@ -191,6 +221,39 @@ public class QuedadaController {
             else{
                 return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
             }
+        }
+    }
+
+    //UPDATE QUEDADA
+    @PutMapping(value = "/{id}")
+    public ResponseEntity updatePerreParada(@RequestBody QuedadaDTO quedadaDTO , @PathVariable(name="id") Integer id,
+                                                @RequestHeader(name="Authorization",required = false) String token) {
+
+        try{
+            if(!decodeJWT(token).equals(quedadaDTO.getAdmin())){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        TimeUnit timeunit = TimeUnit.HOURS;
+        Date fechaactualmenos5h = new Date();
+        long diffInHours = quedadaDTO.getFechaQuedada().getTime() - fechaactualmenos5h.getTime();
+        //timeunit.convert(diffInHours,TimeUnit.HOURS);
+        if(timeunit.toHours(diffInHours) < 5 ){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        else{
+            Quedada quedada = quedadaServices.findById(id);
+            if (quedada == null){
+                return new ResponseEntity(HttpStatus.NOT_FOUND);
+            }
+            //quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
+            quedada.setLugarInicio(quedadaDTO.getLugarInicio());
+            quedada.setLugarFin(quedadaDTO.getLugarFin());
+            quedadaServices.altaQuedada(quedada);
+            return new ResponseEntity(HttpStatus.OK);
         }
     }
 

@@ -12,21 +12,23 @@ import java.util.List;
 @Repository
 @Transactional
 
-public class QuedadaDAOImpl extends AbstractSession implements QuedadaDAO,SessionBD {
+public class QuedadaDAOImpl implements QuedadaDAO {
+
+    private Session session = AbstractSession.getAbstractSession().getSession(Quedada.class);
 
     @Override
     public boolean altaQuedada(Quedada quedada) {
-        getSession().beginTransaction();
+        session.beginTransaction();
         try {
-            getSession().save(quedada);
-            getSession().getTransaction().commit();
-            getSession().getTransaction();
+            session.save(quedada);
+            session.getTransaction().commit();
+            session.getTransaction();
         } catch (Exception ex) {
-            getSession().getTransaction().rollback();
+            session.getTransaction().rollback();
 
         }
 
-        return getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        return session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
     }
 
     @Override
@@ -43,32 +45,27 @@ public class QuedadaDAOImpl extends AbstractSession implements QuedadaDAO,Sessio
     public boolean deleteQuedada(Quedada quedada) {
         boolean result = false;
 
-        getSession().beginTransaction();
-        getSession().delete(quedada);
-        getSession().getTransaction().commit();
-        result = getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        session.beginTransaction();
+        session.delete(quedada);
+        session.getTransaction().commit();
+        result = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
 
         return result;
     }
 
     @Override
     public void updateQuedada(Quedada quedada) {
-        getSession().update(quedada);
+        session.update(quedada);
     }
 
     @Override
     public List<Quedada> findAllQuedada() {
-        return getSession().createQuery("from Quedada").list();
+        return session.createQuery("from Quedada").list();
     }
 
     @Override
     public Quedada findById(Integer id) {
-        return getSession().get(Quedada.class, id);
+        return session.get(Quedada.class, id);
     }
-
-
-    @Override
-    public Session getSession() {
-        return getSession(Quedada.class);
-    }
+    
 }

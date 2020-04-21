@@ -1,5 +1,6 @@
 package api.dao;
 
+import entities.Mascota;
 import entities.Usuario;
 
 import javax.transaction.Transactional;
@@ -12,15 +13,17 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Transactional
 
-public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO,SessionBD {
+public class UsuarioDAOImpl implements UsuarioDAO {
+
+    private Session session = AbstractSession.getAbstractSession().getSession(Mascota.class);
 
     @Override
     public boolean altaUsuario(Usuario usuario) {
-        getSession().beginTransaction();
-        getSession().save(usuario);
-        getSession().getTransaction().commit();
-        getSession().getTransaction();
-        return getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        session.beginTransaction();
+        session.save(usuario);
+        session.getTransaction().commit();
+        session.getTransaction();
+        return session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
     }
 
     @Override
@@ -37,36 +40,32 @@ public class UsuarioDAOImpl extends AbstractSession implements UsuarioDAO,Sessio
     public boolean deleteUsuario(Usuario usuario) {
         boolean result = false;
 
-        getSession().beginTransaction();
-        getSession().delete(usuario);
-        getSession().getTransaction().commit();
-        result = getSession().getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        session.beginTransaction();
+        session.delete(usuario);
+        session.getTransaction().commit();
+        result = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
 
         return result;
     }
 
     @Override
     public void updateUsuario(Usuario usuario) {
-        getSession().update(usuario);
+        session.update(usuario);
     }
 
     @Override
     public List<Usuario> findAllUsuario() {
-        return getSession().createQuery("from Usuario").list();
+        return session.createQuery("from Usuario").list();
     }
 
     @Override
     public Usuario findByUsername(String username) {
-        return getSession().get(Usuario.class, username);
+        return session.get(Usuario.class, username);
     }
 
     @Override
     public Usuario findByEmail(String email) {
-        return getSession().get(Usuario.class, email);
+        return session.get(Usuario.class, email);
     }
 
-    @Override
-    public Session getSession() {
-        return getSession(Usuario.class);
-    }
 }

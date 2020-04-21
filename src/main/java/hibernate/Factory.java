@@ -28,15 +28,7 @@ public class Factory {
         return sessionFactoryUsuario;
     }
 
-    private static SessionFactory getSessionFactoryMascota(){
-        if (sessionFactoryMascota == null)  sessionFactoryMascota = new Configuration().configure(HibernateConfig.getConfigFile()).addAnnotatedClass(Usuario.class).addAnnotatedClass(Mascota.class).buildSessionFactory();
-        return sessionFactoryMascota;
-    }
 
-    private static SessionFactory getSessionFactoryPerreParada(){
-        if (sessionFactoryPerreParada == null)  sessionFactoryPerreParada = new Configuration().configure(HibernateConfig.getConfigFile()).addAnnotatedClass(Quedada.class).buildSessionFactory();
-        return sessionFactoryPerreParada;
-    }
 
     public static SessionFactory getSessionFactory(Class tipoClase){
         SessionFactory sessionFactory;
@@ -44,9 +36,9 @@ public class Factory {
         if (Usuario.class.equals(tipoClase)) {
             sessionFactory = getSessionFactoryUsuario();
         } else if (Mascota.class.equals(tipoClase)) {
-            sessionFactory = getSessionFactoryMascota();
+            sessionFactory = getSessionFactoryUsuario();
         } else if (Quedada.class.equals(tipoClase)) {
-            sessionFactory = getSessionFactoryPerreParada();
+            sessionFactory = getSessionFactoryUsuario();
         }else{
             throw new IllegalStateException("Unexpected value: " + tipoClase.toString());
         }
