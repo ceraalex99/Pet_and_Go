@@ -111,13 +111,13 @@ Successful:
 }
 HTTP 200
 ```
-User not found:
-```
-HTTP 404
-```
-Incorrect Old Password
+Incorrect Old Password:
 ```
 HTTP 400
+```
+No autorizado:
+```
+HTTP 403
 ```
 
 ##### Delete ✔

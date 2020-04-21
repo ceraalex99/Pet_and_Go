@@ -40,10 +40,6 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-        Usuario usuario = usuarioServices.findByEmail(usuarioUpdateDTO.getEmail());
-        if(usuario == null){
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
-        }
 
         if(!login(usuarioUpdateDTO.getEmail(), usuarioUpdateDTO.getOldPassword())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
