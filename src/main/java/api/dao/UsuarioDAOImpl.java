@@ -33,9 +33,9 @@ public class UsuarioDAOImpl implements UsuarioDAO {
     }
 
     @Override
-    public boolean deleteUsuarioByEmail(String username) {
+    public boolean deleteUsuarioByEmail(String email) {
         boolean result = false;
-        Usuario usuario = findByUsername(username);
+        Usuario usuario = findByEmail(email);
         if(usuario != null) {
             result = deleteUsuario(usuario);
         }
