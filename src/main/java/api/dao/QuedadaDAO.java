@@ -6,7 +6,7 @@ import entities.Quedada;
 import java.util.List;
 
 public interface QuedadaDAO {
-    boolean altaQuedada(Quedada usuario);
+    int altaQuedada(Quedada usuario);
     boolean deleteQuedadaById(Integer id);
     boolean deleteQuedada(Quedada usuario);
     void updateQuedada(Quedada usuario);

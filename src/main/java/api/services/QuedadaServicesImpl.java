@@ -17,7 +17,7 @@ public class QuedadaServicesImpl implements QuedadaServices {
     private QuedadaDAO quedadaDAO;
 
     @Override
-    public boolean altaQuedada(Quedada quedada) {
+    public int altaQuedada(Quedada quedada) {
         return quedadaDAO.altaQuedada(quedada);
     }
 

@@ -17,13 +17,16 @@ public class QuedadaDAOImpl implements QuedadaDAO {
     private Session session = AbstractSession.getAbstractSession().getSession(Quedada.class);
 
     @Override
-    public boolean altaQuedada(Quedada quedada) {
+    public int altaQuedada(Quedada quedada) {
         session.beginTransaction();
         session.save(quedada);
         session.getTransaction().commit();
         boolean result = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
         session.clear();
-        return result;
+        if(result){
+            return quedada.getId();
+        }
+        return -1;
     }
 
     @Override

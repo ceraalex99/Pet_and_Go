@@ -183,7 +183,7 @@ public class QuedadaController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
         Quedada quedada = new Quedada();
-        boolean exito;
+        int exito;
 
         quedada.setAdmin(quedadaDTO.getAdmin());
         quedada.setCreatedAt(new Date());
@@ -194,7 +194,7 @@ public class QuedadaController {
         exito = quedadaServices.altaQuedada(quedada);
 
 
-        if (exito) return new ResponseEntity(HttpStatus.CREATED);
+        if (exito != -1) return new ResponseEntity(exito,HttpStatus.CREATED);
         else return new  ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 
 
