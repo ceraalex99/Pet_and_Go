@@ -179,4 +179,16 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.OK);
         }
     }
+
+    @GetMapping(value = "/{email}/image" )
+    public ResponseEntity addImage(@PathVariable(name="email") String email,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        byte[] image = user.getImage();
+        return new ResponseEntity(image, HttpStatus.OK);
+    }
 }
