@@ -94,7 +94,34 @@ User not found:
 HTTP 404
 ```
 
-##### Update ❌
+##### Update Password ✔ 
+
+- `PUT /api/usuarios/<email>/forgot`
+
+**Response body and status:**
+
+Successful:
+```json
+{
+  "newPassword": "P4ssw0rd?",
+  "oldPassword": "Passw0rd!"
+}
+HTTP 200
+```
+Incorrect Old Password:
+```
+HTTP 400
+```
+Usuario not found:
+```
+HTTP 404
+```
+No autorizado:
+```
+HTTP 403
+```
+
+##### Update Campos ✔ 
 
 - `PUT /api/usuarios/<email>`
 
@@ -104,15 +131,9 @@ Successful:
 ```json
 {
   "nombre": "Antonio Ruiz",
-  "username": "antonioruiz83",
-  "newPassword": "P4ssw0rd?",
-  "oldPassword": "Passw0rd!"
+  "username": "antonioruiz83"
 }
 HTTP 200
-```
-Incorrect Old Password:
-```
-HTTP 400
 ```
 Usuario not found:
 ```
