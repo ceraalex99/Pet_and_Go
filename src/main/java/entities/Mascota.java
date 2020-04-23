@@ -18,6 +18,9 @@ public class Mascota implements Serializable {
     @Column(name="fechanacimiento")
     private LocalDate fechaNacimiento;
 
+    @Column(name="raza")
+    private String raza;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable
     @JsonIgnore

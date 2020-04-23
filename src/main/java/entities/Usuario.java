@@ -25,7 +25,8 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private String password;
 
-
+    @Column(name="profileimage")
+    private byte[] image;
 
 
     @OneToMany(cascade=CascadeType.ALL)
@@ -118,6 +119,9 @@ public class Usuario implements Serializable {
         this.quedadasAdmin.remove(quedada);
     }
 
+    public void setImage(byte[] image) { this.image = image; }
+
+    public byte[] getImage() { return image; }
 
     @Override
     public String toString() {
@@ -128,4 +132,6 @@ public class Usuario implements Serializable {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+
 }
