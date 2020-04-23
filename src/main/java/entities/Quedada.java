@@ -115,9 +115,9 @@ public class Quedada implements Serializable {
 
         boolean paricipanteNoAdmin = false;
         String nombreParticipante;
-        Iterator<Mascota> it = participantes.iterator();
 
         if (tieneParticipantes()){
+            Iterator<Mascota> it = participantes.iterator();
             while(it.hasNext() && !paricipanteNoAdmin){
                 nombreParticipante = it.next().getId().getAmo();
                 if (!admin.equals(nombreParticipante)){
