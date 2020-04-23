@@ -33,7 +33,7 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private Set<Mascota> mascotas;
 
-    @OneToMany()
+    @OneToMany
     @JoinColumn(name= "admin",nullable=false, insertable=false)
     @JsonIgnore
     private Set<Quedada> quedadasAdmin;
