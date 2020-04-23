@@ -149,4 +149,57 @@ public class MascotaController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PutMapping(value = "/{nombre}/image" )
+    public ResponseEntity addImage(@PathVariable(name="email") String email, @RequestBody byte[] image,@PathVariable(name="nombre") String nombre,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+        if(email == null || email.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        MascotaId mascotaId = new MascotaId(nombre, email);
+        Mascota mascota = mascotaServices.findById(mascotaId);
+
+        if(mascota == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        mascota.setPetimage(image);
+        mascotaServices.altaMascota(mascota);
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
+
+    @GetMapping(value = "/{nombre}/image" )
+    public ResponseEntity addImage(@PathVariable(name="email") String email,@PathVariable(name="nombre") String nombre,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+        if(email == null || email.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        MascotaId mascotaId = new MascotaId(nombre, email);
+        Mascota mascota = mascotaServices.findById(mascotaId);
+        if(mascota == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        byte[] image = mascota.getPetimage();
+        return new ResponseEntity(image, HttpStatus.OK);
+    }
+
+
+
 }

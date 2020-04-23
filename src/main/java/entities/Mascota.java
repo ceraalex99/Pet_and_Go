@@ -21,6 +21,9 @@ public class Mascota implements Serializable {
     @Column(name="raza")
     private String raza;
 
+    @Column(name="petimage")
+    private byte[] petimage;
+
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable
     @JsonIgnore
@@ -62,6 +65,13 @@ public class Mascota implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public byte[] getPetimage() {
+        return petimage;
+    }
+
+    public void setPetimage(byte[] petimage) {
+        this.petimage = petimage;
+    }
 
     @Override
     public String toString() {
