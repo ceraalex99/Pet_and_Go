@@ -4,6 +4,7 @@ import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
 import api.dto.UsuarioUpdateDTO;
 import api.services.UsuarioServices;
+import com.ja.security.PasswordHash;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -33,7 +34,7 @@ public class UsuarioController {
                                         @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         try{
-            if(!decodeJWT(token).equals(usuarioUpdateDTO.getEmail())){
+            if(!decodeJWT(token).equals(email)){
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
         }
@@ -41,12 +42,21 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-
-        if(!login(usuarioUpdateDTO.getEmail(), usuarioUpdateDTO.getOldPassword())){
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if(!login(email, usuarioUpdateDTO.getOldPassword())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        signUp(usuarioUpdateDTO.getNombre(), usuarioUpdateDTO.getUsername(), usuarioUpdateDTO.getNewPassword(), usuarioUpdateDTO.getEmail());
+        String hashedPassword = new PasswordHash().createHash(usuarioUpdateDTO.getNewPassword());
+
+        user.setUsername(usuarioUpdateDTO.getUsername());
+        user.setNombre(usuarioUpdateDTO.getNombre());
+        user.setPassword(hashedPassword);
+
+        usuarioServices.altaUsuario(user);
         return new ResponseEntity(HttpStatus.OK);
 
     }

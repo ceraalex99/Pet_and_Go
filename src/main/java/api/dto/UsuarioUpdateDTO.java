@@ -7,24 +7,17 @@ public class UsuarioUpdateDTO {
 
     private String newPassword;
 
-    private String email;
-
     private String oldPassword;
 
 
     public UsuarioUpdateDTO() {
     }
 
-    public UsuarioUpdateDTO(String nombre,String username,String newPassword,String email, String oldPassword) {
+    public UsuarioUpdateDTO(String nombre,String username,String newPassword, String oldPassword) {
         this.nombre = nombre;
         this.username = username;
         this.newPassword = newPassword;
-        this.email = email;
         this.oldPassword = oldPassword;
-    }
-
-    public UsuarioUpdateDTO(String email){
-        this.email = email;
     }
 
     public String getNombre() {
@@ -49,14 +42,6 @@ public class UsuarioUpdateDTO {
 
     public void setOldPassword(String oldPassword) {
         this.oldPassword = oldPassword;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getNewPassword() {

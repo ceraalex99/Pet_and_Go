@@ -40,11 +40,13 @@ public class Usuario implements Serializable {
 
 
     public Set<Quedada> preRemove(){
-        Iterator<Quedada> itr = quedadasAdmin.iterator();
-        Quedada q;
-        while(itr.hasNext()){
-            q = itr.next();
-            q.cambiarAdmin();
+        if(quedadasAdmin != null) {
+            Iterator<Quedada> itr = quedadasAdmin.iterator();
+            Quedada q;
+            while (itr.hasNext()) {
+                q = itr.next();
+                q.cambiarAdmin();
+            }
         }
         return quedadasAdmin;
     }

@@ -76,16 +76,17 @@ public class UsuarioDAOImpl implements UsuarioDAO {
         return session.get(Usuario.class, email);
     }
 
-    private void preDelete(Set <Quedada> quedadasAdmin,Usuario usuario){
-        Iterator<Quedada> itr = quedadasAdmin.iterator();
-        Quedada q;
-        while(itr.hasNext()){
-            q = itr.next();
-            if ( !q.getAdmin().equals(usuario.getEmail()) )
-                session.update(q);
-            else
-                session.delete(q);
+    private void preDelete(Set <Quedada> quedadasAdmin,Usuario usuario) {
+        if (quedadasAdmin != null) {
+            Iterator<Quedada> itr = quedadasAdmin.iterator();
+            Quedada q;
+            while (itr.hasNext()) {
+                q = itr.next();
+                if (!q.getAdmin().equals(usuario.getEmail()))
+                    session.update(q);
+                else
+                    session.delete(q);
+            }
         }
     }
-
 }
