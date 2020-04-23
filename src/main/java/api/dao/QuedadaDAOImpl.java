@@ -19,16 +19,11 @@ public class QuedadaDAOImpl implements QuedadaDAO {
     @Override
     public boolean altaQuedada(Quedada quedada) {
         session.beginTransaction();
-        try {
-            session.save(quedada);
-            session.getTransaction().commit();
-            session.getTransaction();
-        } catch (Exception ex) {
-            session.getTransaction().rollback();
-
-        }
-
-        return session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        session.save(quedada);
+        session.getTransaction().commit();
+        boolean result = session.getTransaction().getStatus() == TransactionStatus.COMMITTED;
+        session.clear();
+        return result;
     }
 
     @Override

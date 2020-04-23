@@ -43,7 +43,7 @@ public class QuedadaController {
                                       @RequestParam(value = "participante", required = false) String participante,
                                       @RequestParam(value = "order", required = false) String order) {
 
-        Set<Quedada> quedadas = new HashSet<>();
+        Set<Quedada> quedadas = new HashSet<>(quedadaServices.findAllQuedada());
         if(ubicacion != null){}
 
         if(participante != null){
@@ -65,9 +65,7 @@ public class QuedadaController {
                 quedadas = user.getQuedadasAdmin();
             }
         }
-        else {
-           quedadas = new HashSet<>(quedadaServices.findAllQuedada());
-        }
+
         if(quedadas.isEmpty() ) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
@@ -202,28 +200,6 @@ public class QuedadaController {
 
     }
 
-    //DELETE QUEDADA
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity deleteQuedada(@PathVariable(name="id") Integer id){
-
-        if(id == null || id == 0) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }else {
-
-            if(quedadaServices.findById(id) == null){
-                return new ResponseEntity(HttpStatus.NOT_FOUND);
-            }
-
-            boolean delete = quedadaServices.deleteQuedadaById(id);
-            if(delete){
-                return new ResponseEntity(HttpStatus.OK);
-            }
-            else{
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-    }
-
     //UPDATE QUEDADA
     @PutMapping(value = "/{id}")
     public ResponseEntity updatePerreParada(@RequestBody QuedadaDTO quedadaDTO , @PathVariable(name="id") Integer id,
@@ -255,6 +231,28 @@ public class QuedadaController {
             quedadaServices.altaQuedada(quedada);
             return new ResponseEntity(HttpStatus.OK);
         }
+    }
+
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity deleteQuedada(@PathVariable(name="id") Integer id,
+                                        @RequestHeader(name="Authorization", required = false) String token){
+
+        Quedada quedada = quedadaServices.findById(id);
+        try{
+            if(!decodeJWT(token).equals(quedada.getAdmin())){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        if(quedada.getParticipantes() == null || quedada.getParticipantes().isEmpty()){
+            boolean exito = quedadaServices.deleteQuedada(quedada);
+            if(exito) return new ResponseEntity(HttpStatus.OK);
+            else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        else return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
 }

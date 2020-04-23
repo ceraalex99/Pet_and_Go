@@ -3,6 +3,7 @@ package api.controller;
 import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
 import api.dto.UsuarioUpdateCamposDTO;
+import api.dto.imageDTO;
 import api.dto.UsuarioUpdatePasswordDTO;
 import api.services.UsuarioServices;
 import com.ja.security.PasswordHash;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+
 import java.util.List;
 
 
@@ -175,5 +177,42 @@ public class UsuarioController {
         }
     }
 
+    @PutMapping(value = "/{email}/image" )
+    public ResponseEntity addImage(@PathVariable(name="email") String email, @RequestBody byte[] image,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+        if(email == null || email.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
 
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else {
+            user.setImage(image);
+
+            usuarioServices.altaUsuario(user);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+    }
+
+    @GetMapping(value = "/{email}/image" )
+    public ResponseEntity addImage(@PathVariable(name="email") String email,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        byte[] image = user.getImage();
+        return new ResponseEntity(image, HttpStatus.OK);
+    }
 }
