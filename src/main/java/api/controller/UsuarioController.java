@@ -2,7 +2,8 @@ package api.controller;
 
 import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
-import api.dto.UsuarioUpdateDTO;
+import api.dto.UsuarioUpdateCamposDTO;
+import api.dto.UsuarioUpdatePasswordDTO;
 import api.services.UsuarioServices;
 import com.ja.security.PasswordHash;
 import entities.Usuario;
@@ -27,10 +28,10 @@ public class UsuarioController {
 
     public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
 
-    //UPDATE
+    //UPDATE CONTRASEÑA
     @PutMapping(value= "/{email}")
-    public ResponseEntity updateUsuario(@RequestBody UsuarioUpdateDTO usuarioUpdateDTO, @PathVariable(name="email") String email,
-                                        @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    public ResponseEntity updatePasswordUsuario(@RequestBody UsuarioUpdatePasswordDTO usuarioUpdatePasswordDTO, @PathVariable(name="email") String email,
+                                                   @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         try{
             if(!decodeJWT(token).equals(email)){
@@ -45,15 +46,38 @@ public class UsuarioController {
         if (user == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if(!login(email, usuarioUpdateDTO.getOldPassword())){
+        if(!login(email, usuarioUpdatePasswordDTO.getOldPassword())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
-        String hashedPassword = new PasswordHash().createHash(usuarioUpdateDTO.getNewPassword());
-
-        user.setUsername(usuarioUpdateDTO.getUsername());
-        user.setNombre(usuarioUpdateDTO.getNombre());
+        String hashedPassword = new PasswordHash().createHash(usuarioUpdatePasswordDTO.getNewPassword());
         user.setPassword(hashedPassword);
+
+        usuarioServices.altaUsuario(user);
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
+    //UPDATE CAMPOS
+    @PutMapping(value= "/{email}")
+    public ResponseEntity updateCamposUsuario(@RequestBody UsuarioUpdateCamposDTO usuarioUpdateCamposDTO, @PathVariable(name="email") String email,
+                                              @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        user.setUsername(usuarioUpdateCamposDTO.getUsername());
+        user.setNombre(usuarioUpdateCamposDTO.getNombre());
 
         usuarioServices.altaUsuario(user);
         return new ResponseEntity(HttpStatus.OK);

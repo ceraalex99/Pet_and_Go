@@ -1,6 +1,6 @@
 package api.dto;
 
-public class UsuarioUpdateDTO {
+public class UsuarioUpdatePasswordDTO {
     private String nombre;
 
     private String username;
@@ -10,10 +10,10 @@ public class UsuarioUpdateDTO {
     private String oldPassword;
 
 
-    public UsuarioUpdateDTO() {
+    public UsuarioUpdatePasswordDTO() {
     }
 
-    public UsuarioUpdateDTO(String nombre,String username,String newPassword, String oldPassword) {
+    public UsuarioUpdatePasswordDTO(String nombre, String username, String newPassword, String oldPassword) {
         this.nombre = nombre;
         this.username = username;
         this.newPassword = newPassword;
