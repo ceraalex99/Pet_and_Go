@@ -2,6 +2,7 @@ package api.controller;
 
 import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
+import api.dto.imageDTO;
 import api.dto.UsuarioUpdateDTO;
 import api.services.UsuarioServices;
 import com.ja.security.PasswordHash;
@@ -173,7 +174,7 @@ public class UsuarioController {
         }
         else {
             user.setImage(image);
-            System.out.println(image);
+
             usuarioServices.altaUsuario(user);
             return new ResponseEntity(HttpStatus.OK);
         }
