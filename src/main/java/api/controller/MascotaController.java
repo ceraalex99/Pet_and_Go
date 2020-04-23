@@ -139,6 +139,8 @@ public class MascotaController {
         if(mascotaServices.findById(id) == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
+        Usuario user = usuarioServices.findByEmail(email);
+        user.removeMascota(mascotaServices.findById(id));
         boolean deleted = mascotaServices.deleteMascotaById(id);
         if(deleted){
             return new ResponseEntity(HttpStatus.OK);
