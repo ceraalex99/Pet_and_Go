@@ -12,5 +12,5 @@ public interface QuedadaServices {
     void updateQuedada(Quedada Quedada);
     List<Quedada> findAllQuedada();
     Quedada findById(Integer id);
-
+    void flush();
 }

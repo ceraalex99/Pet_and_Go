@@ -2,14 +2,12 @@ package api.dao;
 
 import entities.Mascota;
 import entities.MascotaId;
-import entities.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+@Repository("mascotarepository")
+public interface MascotaDAO extends JpaRepository<Mascota, MascotaId> {
 
-public interface MascotaDAO {
-    boolean altaMascota(Mascota mascota);
-    boolean deleteMascotaById(MascotaId id);
-    void updateMascota(Mascota mascota);
-    List findAllMascota();
-    Mascota findById(MascotaId id);
 }

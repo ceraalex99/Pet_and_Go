@@ -3,12 +3,12 @@ package api.controller;
 import api.dto.LoginBody;
 import api.dto.UsuarioDTO;
 import api.dto.UsuarioUpdateCamposDTO;
-import api.dto.imageDTO;
 import api.dto.UsuarioUpdatePasswordDTO;
 import api.services.UsuarioServices;
 import com.ja.security.PasswordHash;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +25,9 @@ import static io.github.ceraalex99.petandgo.GestorUsuarios.*;
 @RestController
 @RequestMapping(value="/api/usuarios")
 public class UsuarioController {
+
     @Autowired
+    @Qualifier("usuarioservices")
     private UsuarioServices usuarioServices;
 
     public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
@@ -48,7 +50,7 @@ public class UsuarioController {
         if (user == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        if(!login(email, usuarioUpdatePasswordDTO.getOldPassword())){
+        if(!usuarioServices.login(email, usuarioUpdatePasswordDTO.getOldPassword())){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
 
@@ -119,7 +121,7 @@ public class UsuarioController {
         Usuario user = new Usuario();
 
         user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(hashedPassword(userDTO.getPassword()));
         user.setEmail(userDTO.getEmail());
         user.setNombre(userDTO.getNombre());
 
@@ -128,7 +130,7 @@ public class UsuarioController {
             if(usuarioServices.findByUsername(user.getUsername()) != null){
                 return new ResponseEntity("username", HttpStatus.BAD_REQUEST);
             }
-            signUp(user.getNombre(),user.getUsername(),user.getPassword(),user.getEmail()); //Llamada a gestorUsuarios
+            usuarioServices.altaUsuario(user);
             String token = createToken(user.getEmail());
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.add(HEADER_AUTHORIZATION_KEY,token);
@@ -139,7 +141,7 @@ public class UsuarioController {
     //LOGIN
     @PostMapping(value= "/login")
     public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
-        if(login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
+        if(usuarioServices.login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
             String token = createToken(login.getEmail());
             HttpHeaders headers = new HttpHeaders();
             headers.add(HEADER_AUTHORIZATION_KEY, token);
@@ -167,7 +169,8 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else {
-            boolean delete = usuarioServices.deleteUsuarioByEmail(email);
+            boolean delete;
+            delete = usuarioServices.deleteUsuarioByEmail(email);
             if(delete){
                 return new ResponseEntity(HttpStatus.OK);
             }
@@ -215,4 +218,6 @@ public class UsuarioController {
         byte[] image = user.getImage();
         return new ResponseEntity(image, HttpStatus.OK);
     }
+
+
 }

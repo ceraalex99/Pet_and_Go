@@ -20,6 +20,7 @@ public class GestorUsuariosTest {
         String username = RandomStringUtils.random(10, true, true);
         String email = RandomStringUtils.random(30, true, true);
         String password = RandomStringUtils.random(10, true, true);
+
         GestorUsuarios.signUp(nombre,username,password,email);
 
 

@@ -2,15 +2,18 @@ package entities;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
 public class MascotaId implements Serializable {
 
+    @NotNull
     @Column(name="nombre")
     private String nombre;
 
+    @NotNull
     @Column(name="emailusuario")
     private String amo;
 

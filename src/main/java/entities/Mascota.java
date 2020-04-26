@@ -24,10 +24,15 @@ public class Mascota implements Serializable {
     @Column(name="petimage")
     private byte[] petimage;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable
-    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emailusuario" ,insertable = false, updatable = false)
+    Usuario amo;
+
+    @ManyToMany()
+    @JoinColumn(nullable = false,insertable = false)
     private Set<Quedada> quedadasPart;
+
+
 
     public Set<Quedada> getQuedadasPart() {
         return quedadasPart;

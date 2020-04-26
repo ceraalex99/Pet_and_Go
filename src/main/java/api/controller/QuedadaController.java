@@ -28,8 +28,10 @@ import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
 @RestController
 @RequestMapping(value="/api/quedadas")
 public class QuedadaController {
+
     @Autowired
     private QuedadaServices quedadaServices;
+
     @Autowired
     private UsuarioServices usuarioServices;
 
@@ -117,13 +119,9 @@ public class QuedadaController {
         mascota.addQuedadaPart(quedada);
         mascotaServices.altaMascota(mascota);
 
-
-
         return new ResponseEntity(HttpStatus.CREATED);
-
-
-
     }
+
     //READ PARTICIPANTES
     @GetMapping(value="/{id}/participantes")
     public ResponseEntity getParticipantesQuedada(@PathVariable(name="id") Integer id){

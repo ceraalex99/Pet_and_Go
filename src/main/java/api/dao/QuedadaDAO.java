@@ -1,16 +1,15 @@
 package api.dao;
 
-import entities.Mascota;
 import entities.Quedada;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.io.Serializable;
 
-public interface QuedadaDAO {
-    int altaQuedada(Quedada usuario);
-    boolean deleteQuedadaById(Integer id);
-    boolean deleteQuedada(Quedada usuario);
-    void updateQuedada(Quedada usuario);
-    List findAllQuedada();
-    Quedada findById(Integer id);
+
+@Repository("quedadarepository")
+public interface QuedadaDAO extends JpaRepository<Quedada, Serializable> {
 
 }

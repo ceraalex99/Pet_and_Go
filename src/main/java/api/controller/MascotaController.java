@@ -18,8 +18,10 @@ import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
 @RestController
 @RequestMapping(value="/api/usuarios/{email}/mascotas")
 public class MascotaController {
+
     @Autowired
     private UsuarioServices usuarioServices;
+
     @Autowired
     private MascotaServices mascotaServices;
 

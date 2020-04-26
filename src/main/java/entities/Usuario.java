@@ -2,13 +2,14 @@ package entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
 
 @Entity
-@Table(name= "usuarios"  )
+@Table(name= "usuarios")
 public class Usuario implements Serializable {
 
     @Column(name="nombre")
@@ -29,8 +30,8 @@ public class Usuario implements Serializable {
     private byte[] image;
 
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="emailusuario" , nullable=false, insertable=false )
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "emailusuario", referencedColumnName = "email",nullable = false, insertable=false )
     @JsonIgnore
     private Set<Mascota> mascotas;
 
@@ -38,7 +39,6 @@ public class Usuario implements Serializable {
     @JoinColumn(name= "admin",nullable=false, insertable=false)
     @JsonIgnore
     private Set<Quedada> quedadasAdmin;
-
 
     public Set<Quedada> preRemove(){
         if(quedadasAdmin != null) {
@@ -51,7 +51,6 @@ public class Usuario implements Serializable {
         }
         return quedadasAdmin;
     }
-        
 
     public Usuario() {
     }
