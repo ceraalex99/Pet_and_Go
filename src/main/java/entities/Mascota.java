@@ -24,7 +24,7 @@ public class Mascota implements Serializable {
     @Column(name="petimage")
     private byte[] petimage;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "emailusuario" ,insertable = false, updatable = false)
     Usuario amo;
 
