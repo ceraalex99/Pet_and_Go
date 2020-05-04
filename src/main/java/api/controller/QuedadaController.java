@@ -12,6 +12,8 @@ import entities.MascotaId;
 import entities.Quedada;
 
 import entities.Usuario;
+import helpers.CalculadoraDistancia;
+import helpers.Posicion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -94,6 +96,39 @@ public class QuedadaController {
         else {
             return new ResponseEntity(quedada, HttpStatus.OK);
         }
+    }
+
+    //READ QUEDADA
+    @GetMapping(value= "/distancia/{distanciaEnMetros}/{latitud}/{longitud}")
+    public ResponseEntity getQuedadasPorDistancia(@PathVariable(name="distanciaEnMetros") Integer distanciaEnMetros,
+                                                  @PathVariable(name="latitud") double lat,
+                                                  @PathVariable(name="longitud") double lon,
+                                                  @RequestHeader(name="Authorization",required = false) String token){
+
+        try{
+            if(decodeJWT(token).equals("")){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }else{
+
+                Posicion p1 = new Posicion(lat,lon);
+                Posicion p2;
+                int distancia;
+
+                List<Quedada> quedadas = new ArrayList<Quedada>();
+                for (Quedada q: quedadaServices.findAllQuedada()){
+                    p2 = new Posicion(q);
+                    distancia = CalculadoraDistancia.getDistanciaMetros(p1,p2);
+                    if (distancia <= distanciaEnMetros) quedadas.add(q);
+                }
+
+                return new ResponseEntity(quedadas, HttpStatus.OK);
+
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
     }
 
     //CREATE PARTICIPANTE
@@ -187,7 +222,9 @@ public class QuedadaController {
         quedada.setCreatedAt(new Date());
         quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
         quedada.setLugarInicio(quedadaDTO.getLugarInicio());
-        quedada.setLugarFin(quedadaDTO.getLugarFin());
+        quedada.setLatitud(quedadaDTO.getLatitud());
+        quedada.setLongitud(quedadaDTO.getLongitud());
+        quedada.setIdImageGoogle(quedadaDTO.getIdIamgeGoogle());
 
         exito = quedadaServices.altaQuedada(quedada);
 
@@ -225,7 +262,10 @@ public class QuedadaController {
             }
             //quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
             quedada.setLugarInicio(quedadaDTO.getLugarInicio());
-            quedada.setLugarFin(quedadaDTO.getLugarFin());
+            quedada.setLatitud(quedadaDTO.getLatitud());
+            quedada.setLongitud(quedadaDTO.getLongitud());
+            quedada.setIdImageGoogle(quedadaDTO.getIdIamgeGoogle());
+
             quedadaServices.altaQuedada(quedada);
             return new ResponseEntity(HttpStatus.OK);
         }

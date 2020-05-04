@@ -37,8 +37,14 @@ public class Quedada implements Serializable {
     @Column(name="lugarinicio")
     private String lugarInicio;
 
-    @Column(name="lugarfin")
-    private String lugarFin;
+    @Column(name="latitud")
+    private double latitud;
+
+    @Column(name="longitud")
+    private double longitud;
+
+    @Column(name="idimagegoogle")
+    private int idImageGoogle;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "quedadasPart", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
@@ -46,12 +52,14 @@ public class Quedada implements Serializable {
 
     public Quedada(){}
 
-    public Quedada(String admin, Date createdAt, Date fechaQuedada, String lugarInicio, String lugarFin) {
+    public Quedada(String admin, Date createdAt, Date fechaQuedada, String lugarInicio, double latitud, double longitud, int idImageGoogle) {
         this.admin = admin;
         this.createdAt = createdAt;
         this.fechaQuedada = fechaQuedada;
         this.lugarInicio = lugarInicio;
-        this.lugarFin = lugarFin;
+        this.latitud = latitud;
+        this.longitud = longitud;
+        this.idImageGoogle = idImageGoogle;
     }
 
     public Integer getId() {
@@ -91,12 +99,28 @@ public class Quedada implements Serializable {
         this.lugarInicio = lugarInicio;
     }
 
-    public String getLugarFin() {
-        return lugarFin;
+    public double getLatitud() {
+        return latitud;
     }
 
-    public void setLugarFin(String lugarFin) {
-        this.lugarFin = lugarFin;
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
+    }
+
+    public int getIdImageGoogle() {
+        return idImageGoogle;
+    }
+
+    public void setIdImageGoogle(int idImageGoogle) {
+        this.idImageGoogle = idImageGoogle;
     }
 
     public Set<Mascota> getParticipantes() {

@@ -17,20 +17,24 @@ public class QuedadaDTO {
 
     private String lugarInicio;
 
-    private String lugarFin;
+    private int idIamgeGoogle;
+
+    private double latitud;
+
+    private double longitud;
 
 
     public QuedadaDTO() {
     }
 
-    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, String lugarFin) {
+    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, int idIamgeGoogle, double latitud, double longitud) {
         this.admin = admin;
         this.fechaQuedada = fechaQuedada;
         this.lugarInicio = lugarInicio;
-        this.lugarFin = lugarFin;
+        this.idIamgeGoogle = idIamgeGoogle;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
-
-
 
     public String getAdmin() {
         return admin;
@@ -56,11 +60,27 @@ public class QuedadaDTO {
         this.lugarInicio = lugarInicio;
     }
 
-    public String getLugarFin() {
-        return lugarFin;
+    public int getIdIamgeGoogle() {
+        return idIamgeGoogle;
     }
 
-    public void setLugarFin(String lugarFin) {
-        this.lugarFin = lugarFin;
+    public void setIdIamgeGoogle(int idIamgeGoogle) {
+        this.idIamgeGoogle = idIamgeGoogle;
+    }
+
+    public double getLatitud() {
+        return latitud;
+    }
+
+    public void setLatitud(double latitud) {
+        this.latitud = latitud;
+    }
+
+    public double getLongitud() {
+        return longitud;
+    }
+
+    public void setLongitud(double longitud) {
+        this.longitud = longitud;
     }
 }
