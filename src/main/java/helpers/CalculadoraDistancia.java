@@ -1,7 +1,5 @@
 package helpers;
 
-import javafx.geometry.Pos;
-
 public class CalculadoraDistancia {
 
    static final double radioTierra = 6378;
