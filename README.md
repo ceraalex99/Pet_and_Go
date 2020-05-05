@@ -394,3 +394,84 @@ Sin permiso:
 ```
 HTTP 403
 ```
+
+
+#### Eventos
+
+##### Create ✔
+
+- `POST /api/usuarios/<email>/eventos`
+
+**Request body:**
+```json
+{"id": {
+	"titulo":"cortar pelo a jumanji",
+	"usuario":"joan@gmail.com",
+	"fecha": "2020-06-01"
+	},
+"descripcion":"cortar pelo"}
+```
+
+**Response body and status:**
+```
+HTTP 201
+```
+Sin permiso:
+```
+HTTP 403
+```
+##### Read (all) ✔
+
+- `GET /api/usuarios/<email>/mascotas`
+
+**Response body:**
+Successful:
+```json
+[
+    {
+        "id": {
+            "titulo": "cortar pelo a jumanji",
+            "user": "joan@gmail.com",
+            "fecha": "2020-06-01T00:00:00.000+0000"
+        },
+        "descripcion": "cortar pelo"
+    }
+]
+HTTP 200
+```
+User not found:
+```
+HTTP 404
+```
+
+##### Delete ✔
+
+- `DELETE /api/usuarios/<email>/eventos`
+
+**Request body:**
+```json
+{
+    "titulo": "cortar pelo a jumanji",
+    "usuario": "joan@gmail.com",
+    "fecha": "2020-06-01"
+}
+```
+
+**Response body and status:**
+
+Successful:
+```
+HTTP 200
+```
+Mascota not found:
+```
+HTTP 404
+```
+Error BD:
+```
+HTTP 500
+```
+Sin permiso:
+```
+HTTP 403
+```

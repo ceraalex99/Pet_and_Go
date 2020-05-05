@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 import javax.persistence.*;
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
@@ -34,6 +35,12 @@ public class Usuario implements Serializable {
     @JoinColumn(name = "emailusuario", referencedColumnName = "email",nullable = false, insertable=false )
     @JsonIgnore
     private Set<Mascota> mascotas;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario", referencedColumnName = "email",nullable = false, insertable=false )
+    @JsonIgnore
+    private Set<Evento> eventos;
+
 
     @OneToMany
     @JoinColumn(name= "admin",nullable=false, insertable=false)
@@ -98,12 +105,22 @@ public class Usuario implements Serializable {
         return mascotas;
     }
 
+    public Set<Evento> getEventos() {
+        return eventos;
+    }
+    public void addEvento(Evento evento) {
+        this.eventos.add(evento);
+    }
+
     public void addMascota(Mascota mascota) {
         this.mascotas.add(mascota);
     }
 
     public void removeMascota(Mascota mascota) {
         this.mascotas.remove(mascota);
+    }
+    public void removeEvento(Evento evento) {
+        this.eventos.remove(evento);
     }
 
     public Set<Quedada> getQuedadasAdmin() {
