@@ -1,38 +1,22 @@
-package entities;
+package api.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
+
+import entities.Usuario;
+
 import java.time.LocalDate;
-import java.util.Set;
 
-@Entity
-@Table(name= "mensajes"  )
-public class Mensaje implements Serializable{
-    @Id
-    @Column(name="Id")
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+public class MensajeDTO {
+
     private int id;
-
-    @Column(name="created_at")
     private LocalDate created_at;
-
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sender")
     private Usuario sender;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "receiver")
     private Usuario receiver;
-
-    @Column(name="data")
     private String data;
 
-
-    public Mensaje() {
+    public MensajeDTO() {
     }
 
-    public Mensaje(Usuario sender, Usuario receiver, String data, LocalDate created_at) {
+    public MensajeDTO(Usuario sender, Usuario receiver, String data, LocalDate created_at) {
         this.sender  = sender;
         this.receiver = receiver;
         this.data = data;
