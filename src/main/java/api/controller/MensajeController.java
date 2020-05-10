@@ -1,10 +1,10 @@
 package api.controller;
 
 
+import api.dto.MensajeDTO;
 import api.services.MensajeServices;
 import api.services.UsuarioServices;
 import entities.Mensaje;
-import entities.Quedada;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
