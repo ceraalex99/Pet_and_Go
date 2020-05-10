@@ -1,9 +1,11 @@
 package api.controller;
 
 
+import api.services.MensajeServices;
 import api.services.UsuarioServices;
 import entities.Mensaje;
 import entities.Quedada;
+import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,8 +54,10 @@ public class MensajeController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-        List<Mensaje> mensajes = mensajeServices.findBySender();
-        mensajes.addAll(mensajeServices.findByReceiver());
+        Usuario user = usuarioServices.findByEmail(email);
+
+        List<Mensaje> mensajes = mensajeServices.findBySender(user);
+        mensajes.addAll(mensajeServices.findByReceiver(user));
 
         mensajes.sort(Comparator.comparing(Mensaje::getCreated_at));
 
