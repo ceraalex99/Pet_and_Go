@@ -47,6 +47,16 @@ public class Usuario implements Serializable {
     @JsonIgnore
     private Set<Quedada> quedadasAdmin;
 
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "sender")
+    @JsonIgnore
+    private Set<Mensaje> mensajesEnviados;
+
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver")
+    @JsonIgnore
+    private Set<Mensaje> mensajesRecibidos;
+
     public Set<Quedada> preRemove(){
         if(quedadasAdmin != null) {
             Iterator<Quedada> itr = quedadasAdmin.iterator();
@@ -138,6 +148,30 @@ public class Usuario implements Serializable {
     public void setImage(byte[] image) { this.image = image; }
 
     public byte[] getImage() { return image; }
+
+    public Set<Mensaje> getMensajesEnviados() {
+        return mensajesEnviados;
+    }
+
+    public void addMensajeEnviado(Mensaje mensaje) {
+        this.mensajesEnviados.add(mensaje);
+    }
+
+    public void removeMensajeEnviado(Mensaje mensaje) {
+        this.mensajesEnviados.remove(mensaje);
+    }
+
+    public Set<Mensaje> getMensajesRecibido() {
+        return mensajesRecibidos;
+    }
+
+    public void addMensajeRecibido(Mensaje mensaje) {
+        this.mensajesRecibidos.add(mensaje);
+    }
+
+    public void removeMensajeRecibido(Mensaje mensaje) {
+        this.mensajesRecibidos.remove(mensaje);
+    }
 
     @Override
     public String toString() {
