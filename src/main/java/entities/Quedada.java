@@ -44,7 +44,7 @@ public class Quedada implements Serializable {
     private double longitud;
 
     @Column(name="idimagegoogle")
-    private int idImageGoogle;
+    private String idImageGoogle;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "quedadasPart", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
@@ -52,7 +52,7 @@ public class Quedada implements Serializable {
 
     public Quedada(){}
 
-    public Quedada(String admin, Date createdAt, Date fechaQuedada, String lugarInicio, double latitud, double longitud, int idImageGoogle) {
+    public Quedada(String admin, Date createdAt, Date fechaQuedada, String lugarInicio, double latitud, double longitud, String idImageGoogle) {
         this.admin = admin;
         this.createdAt = createdAt;
         this.fechaQuedada = fechaQuedada;
@@ -115,11 +115,11 @@ public class Quedada implements Serializable {
         this.longitud = longitud;
     }
 
-    public int getIdImageGoogle() {
+    public String getIdImageGoogle() {
         return idImageGoogle;
     }
 
-    public void setIdImageGoogle(int idImageGoogle) {
+    public void setIdImageGoogle(String idImageGoogle) {
         this.idImageGoogle = idImageGoogle;
     }
 
