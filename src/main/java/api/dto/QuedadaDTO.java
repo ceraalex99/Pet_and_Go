@@ -17,7 +17,7 @@ public class QuedadaDTO {
 
     private String lugarInicio;
 
-    private int idIamgeGoogle;
+    private String idIamgeGoogle;
 
     private double latitud;
 
@@ -27,7 +27,7 @@ public class QuedadaDTO {
     public QuedadaDTO() {
     }
 
-    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, int idIamgeGoogle, double latitud, double longitud) {
+    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, String idIamgeGoogle, double latitud, double longitud) {
         this.admin = admin;
         this.fechaQuedada = fechaQuedada;
         this.lugarInicio = lugarInicio;
@@ -60,11 +60,11 @@ public class QuedadaDTO {
         this.lugarInicio = lugarInicio;
     }
 
-    public int getIdIamgeGoogle() {
+    public String getIdIamgeGoogle() {
         return idIamgeGoogle;
     }
 
-    public void setIdIamgeGoogle(int idIamgeGoogle) {
+    public void setIdIamgeGoogle(String idIamgeGoogle) {
         this.idIamgeGoogle = idIamgeGoogle;
     }
 
