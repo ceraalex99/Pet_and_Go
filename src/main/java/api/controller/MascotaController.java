@@ -180,7 +180,7 @@ public class MascotaController {
     }
 
     @GetMapping(value = "/{nombre}/image" )
-    public ResponseEntity addImage(@PathVariable(name="email") String email,@PathVariable(name="nombre") String nombre,
+    public ResponseEntity getImage(@PathVariable(name="email") String email,@PathVariable(name="nombre") String nombre,
                                    @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
