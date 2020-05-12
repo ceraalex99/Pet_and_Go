@@ -18,7 +18,7 @@ public class Evento implements Serializable {
     private Integer id;
 
     @NotNull
-    @Column(name="titulo")
+    @Column(name="titulo",unique = true)
     private String titulo;
 
     @NotNull
