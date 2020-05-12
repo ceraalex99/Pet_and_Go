@@ -17,7 +17,7 @@ import javax.persistence.PersistenceException;
 import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
 
 @RestController
-@RequestMapping(value="/api/usuarios/{email}/eventos")
+@RequestMapping(value="/api/calendario/{email}/eventos")
 public class EventoController {
 
     @Autowired
@@ -48,7 +48,7 @@ public class EventoController {
                                             @RequestHeader(name="Authorization",required = false) String token){
 
         try{
-            if(!decodeJWT(token).equals(eventoDTO.getId().getUsuario())){
+            if(!decodeJWT(token).equals(eventoDTO.getUsuario())){
                 return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
         }
@@ -57,7 +57,10 @@ public class EventoController {
         }
 
         Evento evento = new Evento();
-        evento.setId(new CalendarioId(eventoDTO.getId().getTitulo(),eventoDTO.getId().getUsuario(),eventoDTO.getId().getFecha()));
+        evento.setTitulo(eventoDTO.getTitulo());
+        evento.setUsuario(eventoDTO.getUsuario());
+        evento.setFecha(eventoDTO.getFecha());
+        evento.setFechaFin(eventoDTO.getFechaFin());
         evento.setDescripcion(eventoDTO.getDescripcion());
         //////////////////////////////////////////////////////////////////
         try {
@@ -66,15 +69,15 @@ public class EventoController {
         catch(PersistenceException e){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(evento,HttpStatus.CREATED);
     }
 
     //DELETE
-    @DeleteMapping(value = "")
-    public ResponseEntity deleteEvento(@PathVariable(name="email") String email, @RequestBody EventoIdDTO eventoIdDTO,
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity deleteEvento(@PathVariable(name="email") String email, @PathVariable Integer id,
                                         @RequestHeader(name="Authorization",required = false) String token) {
 
-        if(email==null || email.isEmpty() || eventoIdDTO.getTitulo() == null || eventoIdDTO.getTitulo().isEmpty()){
+        if(email==null || email.isEmpty() || id == null ){
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         try{
@@ -86,13 +89,10 @@ public class EventoController {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
-        CalendarioId id = new CalendarioId(eventoIdDTO.getTitulo(),email,eventoIdDTO.getFecha());
-
         if(eventoServices.findById(id) == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         Usuario user = usuarioServices.findByEmail(email);
-
 
         user.removeEvento(eventoServices.findById(id));
         boolean deleted = eventoServices.deleteEventoById(id);
@@ -102,5 +102,35 @@ public class EventoController {
         else{
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+    //UPDATE
+    @PutMapping(value = "/{id}")
+    public ResponseEntity updatePerreParada(@PathVariable(name="email") String email,@RequestBody EventoDTO eventoDTO , @PathVariable(name="id") Integer id,
+                                            @RequestHeader(name="Authorization",required = false) String token) {
+
+        if(email==null || email.isEmpty() || id == null ){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        Evento evento= eventoServices.findById(id);
+        if(evento== null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        evento.setDescripcion(eventoDTO.getDescripcion());
+        evento.setTitulo(eventoDTO.getTitulo());
+        evento.setFecha(eventoDTO.getFecha());
+        evento.setFechaFin(eventoDTO.getFechaFin());
+
+        eventoServices.altaEvento(evento);
+        return new ResponseEntity(evento,HttpStatus.OK);
+
     }
 }

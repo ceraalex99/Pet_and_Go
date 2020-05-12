@@ -3,29 +3,62 @@ package api.dto;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class EventoDTO {
 
 
-    private EventoIdDTO id;
+    private String titulo;
+
+    private String usuario;
+
+    private Date fecha;
+
+    private Date fechaFin;
 
     private String descripcion;
-
 
     public EventoDTO() {
     }
 
-    public EventoDTO(EventoIdDTO id, String  descripcion) {
-        this.id = id;
+    public EventoDTO(String titulo,String usuario,Date fecha,Date fechaFin, String  descripcion) {
+        this.titulo=titulo;
+        this.usuario=usuario;
+        this.fecha=fecha;
+        this.fechaFin=fechaFin;
         this.descripcion = descripcion;
     }
 
-    public EventoIdDTO getId() {
-        return id;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setId(EventoIdDTO id) {
-        this.id = id;
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getDescripcion() {
