@@ -141,6 +141,7 @@ public class UsuarioController {
     //LOGIN
     @PostMapping(value= "/login")
     public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        System.out.println(login.getEmail()+login.getPassword());
         if(usuarioServices.login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
             String token = createToken(login.getEmail());
             HttpHeaders headers = new HttpHeaders();
