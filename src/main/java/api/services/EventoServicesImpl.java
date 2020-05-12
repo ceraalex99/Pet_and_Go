@@ -1,11 +1,7 @@
 package api.services;
 
 import api.dao.EventoDAO;
-import api.dao.MascotaDAO;
-import entities.CalendarioId;
 import entities.Evento;
-import entities.Mascota;
-import entities.MascotaId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +22,7 @@ public class EventoServicesImpl implements EventoServices {
     }
 
     @Override
-    public boolean deleteEventoById(CalendarioId id) {
+    public boolean deleteEventoById(Integer id) {
         eventoDAO.deleteById(id);
         return !eventoDAO.findById(id).isPresent();
     }
@@ -47,7 +43,7 @@ public class EventoServicesImpl implements EventoServices {
     }
 
     @Override
-    public Evento findById(CalendarioId id) {
+    public Evento findById(Integer id) {
         Evento evento = null;
         Optional<Evento> resultEvento = eventoDAO.findById(id);
         if (resultEvento.isPresent()) evento = resultEvento.get();

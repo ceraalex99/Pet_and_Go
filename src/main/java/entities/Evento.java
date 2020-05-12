@@ -1,8 +1,10 @@
 package entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.Set;
 
 @Entity
@@ -10,8 +12,26 @@ import java.util.Set;
 public class Evento implements Serializable {
 
 
-    @EmbeddedId
-    private CalendarioId id;
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
+    private Integer id;
+
+    @NotNull
+    @Column(name="titulo",unique = true)
+    private String titulo;
+
+    @NotNull
+    @Column(name="usuario")
+    private String usuario;
+
+    @NotNull
+    @Column(name="fecha")
+    private Date fecha;
+
+    @NotNull
+    @Column(name="fechaFin")
+    private Date fechaFin;
 
     @Column(name="descripcion")
     private String descripcion;
@@ -19,17 +39,52 @@ public class Evento implements Serializable {
     public Evento() {
     }
 
-    public Evento(CalendarioId id, String descripcion) {
-        this.id = id;
+    public Evento(String titulo,String Usuario,Date fecha, Date fechaFin, String descripcion) {
+        this.titulo=titulo;
+        this.usuario=Usuario;
+        this.fecha=fecha;
+        this.fechaFin=fechaFin;
         this.descripcion = descripcion;
     }
 
-    public CalendarioId getId() {
+    public Date getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(Date fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(CalendarioId id) {
+    public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
+    }
+
+    public Date getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
     }
 
     public String getDescripcion() {
@@ -43,9 +98,9 @@ public class Evento implements Serializable {
     @Override
     public String toString() {
         return "Evento{" +
-                ", titulo='" + id.getTitulo() + '\'' +
-                ", user='" + id.getUser() + '\'' +
-                ", fecha='" + id.getFecha() + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", usuario='" + usuario + '\'' +
+                ", fecha='" + fecha + '\'' +
                 ", descripcion='" + descripcion + '\'' +
                 '}';
     }

@@ -400,16 +400,17 @@ HTTP 403
 
 ##### Create ✔
 
-- `POST /api/usuarios/<email>/eventos`
+- `POST /api/calendario/<email>/eventos`
 
 **Request body:**
 ```json
-{"id": {
-	"titulo":"cortar pelo a jumanji",
-	"usuario":"joan@gmail.com",
-	"fecha": "2020-06-01"
-	},
-"descripcion":"cortar pelo"}
+{
+    "titulo": "cortar pelo a jumanji",
+    "usuario": "joan@gmail.com",
+    "fecha": "2020-06-01",
+    "fechaFin": "2020-06-02",
+    "descripcion": "cortar pelo"
+}
 ```
 
 **Response body and status:**
@@ -422,20 +423,20 @@ HTTP 403
 ```
 ##### Read (all) ✔
 
-- `GET /api/usuarios/<email>/mascotas`
+- `GET /api/calendario/<email>/mascotas`
 
 **Response body:**
 Successful:
 ```json
 [
-    {
-        "id": {
-            "titulo": "cortar pelo a jumanji",
-            "user": "joan@gmail.com",
-            "fecha": "2020-06-01T00:00:00.000+0000"
-        },
-        "descripcion": "cortar pelo"
-    }
+   {
+       "id": 6,
+       "titulo": "cortar pelo a jumanji",
+       "usuario": "joan@gmail.com",
+       "fecha": "2020-06-01T00:00:00.000+0000",
+       "fechaFin": "2020-06-02T00:00:00.000+0000",
+       "descripcion": "cortar pelo"
+   }
 ]
 HTTP 200
 ```
@@ -446,17 +447,40 @@ HTTP 404
 
 ##### Delete ✔
 
-- `DELETE /api/usuarios/<email>/eventos`
+- `DELETE /api/calendario/<email>/eventos/<id>`
+
+**Response body and status:**
+
+Successful:
+```
+HTTP 200
+```
+Mascota not found:
+```
+HTTP 404
+```
+Error BD:
+```
+HTTP 500
+```
+Sin permiso:
+```
+HTTP 403
+```
+
+##### UPDATE ✔
+
+- `PUT /api/calendario/<email>/eventos/<id>`
 
 **Request body:**
 ```json
 {
     "titulo": "cortar pelo a jumanji",
-    "usuario": "joan@gmail.com",
-    "fecha": "2020-06-01"
+    "fecha": "2020-06-01",
+    "fechaFin": "2020-06-02",
+    "descripcion": "cortar pelo"
 }
 ```
-
 **Response body and status:**
 
 Successful:
