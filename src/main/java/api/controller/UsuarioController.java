@@ -54,7 +54,7 @@ public class UsuarioController {
         String hashedPassword = new PasswordHash().createHash(usuarioUpdatePasswordDTO.getNewPassword());
         user.setPassword(hashedPassword);
 
-        usuarioServices.altaUsuario(user);
+        usuarioServices.updateUsuario(user);
         return new ResponseEntity(HttpStatus.OK);
 
     }
@@ -80,7 +80,7 @@ public class UsuarioController {
         user.setUsername(usuarioUpdateCamposDTO.getUsername());
         user.setNombre(usuarioUpdateCamposDTO.getNombre());
 
-        usuarioServices.altaUsuario(user);
+        usuarioServices.updateUsuario(user);
         return new ResponseEntity(HttpStatus.OK);
 
     }
@@ -199,7 +199,7 @@ public class UsuarioController {
         else {
             user.setImage(image);
 
-            usuarioServices.altaUsuario(user);
+            usuarioServices.updateUsuario(user);
             return new ResponseEntity(HttpStatus.OK);
         }
     }

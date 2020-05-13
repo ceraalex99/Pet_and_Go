@@ -113,7 +113,7 @@ public class MascotaController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
-        mascotaServices.altaMascota(mascota);
+        mascotaServices.updateMascota(mascota);
         return new ResponseEntity(HttpStatus.OK);
 
     }
@@ -174,7 +174,7 @@ public class MascotaController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         mascota.setPetimage(image);
-        mascotaServices.altaMascota(mascota);
+        mascotaServices.updateMascota(mascota);
         return new ResponseEntity(HttpStatus.OK);
 
     }

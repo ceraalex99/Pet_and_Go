@@ -129,7 +129,7 @@ public class EventoController {
         evento.setFecha(eventoDTO.getFecha());
         evento.setFechaFin(eventoDTO.getFechaFin());
 
-        eventoServices.altaEvento(evento);
+        eventoServices.updateEvento(evento);
         return new ResponseEntity(evento,HttpStatus.OK);
 
     }

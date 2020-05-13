@@ -266,7 +266,7 @@ public class QuedadaController {
             quedada.setLongitud(quedadaDTO.getLongitud());
             quedada.setIdImageGoogle(quedadaDTO.getIdIamgeGoogle());
 
-            quedadaServices.altaQuedada(quedada);
+            quedadaServices.updateQuedada(quedada);
             return new ResponseEntity(HttpStatus.OK);
         }
     }
