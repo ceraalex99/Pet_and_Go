@@ -220,6 +220,8 @@ public class UsuarioController {
     }
 
 
+    @GetMapping(value = "/{email}/firebase")
+    public ResponseEntity get
 
 
 
