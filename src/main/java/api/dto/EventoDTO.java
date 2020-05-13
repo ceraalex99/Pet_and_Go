@@ -18,6 +18,8 @@ public class EventoDTO {
 
     private String descripcion;
 
+    private Boolean notificaciones;
+
     public EventoDTO() {
     }
 
@@ -27,6 +29,14 @@ public class EventoDTO {
         this.fecha=fecha;
         this.fechaFin=fechaFin;
         this.descripcion = descripcion;
+    }
+
+    public Boolean getNotificaciones() {
+        return notificaciones;
+    }
+
+    public void setNotificaciones(Boolean notificaciones) {
+        this.notificaciones = notificaciones;
     }
 
     public String getTitulo() {
