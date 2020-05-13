@@ -1,9 +1,6 @@
 package api.controller;
 
-import api.dto.LoginBody;
-import api.dto.UsuarioDTO;
-import api.dto.UsuarioUpdateCamposDTO;
-import api.dto.UsuarioUpdatePasswordDTO;
+import api.dto.*;
 import api.services.UsuarioServices;
 import com.ja.security.PasswordHash;
 import entities.Usuario;
@@ -246,7 +243,7 @@ public class UsuarioController {
     }
 
     @PutMapping(value = "/{email}/firebase" )
-    public ResponseEntity setFirebaseToken(@PathVariable(name="email") String email, @RequestBody String fToken,
+    public ResponseEntity setFirebaseToken(@PathVariable(name="email") String email, @RequestBody FirebaseTokenDTO fToken,
                                    @RequestHeader(name="Authorization", required = false) String token){
         try {
             if (!decodeJWT(token).equals(email)) {
@@ -262,7 +259,7 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else {
-            user.setFirebaseToken(fToken);
+            user.setFirebaseToken(fToken.getToken());
 
             usuarioServices.altaUsuario(user);
             return new ResponseEntity(HttpStatus.OK);
