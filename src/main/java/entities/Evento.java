@@ -36,6 +36,10 @@ public class Evento implements Serializable {
     @Column(name="descripcion")
     private String descripcion;
 
+    @NotNull
+    @Column(name="notificaciones")
+    private Boolean notificaciones;
+
     public Evento() {
     }
 
@@ -45,6 +49,14 @@ public class Evento implements Serializable {
         this.fecha=fecha;
         this.fechaFin=fechaFin;
         this.descripcion = descripcion;
+    }
+
+    public void setNotificaciones(Boolean notificaciones) {
+        this.notificaciones = notificaciones;
+    }
+
+    public Boolean getNotificaciones() {
+        return notificaciones;
     }
 
     public Date getFechaFin() {

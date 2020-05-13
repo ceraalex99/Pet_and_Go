@@ -62,6 +62,7 @@ public class EventoController {
         evento.setFecha(eventoDTO.getFecha());
         evento.setFechaFin(eventoDTO.getFechaFin());
         evento.setDescripcion(eventoDTO.getDescripcion());
+        evento.setNotificaciones(eventoDTO.getNotificaciones());
         //////////////////////////////////////////////////////////////////
         try {
             eventoServices.altaEvento(evento);
@@ -128,6 +129,7 @@ public class EventoController {
         evento.setTitulo(eventoDTO.getTitulo());
         evento.setFecha(eventoDTO.getFecha());
         evento.setFechaFin(eventoDTO.getFechaFin());
+        evento.setNotificaciones(eventoDTO.getNotificaciones());
 
         eventoServices.updateEvento(evento);
         return new ResponseEntity(evento,HttpStatus.OK);

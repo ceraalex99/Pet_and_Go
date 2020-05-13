@@ -409,7 +409,8 @@ HTTP 403
     "usuario": "joan@gmail.com",
     "fecha": "2020-06-01",
     "fechaFin": "2020-06-02",
-    "descripcion": "cortar pelo"
+    "descripcion": "cortar pelo",
+    "notificaciones": 1
 }
 ```
 
@@ -435,7 +436,8 @@ Successful:
        "usuario": "joan@gmail.com",
        "fecha": "2020-06-01T00:00:00.000+0000",
        "fechaFin": "2020-06-02T00:00:00.000+0000",
-       "descripcion": "cortar pelo"
+       "descripcion": "cortar pelo",
+       "notificaciones": 1
    }
 ]
 HTTP 200
@@ -478,7 +480,8 @@ HTTP 403
     "titulo": "cortar pelo a jumanji",
     "fecha": "2020-06-01",
     "fechaFin": "2020-06-02",
-    "descripcion": "cortar pelo"
+    "descripcion": "cortar pelo",
+    "notificaciones": 1
 }
 ```
 **Response body and status:**
