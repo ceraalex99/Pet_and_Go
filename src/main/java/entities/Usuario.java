@@ -1,6 +1,7 @@
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.http.HttpStatus;
 
 
 import javax.persistence.*;
@@ -56,6 +57,9 @@ public class Usuario implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "receiver")
     @JsonIgnore
     private Set<Mensaje> mensajesRecibidos;
+
+    @Column(name="firebase_token")
+    private String firebaseToken;
 
     public Set<Quedada> preRemove(){
         if(quedadasAdmin != null) {
@@ -173,6 +177,14 @@ public class Usuario implements Serializable {
         this.mensajesRecibidos.remove(mensaje);
     }
 
+    public String getFirebaseToken() {
+        return firebaseToken;
+    }
+
+    public void setFirebaseToken(String firebaseToken) {
+        this.firebaseToken = firebaseToken;
+    }
+
     @Override
     public String toString() {
         return "Usuario{" +
@@ -182,6 +194,5 @@ public class Usuario implements Serializable {
                 ", email='" + email + '\'' +
                 '}';
     }
-
 
 }

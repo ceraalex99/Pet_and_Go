@@ -184,7 +184,7 @@ public class UsuarioController {
     public ResponseEntity addImage(@PathVariable(name="email") String email, @RequestBody byte[] image,
                                    @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
         try {
             if (!decodeJWT(token).equals(email)) {
@@ -208,9 +208,15 @@ public class UsuarioController {
     }
 
     @GetMapping(value = "/{email}/image" )
-    public ResponseEntity addImage(@PathVariable(name="email") String email,
+    public ResponseEntity getImage(@PathVariable(name="email") String email,
                                    @RequestHeader(name="Authorization", required = false) String token){
 
+        try{
+            decodeJWT(token);
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
         Usuario user = usuarioServices.findByEmail(email);
         if (user == null){
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -221,7 +227,47 @@ public class UsuarioController {
 
 
     @GetMapping(value = "/{email}/firebase")
-    public ResponseEntity get
+    public ResponseEntity getFirebaseToken(@PathVariable(name="email") String email,
+                                           @RequestHeader(name="Authorization", required = false) String token){
+
+        try{
+            if(!token.equals("8jGerhqiOlLokORRMEx1WJqx0kCNqqXA")){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        Usuario user = usuarioServices.findByEmail(email);
+        if(user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(user.getFirebaseToken(), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{email}/firebase" )
+    public ResponseEntity setFirebaseToken(@PathVariable(name="email") String email, @RequestBody String fToken,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else {
+            user.setFirebaseToken(fToken);
+
+            usuarioServices.altaUsuario(user);
+            return new ResponseEntity(HttpStatus.OK);
+        }
+    }
 
 
 
