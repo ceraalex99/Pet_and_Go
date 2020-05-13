@@ -259,6 +259,7 @@ public class UsuarioController {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else {
+            System.out.println(fToken.getToken());
             user.setFirebaseToken(fToken.getToken());
 
             usuarioServices.altaUsuario(user);
