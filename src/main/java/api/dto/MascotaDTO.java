@@ -6,28 +6,27 @@ import java.time.LocalDate;
 
 public class MascotaDTO {
 
-    private String nombre;
 
+
+    private MascotaIdDTO id;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaNacimiento;
 
-    private String emailAmo;
 
     public MascotaDTO() {
     }
 
-    public MascotaDTO(String nombre,LocalDate fechaNacimiento,String emailAmo) {
-        this.nombre = nombre;
+    public MascotaDTO(MascotaIdDTO id,LocalDate fechaNacimiento) {
+        this.id = id;
         this.fechaNacimiento = fechaNacimiento;
-        this.emailAmo = emailAmo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public MascotaIdDTO getId() {
+        return id;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setId(MascotaIdDTO id) {
+        this.id = id;
     }
 
     public LocalDate getFechaNacimiento() {
@@ -39,11 +38,5 @@ public class MascotaDTO {
     }
 
 
-    public String getEmailAmo() {
-        return emailAmo;
-    }
 
-    public void setEmailAmo(String emailAmo) {
-        this.emailAmo = emailAmo;
-    }
 }

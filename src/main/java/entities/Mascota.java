@@ -1,8 +1,11 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name= "mascotas"  )
@@ -14,6 +17,34 @@ public class Mascota implements Serializable {
 
     @Column(name="fechanacimiento")
     private LocalDate fechaNacimiento;
+
+    @Column(name="raza")
+    private String raza;
+
+    @Column(name="petimage")
+    private byte[] petimage;
+
+    @ManyToOne
+    @JoinColumn(name = "emailusuario" ,insertable = false, updatable = false)
+    Usuario amo;
+
+    @ManyToMany()
+    @JoinColumn(nullable = false,insertable = false)
+    private Set<Quedada> quedadasPart;
+
+
+
+    public Set<Quedada> getQuedadasPart() {
+        return quedadasPart;
+    }
+
+    public void addQuedadaPart(Quedada quedada) {
+        this.quedadasPart.add(quedada);
+    }
+
+    public void removeQuedadaPart(Quedada quedada) {
+        this.quedadasPart.remove(quedada);
+    }
 
     public Mascota() {
     }
@@ -39,11 +70,19 @@ public class Mascota implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
+    public byte[] getPetimage() {
+        return petimage;
+    }
+
+    public void setPetimage(byte[] petimage) {
+        this.petimage = petimage;
+    }
 
     @Override
     public String toString() {
-        return "Usuario{" +
+        return "Mascota{" +
                 ", nombre='" + id.getNombre() + '\'' +
+                ", amo='" + id.getAmo() + '\'' +
                 ", fecha de nacimiento='" + fechaNacimiento + '\'' +
                 '}';
     }

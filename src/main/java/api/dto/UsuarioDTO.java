@@ -1,13 +1,16 @@
 package api.dto;
 
 public class UsuarioDTO {
+
+    private String nombre;
+
     private String username;
 
     private String password;
 
     private String email;
 
-    private String nombre;
+
 
 
     public UsuarioDTO() {
@@ -17,6 +20,10 @@ public class UsuarioDTO {
         this.nombre = nombre;
         this.username = username;
         this.password = password;
+        this.email = email;
+    }
+
+    public UsuarioDTO(String email){
         this.email = email;
     }
 

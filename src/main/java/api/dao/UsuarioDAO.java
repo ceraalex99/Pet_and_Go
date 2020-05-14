@@ -1,16 +1,21 @@
 package api.dao;
 
-import entities.Mascota;
 import entities.Usuario;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.io.Serializable;
 
-public interface UsuarioDAO {
-    boolean altaUsuario(Usuario usuario);
-    boolean deleteUsuarioByEmail(String username);
-    boolean deleteUsuario(Usuario usuario);
-    void updateUsuario(Usuario usuario);
-    List findAllUsuario();
+
+@Repository("usuariorepository")
+public interface UsuarioDAO extends JpaRepository<Usuario, Serializable> {
+
     Usuario findByUsername(String username);
-    Usuario findByEmail(String email);
+    Long deleteByEmail(String email);
+
+    @Query("SELECT u FROM Usuario as u WHERE u.email = :email and u.password = :password")
+    Usuario loginUser(@Param("email") String email, @Param("password") String password);
+
 }

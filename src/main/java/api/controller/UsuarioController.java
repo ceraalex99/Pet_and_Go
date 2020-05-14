@@ -1,138 +1,270 @@
 package api.controller;
 
-import api.dto.MascotaDTO;
-import api.dto.UsuarioDTO;
-import api.services.MascotaServices;
+import api.dto.*;
 import api.services.UsuarioServices;
-import entities.Mascota;
-import entities.MascotaId;
+import com.ja.security.PasswordHash;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+
 import java.util.List;
 
-import static io.github.ceraalex99.petandgo.GestorUsuarios.login;
-import static io.github.ceraalex99.petandgo.GestorUsuarios.signUp;
+
+import static io.github.ceraalex99.petandgo.GestorUsuarios.*;
 
 
 @RestController
 @RequestMapping(value="/api/usuarios")
 public class UsuarioController {
-    @Autowired
-    private UsuarioServices usuarioServices;
-    @Autowired
-    private MascotaServices mascotaServices;
 
+    @Autowired
+    @Qualifier("usuarioservices")
+    private UsuarioServices usuarioServices;
+
+    public static final String HEADER_AUTHORIZATION_KEY = "Authorization";
+
+    //UPDATE CONTRASEÑA
+    @PutMapping(value= "/{email}/forgot")
+    public ResponseEntity updatePasswordUsuario(@RequestBody UsuarioUpdatePasswordDTO usuarioUpdatePasswordDTO, @PathVariable(name="email") String email,
+                                                   @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if(!usuarioServices.login(email, usuarioUpdatePasswordDTO.getOldPassword())){
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
+
+        String hashedPassword = new PasswordHash().createHash(usuarioUpdatePasswordDTO.getNewPassword());
+        user.setPassword(hashedPassword);
+
+        usuarioServices.updateUsuario(user);
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
+    //UPDATE CAMPOS
+    @PutMapping(value= "/{email}")
+    public ResponseEntity updateCamposUsuario(@RequestBody UsuarioUpdateCamposDTO usuarioUpdateCamposDTO, @PathVariable(name="email") String email,
+                                              @RequestHeader(name="Authorization",required = false) String token) throws InvalidKeySpecException, NoSuchAlgorithmException {
+
+        try{
+            if(!decodeJWT(token).equals(email)){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        user.setUsername(usuarioUpdateCamposDTO.getUsername());
+        user.setNombre(usuarioUpdateCamposDTO.getNombre());
+
+        usuarioServices.updateUsuario(user);
+        return new ResponseEntity(HttpStatus.OK);
+
+    }
     // - Get todos los Usuarios
     @GetMapping(value= "")
-    public ResponseEntity getUsuarios( ) {
+    public ResponseEntity getUsuarios(@RequestHeader(name = "Authorization", required = false) String token ) {
+        try{
+            decodeJWT(token);
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         List<Usuario> usuarios = usuarioServices.findAllUsuario();
         if(usuarios==null ) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }else {
             return new ResponseEntity<List<Usuario>>(usuarios,HttpStatus.OK);
         }
     }
-
+    //READ USER 
     @GetMapping(value= "/{email}")
     public ResponseEntity getUsuarioByEmail(@PathVariable(name="email") String email){
         Usuario usuario= usuarioServices.findByEmail(email);
         if(usuario==null ) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
         else {
             return new ResponseEntity(usuario, HttpStatus.OK);
         }
     }
-
+    //CREATE USER
     @PostMapping(value= "")
     public ResponseEntity addUsuario(@RequestBody UsuarioDTO userDTO) throws InvalidKeySpecException, NoSuchAlgorithmException {
 
         Usuario user = new Usuario();
 
         user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
+        user.setPassword(hashedPassword(userDTO.getPassword()));
         user.setEmail(userDTO.getEmail());
         user.setNombre(userDTO.getNombre());
 
-/*
-        if(userDTO==null ) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-
- */
         Usuario usuarioExsitente = usuarioServices.findByEmail(user.getEmail());
         if(usuarioExsitente==null) {
             if(usuarioServices.findByUsername(user.getUsername()) != null){
-                return new ResponseEntity("Username en uso", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity("username", HttpStatus.BAD_REQUEST);
             }
-            signUp(user.getNombre(),user.getUsername(),user.getPassword(),user.getEmail()); //Llamada a gestorUsuarios
-            return new ResponseEntity("Usuario creado con exito", HttpStatus.OK);
+            usuarioServices.altaUsuario(user);
+            String token = createToken(user.getEmail());
+            HttpHeaders httpHeaders = new HttpHeaders();
+            httpHeaders.add(HEADER_AUTHORIZATION_KEY,token);
+            return new ResponseEntity(httpHeaders,HttpStatus.CREATED);
         }
-        return new ResponseEntity("Email en uso", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity("email", HttpStatus.BAD_REQUEST);
     }
-
+    //LOGIN
     @PostMapping(value= "/login")
-    public ResponseEntity loginRequest(@RequestBody UsuarioDTO userDTO) throws InvalidKeySpecException, NoSuchAlgorithmException {
-
-        Usuario user = new Usuario();
-
-        user.setUsername(userDTO.getUsername());
-        user.setPassword(userDTO.getPassword());
-        user.setEmail(userDTO.getEmail());
-        user.setNombre(userDTO.getNombre());
-
-        Usuario userbd= usuarioServices.findByEmail(user.getEmail());
-        if( userbd != null){
-            if(login(user.getEmail(),user.getPassword())){ // Llamada a gestorUsuarios
-                return new ResponseEntity(userbd, HttpStatus.OK);
-            }
-            else return new ResponseEntity("Password incorrecto", HttpStatus.BAD_REQUEST);
+    public ResponseEntity loginRequest(@RequestBody LoginBody login) throws InvalidKeySpecException, NoSuchAlgorithmException {
+        if(usuarioServices.login(login.getEmail(),login.getPassword())){ // Llamada a gestorUsuarios
+            String token = createToken(login.getEmail());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HEADER_AUTHORIZATION_KEY, token);
+            ResponseEntity response = new ResponseEntity(headers, HttpStatus.OK);
+            return response;
         }
-        else return new ResponseEntity("El email no existe",HttpStatus.BAD_REQUEST);
+        else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+
+    }
+    //DELETE USER
+    @DeleteMapping(value = "/{email}")
+    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email, @RequestHeader(name="Authorization", required = false) String token){
+        if(email == null || email.isEmpty()) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        if(usuarioServices.findByEmail(email) == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else {
+            boolean delete;
+            delete = usuarioServices.deleteUsuarioByEmail(email);
+            if(delete){
+                return new ResponseEntity(HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
     }
 
-    @DeleteMapping(value = "/{email}")
-    public ResponseEntity deleteUsuario(@PathVariable(name="email") String email){
+    @PutMapping(value = "/{email}/image" )
+    public ResponseEntity addImage(@PathVariable(name="email") String email, @RequestBody byte[] image,
+                                   @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
         else {
-            return new ResponseEntity(usuarioServices.deleteUsuarioByEmail(email), HttpStatus.OK);
+            user.setImage(image);
+
+            usuarioServices.updateUsuario(user);
+            return new ResponseEntity(HttpStatus.OK);
         }
     }
 
-    @GetMapping(value="/{email}/mascotas")
-    public ResponseEntity getMascotasUsuario(@PathVariable(name="email") String email){
-        if(email==null || email.isEmpty()){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+    @GetMapping(value = "/{email}/image" )
+    public ResponseEntity getImage(@PathVariable(name="email") String email,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+
+        try{
+            decodeJWT(token);
         }
-        else{
-            Usuario usuario = usuarioServices.findByEmail(email);
-            if(usuario==null ) {
-                return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        byte[] image = user.getImage();
+        return new ResponseEntity(image, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "/{email}/firebase")
+    public ResponseEntity getFirebaseToken(@PathVariable(name="email") String email,
+                                           @RequestHeader(name="Authorization", required = false) String token){
+
+        try{
+            if(!token.equals("8jGerhqiOlLokORRMEx1WJqx0kCNqqXA")){
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
-            else {
-                return new ResponseEntity(usuario.getMascotas(), HttpStatus.OK);
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+        Usuario user = usuarioServices.findByEmail(email);
+        if(user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity(user.getFirebaseToken(), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/{email}/firebase" )
+    public ResponseEntity setFirebaseToken(@PathVariable(name="email") String email, @RequestBody FirebaseTokenDTO fToken,
+                                   @RequestHeader(name="Authorization", required = false) String token){
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity(HttpStatus.FORBIDDEN);
             }
+        }
+        catch (Exception e){
+            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        if (user == null){
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        else {
+            user.setFirebaseToken(fToken.getToken());
+            usuarioServices.updateUsuario(user);
+            return new ResponseEntity(HttpStatus.OK);
         }
     }
 
-    @PostMapping(value="/{email}/mascotas")
-    public ResponseEntity addMascotaUsuario(MascotaDTO mascotaDTO){
-        Usuario amo = usuarioServices.findByEmail(mascotaDTO.getEmailAmo());
-        Mascota mascota = new Mascota();
-        mascota.setId(new MascotaId(mascotaDTO.getNombre(),mascotaDTO.getEmailAmo()));
-        mascota.setFechaNacimiento(mascotaDTO.getFechaNacimiento());
-        mascotaServices.altaMascota(mascota);
-        amo.addMascota(mascota);
-        usuarioServices.updateUsuario(amo);
 
-        return new ResponseEntity(HttpStatus.OK);
-    }
+
 }

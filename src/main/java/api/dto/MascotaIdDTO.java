@@ -1,26 +1,16 @@
-package entities;
+package api.dto;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Embeddable
-public class MascotaId implements Serializable {
-
-    @NotNull
-    @Column(name="nombre")
+public class MascotaIdDTO implements Serializable {
     private String nombre;
-
-    @NotNull
-    @Column(name="emailusuario")
     private String amo;
 
-    public MascotaId(){
+    public MascotaIdDTO(){
     }
 
-    public MascotaId(String nombre, String amo) {
+    public MascotaIdDTO(String nombre, String amo) {
         this.nombre = nombre;
         this.amo = amo;
     }
@@ -33,19 +23,11 @@ public class MascotaId implements Serializable {
         return amo;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public void setAmo(String amo) {
-        this.amo = amo;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof MascotaId)) return false;
-        MascotaId that = (MascotaId) o;
+        if (!(o instanceof MascotaIdDTO)) return false;
+        MascotaIdDTO that = (MascotaIdDTO) o;
         return Objects.equals(getAmo(), that.getAmo()) &&
                 Objects.equals(getNombre(), that.getNombre());
     }
