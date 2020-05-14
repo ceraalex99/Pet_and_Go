@@ -47,7 +47,8 @@ public class QuedadaController {
                                       @RequestParam(value = "participante", required = false) String participante,
                                       @RequestParam(value = "order", required = false) String order) {
 
-        Set<Quedada> quedadas = new HashSet<>(quedadaServices.findAllQuedada());
+        Set<Quedada> quedadas = null;
+
         if(ubicacion != null){}
 
         if(participante != null){
@@ -57,7 +58,7 @@ public class QuedadaController {
             }
             else{
                 Set<Mascota> mascotas = user.getMascotas();
-                for (Mascota masc : mascotas) quedadas.addAll(masc.getQuedadasPart());
+                for (Mascota masc : mascotas) quedadas = masc.getQuedadasPart();
             }
         }
         else if(admin != null){
@@ -68,9 +69,11 @@ public class QuedadaController {
             else{
                 quedadas = user.getQuedadasAdmin();
             }
+        }else{
+            quedadas = new HashSet<>(quedadaServices.findAllQuedada());
         }
 
-        if(quedadas.isEmpty() ) {
+        if( quedadas == null || quedadas.isEmpty() ) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }
         if(order!=null){
