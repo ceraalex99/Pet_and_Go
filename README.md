@@ -502,3 +502,82 @@ Sin permiso:
 ```
 HTTP 403
 ```
+
+#### Consejos
+
+- `POST /api/consejos`
+
+**Request body:**
+```json
+{
+  "consejo": "Recuerda asear y peinar a tu perro con frecuencia",
+}
+```
+**Response body:**
+Successful:
+```json
+[
+   {
+       "id": 6,
+       "consejo": "Recuerda asear y peinar a tu perro con frecuencia"
+   }
+]
+
+HTTP 201
+```
+Sin permiso:
+```
+HTTP 403
+```
+
+- `GET /api/consejos`
+
+**Response body:**
+Successful:
+```json
+[
+   {
+       "id": 6,
+       "consejo": "Recuerda asear y peinar a tu perro con frecuencia"
+   }
+]
+HTTP 200
+```
+Consejo not found:
+```
+HTTP 404
+```
+
+- `GET /api/consejos/one`
+
+**Response body:**
+Successful:
+```json
+[
+   {
+       "id": 6,
+       "consejo": "Recuerda asear y peinar a tu perro con frecuencia"
+   }
+]
+HTTP 200
+```
+
+- `DELETE /api/consejos/<id>`
+
+**Response body and status:**
+
+Successful:
+```
+HTTP 200
+```
+Mascota not found:
+```
+HTTP 404
+```
+Error BD:
+```
+HTTP 500
+```
+Sin permiso:
+```
+HTTP 403
