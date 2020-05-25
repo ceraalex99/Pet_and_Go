@@ -58,7 +58,8 @@ public class QuedadaController {
             }
             else{
                 Set<Mascota> mascotas = user.getMascotas();
-                for (Mascota masc : mascotas) quedadas = masc.getQuedadasPart();
+                quedadas = new  HashSet<>();
+                for (Mascota masc : mascotas) quedadas.addAll(masc.getQuedadasPart());
             }
         }
         else if(admin != null){
@@ -119,10 +120,14 @@ public class QuedadaController {
 
                 List<Quedada> quedadas = new ArrayList<Quedada>();
                 for (Quedada q: quedadaServices.findAllQuedada()){
-                    p2 = new Posicion(q);
-                    distancia = CalculadoraDistancia.getDistanciaMetros(p1,p2);
-                    if (distancia <= distanciaEnMetros) quedadas.add(q);
+                    if (q.getFechaQuedada().compareTo(new Date()) >= 0){
+                        p2 = new Posicion(q);
+                        distancia = CalculadoraDistancia.getDistanciaMetros(p1,p2);
+                        if (distancia <= distanciaEnMetros) quedadas.add(q);
+                    }
                 }
+
+                quedadas.sort(Comparator.comparing(Quedada::getFechaQuedada));
 
                 return new ResponseEntity(quedadas, HttpStatus.OK);
 

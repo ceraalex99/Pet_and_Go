@@ -17,7 +17,8 @@ public class CalculadoraDistancia {
     }
 
     static public int getDistanciaMetros(Posicion p1, Posicion p2){
-        return (int) getDistanciaKMetros(p1,p2)  * 1000;
+        double metros = getDistanciaKMetros(p1,p2)  * 1000;
+        return (int) metros;
     }
 
 

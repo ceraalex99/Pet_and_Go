@@ -1,57 +1,51 @@
 package io.github.ceraalex99.petandgo;
 
-import entities.Usuario;
-import com.ja.security.PasswordHash;
-import hibernate.bd.UsuariosBD;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Test;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
-import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class GestorUsuariosTest {
-/*
+
     @Test
-    public void signUpTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        String nombre = RandomStringUtils.random(25, true, false);
-        String username = RandomStringUtils.random(10, true, true);
-        String email = RandomStringUtils.random(30, true, true);
-        String password = RandomStringUtils.random(10, true, true);
-
-        GestorUsuarios.signUp(nombre,username,password,email);
-
-
-        Usuario user = new Usuario();
-        UsuariosBD usuariosBD = new UsuariosBD();
-        List<Usuario> users = usuariosBD.getAll();
-        for (Usuario usuario : users) {
-            if (usuario.getUsername().equals(username)) {
-                user = usuario;
-            }
-        }
-
-        assertEquals(nombre, user.getNombre());
-        assertEquals(username, user.getUsername());
-        assertEquals(email,user.getEmail());
-        assertTrue(new PasswordHash().validatePassword(password, user.getPassword()));
-        GestorUsuarios.deleteByEmail(email);
+    public void decodeJWT() {
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
+        String email = "joan@gmail.com";
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgam9hbkBnbWFpbC5jb20ifQ.PhPNnUE_cL3tAqJ_DrpWP5h903NXWMTRgoXCYdUCkWlFYvP5encnzDVIj4CQfiQUqQ2m751SW_hqUXDc5c4mUA";
+        String emailToken = gestorUsuarios.decodeJWT(token);
+        assertEquals(email, emailToken);
     }
 
     @Test
-    public void correctLoginTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        assertTrue(GestorUsuarios.login("joan@gmail.com","123"));
+    public void createToken() {
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
+        String token = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgam9hbkBnbWFpbC5jb20ifQ.PhPNnUE_cL3tAqJ_DrpWP5h903NXWMTRgoXCYdUCkWlFYvP5encnzDVIj4CQfiQUqQ2m751SW_hqUXDc5c4mUA";
+        String email = "joan@gmail.com";
+        String tokenCreate = gestorUsuarios.createToken(email);
+        assertEquals(token, tokenCreate);
     }
 
     @Test
-    public void loginBadPassTest() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        assertFalse(GestorUsuarios.login("antoniogp68@gmail.com","patata"));
+    public void validatePassword() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
+        String pass = "pepe123";
+        String passHashed = "20000:1bd482f4c6aa030b3502bc36b9fd5998a7ce5e674af39ddf:8c772d54d69035d9a67d15ccec182879ba6461e3e7c32fd5";
+        boolean okey = gestorUsuarios.validatePassword(pass,passHashed);
+        assertEquals(true, okey);
+        okey = gestorUsuarios.validatePassword("blabla",passHashed);
+        assertEquals(false, okey);
     }
 
     @Test
-    public void loginNonexistentUsername() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        assertFalse(GestorUsuarios.login("idfnidnijnvdfvjdjdnkjvdfbv","patata"));
-    }*/
+    public void hashedPassword() throws InvalidKeySpecException, NoSuchAlgorithmException {
+        GestorUsuarios gestorUsuarios = new GestorUsuarios();
+        String pass = "pepe123";
+        String passHashed = gestorUsuarios.hashedPassword(pass);
+        boolean okey = gestorUsuarios.validatePassword(pass,passHashed);
+        assertEquals(true, okey);
+    }
+
 }
+
