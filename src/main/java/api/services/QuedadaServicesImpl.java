@@ -45,6 +45,11 @@ public class QuedadaServicesImpl implements QuedadaServices {
     }
 
     @Override
+    public List<Quedada> getPendientesFinalizar() {
+        return quedadaDAO.getPendientesFinalizar();
+    }
+
+    @Override
     public Quedada findById(Integer id) {
         Quedada quedada = null;
         Optional<Quedada> resultQuedada = quedadaDAO.findById(id);

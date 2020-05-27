@@ -34,6 +34,11 @@ public class Usuario implements Serializable {
     @Column(name="avatarimage")
     private String avatar;
 
+    @Column(name="nivel", columnDefinition = "numeric default 0")
+    private int nivel;
+
+    @Column(name="puntos", columnDefinition = "numeric default 0")
+    private int puntos;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "emailusuario", referencedColumnName = "email",nullable = false, insertable=false )
@@ -194,6 +199,22 @@ public class Usuario implements Serializable {
 
     public void setFirebaseToken(String firebaseToken) {
         this.firebaseToken = firebaseToken;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
     }
 
     @Override

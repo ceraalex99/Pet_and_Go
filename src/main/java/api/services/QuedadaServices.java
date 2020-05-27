@@ -11,6 +11,7 @@ public interface QuedadaServices {
     boolean deleteQuedada(Quedada Quedada);
     void updateQuedada(Quedada Quedada);
     List<Quedada> findAllQuedada();
+    List<Quedada> getPendientesFinalizar();
     Quedada findById(Integer id);
     void flush();
 }
