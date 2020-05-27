@@ -581,3 +581,54 @@ HTTP 500
 Sin permiso:
 ```
 HTTP 403
+```
+#### avatares
+
+- `POST /api/avatares`
+
+**Request body:**
+```json
+{
+    "niveldesbloqueo": "1",
+    "avatar": "https://i.imgur.com/2mWlaET.png"
+}
+```
+**Response body:**
+Successful: HTTP 201
+```json
+[
+   {
+           "id": 1,
+           "niveldesbloqueo": 3,
+           "avatar": "https://i.imgur.com/8WOOHSW.png"
+    }
+]
+```
+Sin permiso:
+```
+HTTP 403
+```
+
+- `GET /api/avatares`
+
+**Response body:**
+Successful: HTTP 200
+```json
+[
+   {
+           "id": 1,
+           "niveldesbloqueo": 3,
+           "avatar": "https://i.imgur.com/8WOOHSW.png"
+    }
+]
+```
+- `PUT /api/avatares/{email}/avatar`
+
+**Request body:**
+```text
+https://i.imgur.com/2mWlaET.png
+```
+Successful
+```
+HTTP 200
+```

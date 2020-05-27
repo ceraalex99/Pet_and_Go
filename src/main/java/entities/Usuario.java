@@ -31,6 +31,9 @@ public class Usuario implements Serializable {
     @Column(name="profileimage")
     private byte[] image;
 
+    @Column(name="avatarimage")
+    private String avatar;
+
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "emailusuario", referencedColumnName = "email",nullable = false, insertable=false )
@@ -81,6 +84,14 @@ public class Usuario implements Serializable {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     public String getNombre() {
