@@ -4,18 +4,26 @@ import api.services.EventoServices;
 import api.services.QuedadaServices;
 import api.services.UsuarioServices;
 import entities.Evento;
+import entities.Mascota;
 import entities.Quedada;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallbackWithoutResult;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 public class ActualizadorPuntos extends TimerTask {
 
-    private List<Quedada> quedadasFinalziadas;
     private Timer timer;
+    private List<Quedada> quedadasFinalziadas;
+
     private Map<String,Integer> puntosUsuarios;
     private Niveles niveles;
 
@@ -28,28 +36,40 @@ public class ActualizadorPuntos extends TimerTask {
     @Autowired
     private EventoServices eventoServices;
 
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
+
     @Override
     public void run() {
-        niveles = Niveles.getInstance();
-        actualizarPerrParadasFinalizadas();
-        actualizarNivel();
+        TransactionTemplate transactionTemplate = new TransactionTemplate(platformTransactionManager);
+        transactionTemplate.execute(new TransactionCallbackWithoutResult() {
+            @Override
+            protected void doInTransactionWithoutResult(TransactionStatus transactionStatus) {
+                niveles = Niveles.getInstance();
+                actualizarPerrParadasFinalizadas();
+                actualizarNivel();
+            }
+        });
     }
 
-    private void actualizarPerrParadasFinalizadas(){
+    void actualizarPerrParadasFinalizadas(){
         quedadasFinalziadas = quedadaServices.getPendientesFinalizar();
         puntosUsuarios = new HashMap<String,Integer>();
-        List<String> participantes;
+        List<String> participantesEmail;
+        Set<Mascota> participantes;
         int puntos;
         for (Quedada q : quedadasFinalziadas) {
-            participantes = q.getParticipantes().stream().map(m -> m.getId().getAmo()).distinct().collect(Collectors.toList());
-            puntos = participantes.size();
-            for (String emailUser: participantes){
-               actualizarPuntos(emailUser,puntos);
+            if (q.getParticipantes().size() > 0){
+                participantes = q.getParticipantes();
+                participantesEmail = participantes.stream().map(m -> m.getId().getAmo()).distinct().collect(Collectors.toList());
+                puntos = participantes.size();
+                for (String emailUser: participantesEmail){
+                    actualizarPuntos(emailUser,puntos);
+                }
+                if (puntos > 0)
+                    actualizarPuntos(q.getAdmin(),(int) (puntos * 1.10));
+                q.setFinalizada(true);
             }
-            if (puntos > 0)
-                actualizarPuntos(q.getAdmin(),(int) (puntos * 1.10));
-            q.setFinalizada(true);
-            quedadaServices.updateQuedada(q);
         }
     }
 
@@ -68,10 +88,9 @@ public class ActualizadorPuntos extends TimerTask {
             user.setPuntos(user.getPuntos() + value.getValue());
             nivel = niveles.getNivelPorPuntos(user.getPuntos());
             if (nivel != user.getNivel()){
-                generarEvento(user);
                 user.setNivel(nivel);
+                generarEvento(user);
             }
-            usuarioServices.updateUsuario(user);
         }
     }
 
@@ -81,7 +100,8 @@ public class ActualizadorPuntos extends TimerTask {
         Calendar nextDay = Calendar.getInstance();
         nextDay.setTime(new Date());
         nextDay.add(Calendar.DATE,1);
-        String desc = user.getEmail() + "sube a nivel" + user.getNivel();
+        String desc = user.getEmail() + " sube a nivel " + user.getNivel();
+
         Evento evento = new Evento();
         evento.setDescripcion(desc);
         evento.setTitulo(desc);
@@ -92,10 +112,11 @@ public class ActualizadorPuntos extends TimerTask {
         eventoServices.altaEvento(evento);
     }
 
-    public void lanzar(){
+    public void init(){
+        timer = new Timer();
         int minuto = 60000;
         int periodo = minuto * 30;
-        timer.schedule(this,0,periodo);
+        timer.schedule(this,10,periodo);
     }
 
 }

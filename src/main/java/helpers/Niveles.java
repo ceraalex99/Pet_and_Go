@@ -1,5 +1,6 @@
 package helpers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,11 +12,13 @@ public class Niveles {
     private static List<Integer> nivelesPunto;
 
     private Niveles(){
+        nivelesPunto = new ArrayList<>();
+
         int puntos = 0;
         for(int i = 0; i < MAXlevel;i++ ) {
             if(i<3)
                 puntos += 10;
-            if(i<6)
+            else if(i<6)
                 puntos += 20;
             else
                 puntos += 40;
@@ -31,11 +34,11 @@ public class Niveles {
 
 
     public static int getNivelPorPuntos(int puntos){
-        Optional<Integer> puntosNivelMinimo = nivelesPunto.stream().filter(n -> n >= puntos).findFirst();
-        if(puntosNivelMinimo.isPresent())
-            return puntosNivelMinimo.get();
-        else
-            return 0;
+        int lvl= 0;
+        for (Integer p: nivelesPunto){
+            if(puntos >= p) lvl++;
+        }
+        return lvl;
     }
 
 }
