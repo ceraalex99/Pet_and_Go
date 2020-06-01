@@ -10,9 +10,9 @@ public class AvatarDTO {
     public AvatarDTO() {
     }
 
-    public AvatarDTO(Integer niveldesbloqueo, String URLavatar) {
+    public AvatarDTO(Integer niveldesbloqueo, String avatar) {
         this.niveldesbloqueo = niveldesbloqueo;
-        this.avatar=URLavatar;
+        this.avatar=avatar;
     }
 
     public Integer getNiveldesbloqueo() {

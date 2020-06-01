@@ -11,6 +11,12 @@ import java.security.spec.InvalidKeySpecException;
 
 
 public class GestorUsuarios {
+
+    private GestorUsuarios(){
+        throw new IllegalStateException("Utility class");
+    }
+
+
     private static PasswordHash passwordHash = new PasswordHash();
 
     public static String decodeJWT(String jwt){

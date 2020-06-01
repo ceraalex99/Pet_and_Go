@@ -15,7 +15,7 @@ public class Avatar implements Serializable {
     private Integer id;
 
     @NotNull
-    @Column(name="nivelDesbloqueo",unique = false)
+    @Column(name="nivel_desbloqueo")
     private Integer niveldesbloqueo;
 
     @NotNull
@@ -26,8 +26,8 @@ public class Avatar implements Serializable {
     public Avatar() {
     }
 
-    public Avatar(String URLavatar, Integer niveldesbloqueo) {
-        this.avatar = URLavatar;
+    public Avatar(String avatar, Integer niveldesbloqueo) {
+        this.avatar = avatar;
         this.niveldesbloqueo = niveldesbloqueo;
     }
 

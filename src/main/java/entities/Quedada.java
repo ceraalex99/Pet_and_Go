@@ -51,7 +51,7 @@ public class Quedada implements Serializable {
 
     @JsonIgnore
     @ManyToMany(mappedBy = "quedadasPart", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    Set<Mascota> participantes = new HashSet<>();
+    private Set<Mascota> participantes = new HashSet<>();
 
     public Quedada(){}
 

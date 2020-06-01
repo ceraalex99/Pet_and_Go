@@ -1,9 +1,7 @@
 package api.services;
 
 import api.dao.AvatarDAO;
-import api.dao.ConsejoDAO;
 import entities.Avatar;
-import entities.Consejo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,7 @@ public class AvatarServicesImpl implements AvatarServices {
     }
 
     @Override
-    public List findAllAvatar() {
+    public List<Avatar> findAllAvatar() {
         return avatarDAO.findAll();
     }
 

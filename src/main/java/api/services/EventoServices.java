@@ -9,6 +9,6 @@ public interface EventoServices {
     boolean deleteEventoById(Integer id);
     void deleteEvento(Evento evento);
     void updateEvento(Evento evento);
-    List findAllEventos();
+    List<Evento> findAllEventos();
     Evento findById(Integer id);
 }

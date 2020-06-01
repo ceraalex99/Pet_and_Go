@@ -1,13 +1,13 @@
 package api.dto;
 
-public class imageDTO {
+public class ImageDTO {
     private byte[] imagen ;
 
 
-    public imageDTO() {
+    public ImageDTO() {
     }
 
-    public imageDTO(byte[] imagen) {
+    public ImageDTO(byte[] imagen) {
        this.imagen = imagen;
     }
 

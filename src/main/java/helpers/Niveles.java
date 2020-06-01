@@ -2,20 +2,19 @@ package helpers;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class Niveles {
 
     private static Niveles niveles;
-    private static int MAXlevel = 30;
 
-    private static List<Integer> nivelesPunto;
+    private List<Integer> nivelesPunto;
 
     private Niveles(){
         nivelesPunto = new ArrayList<>();
 
         int puntos = 0;
-        for(int i = 0; i < MAXlevel;i++ ) {
+        int maxLevel = 30;
+        for(int i = 0; i < maxLevel; i++ ) {
             if(i<3)
                 puntos += 10;
             else if(i<6)
@@ -33,7 +32,7 @@ public class Niveles {
     }
 
 
-    public static int getNivelPorPuntos(int puntos){
+    public int getNivelPorPuntos(int puntos){
         int lvl= 0;
         for (Integer p: nivelesPunto){
             if(puntos >= p) lvl++;

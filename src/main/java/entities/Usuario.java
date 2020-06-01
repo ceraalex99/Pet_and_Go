@@ -1,11 +1,9 @@
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.http.HttpStatus;
 
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;

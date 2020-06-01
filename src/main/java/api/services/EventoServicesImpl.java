@@ -38,7 +38,7 @@ public class EventoServicesImpl implements EventoServices {
     }
 
     @Override
-    public List findAllEventos() {
+    public List<Evento> findAllEventos() {
         return eventoDAO.findAll();
     }
 

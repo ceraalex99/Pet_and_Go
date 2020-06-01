@@ -1,9 +1,6 @@
 package api.services;
 
-import api.dao.MascotaDAO;
 import api.dao.UsuarioDAO;
-import entities.Mascota;
-import entities.MascotaId;
 import entities.Quedada;
 import entities.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,9 +78,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
             Usuario user = findByEmail(email);
             if (user != null) result = validatePassword(password,user.getPassword());
             return result;
-        }catch (InvalidKeySpecException e){
-            return false;
-        } catch (NoSuchAlgorithmException e) {
+        }catch (InvalidKeySpecException | NoSuchAlgorithmException e){
             return false;
         }
     }
@@ -96,7 +91,7 @@ public class UsuarioServicesImpl implements UsuarioServices {
                 q = itr.next();
                 if (!q.getAdmin().equals(usuario.getEmail()))
                     quedadaServices.updateQuedada(q);
-                else if (q.getParticipantes() == null || q.getParticipantes().size() == 0 )
+                else if (q.getParticipantes() == null || q.getParticipantes().isEmpty() )
                     quedadaServices.deleteQuedada(q);
             }
         }

@@ -21,9 +21,6 @@ import java.util.stream.Collectors;
 @Component
 public class ActualizadorPuntos extends TimerTask {
 
-    private Timer timer;
-    private List<Quedada> quedadasFinalziadas;
-
     private Map<String,Integer> puntosUsuarios;
     private Niveles niveles;
 
@@ -53,13 +50,13 @@ public class ActualizadorPuntos extends TimerTask {
     }
 
     void actualizarPerrParadasFinalizadas(){
-        quedadasFinalziadas = quedadaServices.getPendientesFinalizar();
-        puntosUsuarios = new HashMap<String,Integer>();
+        List<Quedada> quedadasFinalziadas = quedadaServices.getPendientesFinalizar();
+        puntosUsuarios = new HashMap<>();
         List<String> participantesEmail;
         Set<Mascota> participantes;
         int puntos;
         for (Quedada q : quedadasFinalziadas) {
-            if (q.getParticipantes().size() > 0){
+            if (!q.getParticipantes().isEmpty()){
                 participantes = q.getParticipantes();
                 participantesEmail = participantes.stream().map(m -> m.getId().getAmo()).distinct().collect(Collectors.toList());
                 puntos = participantes.size();
@@ -113,7 +110,7 @@ public class ActualizadorPuntos extends TimerTask {
     }
 
     public void init(){
-        timer = new Timer();
+        Timer timer = new Timer();
         int minuto = 60000;
         int periodo = minuto * 30;
         timer.schedule(this,10,periodo);

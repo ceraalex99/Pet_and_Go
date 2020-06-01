@@ -1,8 +1,6 @@
 package io.github.ceraalex99.petandgo;
 
-import helpers.CalculadoraDistancia;
 import helpers.Niveles;
-import helpers.Posicion;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

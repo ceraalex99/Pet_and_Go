@@ -1,7 +1,6 @@
 package api.services;
 
 import entities.Avatar;
-import entities.Consejo;
 
 import java.util.List;
 
@@ -10,6 +9,6 @@ public interface AvatarServices {
     boolean deleteAvatarById(Integer id);
     void deleteAvatar(Avatar avatar);
     void updateAvatar(Avatar avatar);
-    List findAllAvatar();
+    List<Avatar> findAllAvatar();
     Avatar findById(Integer id);
 }
