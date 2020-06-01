@@ -65,7 +65,8 @@ public class QuedadaController {
             else{
                 quedadas = user.getQuedadasAdmin();
             }
-        }else{
+        }
+        else{
             quedadas = new HashSet<>(quedadaServices.findAllQuedada());
         }
 

@@ -37,7 +37,6 @@ public class AvatarController {
         Avatar avatar = new Avatar();
         avatar.setNiveldesbloqueo(avatarDTO.getNiveldesbloqueo());
         avatar.setAvatar(avatarDTO.getAvatar());
-        System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         //////////////////////////////////////////////////////////////////
         try {
             avatarServices.altaAvatar(avatar);

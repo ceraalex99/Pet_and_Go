@@ -3,7 +3,6 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import api.dto.ConsejoDTO;
 import api.services.ConsejoServices;
-import api.services.UsuarioServices;
 import entities.Consejo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
