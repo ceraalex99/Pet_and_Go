@@ -57,7 +57,7 @@ public class MensajeControllerTest {
         Usuario user = new Usuario();
 
         given(usuarioServices.findByEmail("a@prueba.com")).willReturn(user);
-        given(mensajeServices.findBySender(user)).willReturn(new ArrayList<>(Arrays.asList(m1, m2)));
+        given(mensajeServices.findBySender(user)).willReturn(new ArrayList<>(Arrays.asList(m1, m2))); 
         given(mensajeServices.findByReceiver(user)).willReturn(Arrays.asList(m3, m4));
 
         mvc.perform(get("/api/usuarios/a@prueba.com/mensajes").contentType(MediaType.APPLICATION_JSON).header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(4)));
