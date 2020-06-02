@@ -17,6 +17,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -57,6 +58,23 @@ public class ConsejoControllerTest {
 
         mvc.perform(get("/api/consejos/one").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.id", is(oneOf(1,2,3))));
 
+    }
+
+    @Test
+    public void deleteConsejo() throws Exception {
+
+        given(consejoServices.findById(1)).willReturn(new Consejo());
+        given(consejoServices.deleteConsejoById(1)).willReturn(true);
+
+        mvc.perform(delete("/api/consejos/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void deleteConsejoInexistente() throws Exception {
+        given(consejoServices.findById(1)).willReturn(null);
+
+        mvc.perform(delete("/api/consejos/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
     }
 
 }

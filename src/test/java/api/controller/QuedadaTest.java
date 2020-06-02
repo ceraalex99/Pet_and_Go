@@ -49,7 +49,7 @@ public class QuedadaTest {
 
         List<Quedada> pendientes = quedadaDAO.getPendientesFinalizar();
 
-        assertEquals(pendientes.get(0).getAdmin(), "pepe@pepe.pepe");
+        assertEquals("pepe@pepe.pepe", pendientes.get(0).getAdmin());
     }
 
     @Test
