@@ -26,7 +26,7 @@ public class AvatarController {
     @Autowired
     private AvatarServices avatarServices;
 
-    //READ ALL CONSEJOS
+    //READ ALL
     @GetMapping(value="")
     public ResponseEntity<List<Avatar>> getAllAvatar(){
         return new ResponseEntity<>(avatarServices.findAllAvatar(), HttpStatus.OK);

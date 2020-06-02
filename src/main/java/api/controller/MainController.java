@@ -11,9 +11,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication(scanBasePackages= {"api"})
-@EnableJpaRepositories(basePackages  = "api.dao")
-@EntityScan( basePackages = {"entities"} )
-@ComponentScan(basePackages = {"api","helpers"} )
 @EnableScheduling
 public class MainController {
 
