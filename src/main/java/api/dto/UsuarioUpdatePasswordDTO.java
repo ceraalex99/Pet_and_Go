@@ -9,7 +9,7 @@ public class UsuarioUpdatePasswordDTO {
     public UsuarioUpdatePasswordDTO() {
     }
 
-    public UsuarioUpdatePasswordDTO(String nombre, String username, String newPassword, String oldPassword) {
+    public UsuarioUpdatePasswordDTO(String newPassword, String oldPassword) {
         this.newPassword = newPassword;
         this.oldPassword = oldPassword;
     }

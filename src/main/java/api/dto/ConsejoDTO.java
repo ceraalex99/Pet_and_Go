@@ -1,6 +1,5 @@
 package api.dto;
 
-import java.util.Date;
 
 public class ConsejoDTO {
 

@@ -24,7 +24,7 @@ public class MensajeServicesImpl implements MensajeServices{
     }
 
     @Override
-    public List findBySender(Usuario sender) {
+    public List<Mensaje> findBySender(Usuario sender) {
         List<Mensaje> mensaje = null;
         Optional<List<Mensaje>> resultMensaje = mensajeDAO.findBySender(sender);
         if(resultMensaje.isPresent()) mensaje = resultMensaje.get();
@@ -32,7 +32,7 @@ public class MensajeServicesImpl implements MensajeServices{
     }
 
     @Override
-    public List findByReceiver(Usuario receiver) {
+    public List<Mensaje> findByReceiver(Usuario receiver) {
         List<Mensaje> mensaje = null;
         Optional<List<Mensaje>> resultMensaje = mensajeDAO.findByReceiver(receiver);
         if(resultMensaje.isPresent()) mensaje = resultMensaje.get();

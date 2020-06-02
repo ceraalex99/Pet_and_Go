@@ -39,7 +39,7 @@ public class MascotaServicesImpl implements MascotaServices {
     }
 
     @Override
-    public List findAllMascota() {
+    public List<Mascota> findAllMascota() {
         return mascotaDAO.findAll();
     }
 

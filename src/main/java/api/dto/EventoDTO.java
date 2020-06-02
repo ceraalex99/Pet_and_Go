@@ -1,8 +1,6 @@
 package api.dto;
 
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 public class EventoDTO {

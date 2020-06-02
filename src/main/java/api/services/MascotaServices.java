@@ -10,6 +10,6 @@ public interface MascotaServices {
     boolean deleteMascotaById(MascotaId id);
     void deleteMascota(Mascota mascota);
     void updateMascota(Mascota mascota);
-    List findAllMascota();
+    List<Mascota> findAllMascota();
     Mascota findById(MascotaId id);
 }

@@ -3,9 +3,7 @@ package entities;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Date;
-import java.util.Set;
 
 @Entity
 @Table(name= "eventos"  )
@@ -30,7 +28,7 @@ public class Evento implements Serializable {
     private Date fecha;
 
     @NotNull
-    @Column(name="fechaFin")
+    @Column(name="fecha_fin")
     private Date fechaFin;
 
     @Column(name="descripcion")
@@ -43,12 +41,13 @@ public class Evento implements Serializable {
     public Evento() {
     }
 
-    public Evento(String titulo,String Usuario,Date fecha, Date fechaFin, String descripcion) {
+    public Evento(String titulo,String usuario,Date fecha, Date fechaFin, String descripcion, Boolean notificaciones) {
         this.titulo=titulo;
-        this.usuario=Usuario;
+        this.usuario=usuario;
         this.fecha=fecha;
         this.fechaFin=fechaFin;
         this.descripcion = descripcion;
+        this.notificaciones = notificaciones;
     }
 
     public void setNotificaciones(Boolean notificaciones) {

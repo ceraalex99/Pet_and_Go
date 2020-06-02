@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MensajeServices {
     boolean altaMensaje(Mensaje mensaje);
-    List findBySender(Usuario sender);
-    List findByReceiver(Usuario receiver);
+    List<Mensaje> findBySender(Usuario sender);
+    List<Mensaje> findByReceiver(Usuario receiver);
 }

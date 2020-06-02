@@ -29,29 +29,29 @@ public class MensajeController {
     private UsuarioServices usuarioServices;
 
     @PostMapping(value="/mensajes")
-    public ResponseEntity addMessage(@RequestBody MensajeDTO mensajeDTO){
+    public ResponseEntity<Void> addMessage(@RequestBody MensajeDTO mensajeDTO){
         Mensaje mensaje = new Mensaje(mensajeDTO.getSender(), mensajeDTO.getReceiver(), mensajeDTO.getData(), mensajeDTO.getCreated_at());
 
         try {
             mensajeServices.altaMensaje(mensaje);
         }
         catch(PersistenceException e){
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping(value="/usuarios/{email}/mensajes")
-    public ResponseEntity getMensajes(@PathVariable(name = "email") String email,
+    public ResponseEntity<List<Mensaje>> getMensajes(@PathVariable(name = "email") String email,
                                       @RequestHeader(name="Authorization",required = false) String token){
 
         try{
             if(!decodeJWT(token).equals(email)){
-                return new ResponseEntity(HttpStatus.FORBIDDEN);
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
             }
         }
         catch (Exception e){
-            return new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         Usuario user = usuarioServices.findByEmail(email);
@@ -61,7 +61,7 @@ public class MensajeController {
 
         mensajes.sort(Comparator.comparing(Mensaje::getCreated_at));
 
-        return new ResponseEntity(mensajes, HttpStatus.OK);
+        return new ResponseEntity<>(mensajes, HttpStatus.OK);
 
 
     }

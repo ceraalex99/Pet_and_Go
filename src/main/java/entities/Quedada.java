@@ -43,12 +43,15 @@ public class Quedada implements Serializable {
     @Column(name="longitud")
     private double longitud;
 
-    @Column(name="idimagegoogle")
+    @Column(name = "idimagegoogle")
     private String idImageGoogle;
+
+    @Column(name = "finalizada", columnDefinition = "boolean default false")
+    private boolean finalizada;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "quedadasPart", cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    Set<Mascota> participantes = new HashSet<>();
+    private Set<Mascota> participantes = new HashSet<>();
 
     public Quedada(){}
 
@@ -65,7 +68,6 @@ public class Quedada implements Serializable {
     public Integer getId() {
         return id;
     }
-
 
     public String getAdmin() {
         return admin;
@@ -129,6 +131,14 @@ public class Quedada implements Serializable {
 
     public void addParticipante(Mascota mascota){
         participantes.add(mascota);
+    }
+
+    public boolean isFinalizada() {
+        return finalizada;
+    }
+
+    public void setFinalizada(boolean finalizada) {
+        this.finalizada = finalizada;
     }
 
     private boolean tieneParticipantes() {

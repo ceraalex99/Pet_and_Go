@@ -1,11 +1,11 @@
 package api.dao;
 
 
-import entities.Consejo;
+import entities.Avatar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("consejorepository")
-public interface ConsejoDAO extends JpaRepository<Consejo, Integer> {
+@Repository("avatarrepository")
+public interface AvatarDAO extends JpaRepository<Avatar, Integer> {
 
 }

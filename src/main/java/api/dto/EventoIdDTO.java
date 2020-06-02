@@ -1,7 +1,6 @@
 package api.dto;
 
 import java.io.Serializable;
-import java.util.Objects;
 import java.util.Date;
 
 public class EventoIdDTO implements Serializable {
@@ -42,18 +41,4 @@ public class EventoIdDTO implements Serializable {
     public void setUsuario(String usuario) {
         this.usuario = usuario;
     }
-
-    /*@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof EventoIdDTO)) return false;
-        EventoIdDTO that = (EventoIdDTO) o;
-        return Objects.equals(getAmo(), that.getAmo()) &&
-                Objects.equals(getNombre(), that.getNombre());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getNombre(), getAmo());
-    }*/
 }

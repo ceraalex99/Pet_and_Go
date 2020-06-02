@@ -1,9 +1,7 @@
 package api.services;
 
 import api.dao.ConsejoDAO;
-import api.dao.EventoDAO;
 import entities.Consejo;
-import entities.Evento;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +38,7 @@ public class ConsejoServicesImpl implements ConsejoServices {
     }
 
     @Override
-    public List findAllConsejos() {
+    public List<Consejo> findAllConsejos() {
         return consejoDAO.findAll();
     }
 

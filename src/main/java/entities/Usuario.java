@@ -1,11 +1,9 @@
 package entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.springframework.http.HttpStatus;
 
 
 import javax.persistence.*;
-import java.awt.*;
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Set;
@@ -31,6 +29,14 @@ public class Usuario implements Serializable {
     @Column(name="profileimage")
     private byte[] image;
 
+    @Column(name="avatarimage")
+    private String avatar;
+
+    @Column(name="nivel", columnDefinition = "numeric default 0")
+    private int nivel;
+
+    @Column(name="puntos", columnDefinition = "numeric default 0")
+    private int puntos;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "emailusuario", referencedColumnName = "email",nullable = false, insertable=false )
@@ -81,6 +87,14 @@ public class Usuario implements Serializable {
         this.username = username;
         this.password = password;
         this.email = email;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 
     public String getNombre() {
@@ -183,6 +197,22 @@ public class Usuario implements Serializable {
 
     public void setFirebaseToken(String firebaseToken) {
         this.firebaseToken = firebaseToken;
+    }
+
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
+    public int getPuntos() {
+        return puntos;
+    }
+
+    public void setPuntos(int puntos) {
+        this.puntos = puntos;
     }
 
     @Override
