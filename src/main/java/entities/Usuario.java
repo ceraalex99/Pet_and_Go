@@ -50,6 +50,7 @@ public class Usuario implements Serializable {
     }
 
     @OneToMany(mappedBy="me", fetch = FetchType.EAGER)
+    @JsonIgnore
     private List<MyFriends> myFriends = new ArrayList<>();
 
 
