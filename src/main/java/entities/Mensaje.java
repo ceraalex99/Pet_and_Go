@@ -24,17 +24,17 @@ public class Mensaje implements Serializable{
     @JoinColumn(name = "receiver")
     private Usuario receiver;
 
-    @Column(name="data")
-    private String data;
+    @Column(name="text")
+    private String text;
 
 
     public Mensaje() {
     }
 
-    public Mensaje(Usuario sender, Usuario receiver, String data, LocalDate created_at) {
+    public Mensaje(Usuario sender, Usuario receiver, String text, LocalDate created_at) {
         this.sender  = sender;
         this.receiver = receiver;
-        this.data = data;
+        this.text = text;
         this.created_at = created_at;
     }
 
@@ -66,12 +66,12 @@ public class Mensaje implements Serializable{
         this.receiver = receiver;
     }
 
-    public String getData() {
-        return data;
+    public String getText() {
+        return text;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class Mensaje implements Serializable{
                 ", created_at='" + created_at + '\'' +
                 ", sender='" + sender + '\'' +
                 ", reciever='" + receiver + '\'' +
-                ", data='" + data + '\'' +
+                ", data='" + text + '\'' +
                 '}';
     }
 }

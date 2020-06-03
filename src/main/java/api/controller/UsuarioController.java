@@ -108,6 +108,8 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else {
+           // for(String elemento: usuario.get)
+
             return new ResponseEntity<>(usuario, HttpStatus.OK);
         }
     }
@@ -263,7 +265,4 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-
-
-
 }
