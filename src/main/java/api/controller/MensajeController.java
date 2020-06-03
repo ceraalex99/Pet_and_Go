@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.PersistenceException;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class MensajeController {
     }
 
     @GetMapping(value="/usuarios/{email}/mensajes")
-    public ResponseEntity<List<Mensaje>> getMensajes(@PathVariable(name = "email") String email,
+    public ResponseEntity<List<MensajeDTO>> getMensajes(@PathVariable(name = "email") String email,
                                       @RequestHeader(name="Authorization",required = false) String token){
 
         try{
@@ -60,11 +61,16 @@ public class MensajeController {
         Usuario user = usuarioServices.findByEmail(email);
 
         List<Mensaje> mensajes = mensajeServices.findBySender(user);
+
         mensajes.addAll(mensajeServices.findByReceiver(user));
+        List<MensajeDTO> mensajeDTOList = new ArrayList<>();
+        for (Mensaje mensaje : mensajes) {
+            mensajeDTOList.add(new MensajeDTO(mensaje.getId(), mensaje.getSender().getEmail(), mensaje.getReceiver().getEmail(), mensaje.getText(), mensaje.getCreated_at()));
+        }
 
-        mensajes.sort(Comparator.comparing(Mensaje::getCreated_at));
+        mensajeDTOList.sort(Comparator.comparing(MensajeDTO::getCreated_at));
 
-        return new ResponseEntity<>(mensajes, HttpStatus.OK);
+        return new ResponseEntity<>(mensajeDTOList, HttpStatus.OK);
 
 
     }

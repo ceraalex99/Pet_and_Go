@@ -22,6 +22,14 @@ public class MensajeDTO {
         this.created_at = created_at;
     }
 
+    public MensajeDTO(int id, String sender, String receiver, String text, LocalDateTime created_at) {
+        this.id = id;
+        this.sender  = sender;
+        this.receiver = receiver;
+        this.text = text;
+        this.created_at = created_at;
+    }
+
     public int getId() {
         return id;
     }
