@@ -50,9 +50,7 @@ public class AvatarController {
     @PutMapping(value = "/{email}/avatar" )
     public ResponseEntity<Void> addAvatar(@PathVariable(name="email") String email, @RequestBody String avatar,
                                    @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
         try {
             if (!decodeJWT(token).equals(email)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
