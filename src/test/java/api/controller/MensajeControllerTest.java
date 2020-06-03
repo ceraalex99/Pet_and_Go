@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -47,13 +48,13 @@ public class MensajeControllerTest {
     @Test
     public void getMensajesUsuario() throws Exception {
         Mensaje m1 = new Mensaje();
-        m1.setCreated_at(LocalDate.now());
+        m1.setCreated_at(LocalDateTime.now());
         Mensaje m2 = new Mensaje();
-        m2.setCreated_at(LocalDate.now());
+        m2.setCreated_at(LocalDateTime.now());
         Mensaje m3 = new Mensaje();
-        m3.setCreated_at(LocalDate.now());
+        m3.setCreated_at(LocalDateTime.now());
         Mensaje m4 = new Mensaje();
-        m4.setCreated_at(LocalDate.now());
+        m4.setCreated_at(LocalDateTime.now());
         Usuario user = new Usuario();
 
         given(usuarioServices.findByEmail("a@prueba.com")).willReturn(user);

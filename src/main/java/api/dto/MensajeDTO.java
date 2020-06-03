@@ -3,11 +3,12 @@ package api.dto;
 
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MensajeDTO {
 
     private int id;
-    private LocalDate created_at;
+    private LocalDateTime created_at;
     private String sender;
     private String receiver;
     private String data;
@@ -15,7 +16,7 @@ public class MensajeDTO {
     public MensajeDTO() {
     }
 
-    public MensajeDTO(String sender, String receiver, String data, LocalDate created_at) {
+    public MensajeDTO(String sender, String receiver, String data, LocalDateTime created_at) {
         this.sender  = sender;
         this.receiver = receiver;
         this.data = data;
@@ -26,11 +27,11 @@ public class MensajeDTO {
         return id;
     }
 
-    public LocalDate getCreated_at() {
+    public LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(LocalDate created_at) {
+    public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
 
