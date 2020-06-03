@@ -33,7 +33,7 @@ public class MensajeController {
         Usuario sender = usuarioServices.findByEmail(mensajeDTO.getSender());
         Usuario receiver = usuarioServices.findByEmail(mensajeDTO.getReceiver());
 
-        Mensaje mensaje = new Mensaje(sender, receiver, mensajeDTO.getData(), mensajeDTO.getCreated_at());
+        Mensaje mensaje = new Mensaje(sender, receiver, mensajeDTO.getText(), mensajeDTO.getCreated_at());
 
         try {
             mensajeServices.altaMensaje(mensaje);

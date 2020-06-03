@@ -40,7 +40,7 @@ public class AvatarController {
         //////////////////////////////////////////////////////////////////
         try {
             avatarServices.altaAvatar(avatar);
-        }
+    }
         catch(PersistenceException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
