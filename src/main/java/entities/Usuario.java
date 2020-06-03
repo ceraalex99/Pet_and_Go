@@ -184,7 +184,7 @@ public class Usuario implements Serializable {
         this.mensajesEnviados.remove(mensaje);
     }
 
-    public Set<Mensaje> getMensajesRecibido() {
+    public Set<Mensaje> getMensajesRecibidos() {
         return mensajesRecibidos;
     }
 
