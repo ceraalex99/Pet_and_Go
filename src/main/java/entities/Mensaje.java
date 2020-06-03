@@ -16,11 +16,11 @@ public class Mensaje implements Serializable{
     private LocalDate created_at;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender")
     private Usuario sender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver")
     private Usuario receiver;
 
