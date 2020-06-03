@@ -1,7 +1,6 @@
 package api.dto;
 
 
-import entities.Usuario;
 
 import java.time.LocalDate;
 
@@ -9,14 +8,14 @@ public class MensajeDTO {
 
     private int id;
     private LocalDate created_at;
-    private Usuario sender;
-    private Usuario receiver;
+    private String sender;
+    private String receiver;
     private String data;
 
     public MensajeDTO() {
     }
 
-    public MensajeDTO(Usuario sender, Usuario receiver, String data, LocalDate created_at) {
+    public MensajeDTO(String sender, String receiver, String data, LocalDate created_at) {
         this.sender  = sender;
         this.receiver = receiver;
         this.data = data;
@@ -35,19 +34,19 @@ public class MensajeDTO {
         this.created_at = created_at;
     }
 
-    public Usuario getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Usuario sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public Usuario getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(Usuario receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
