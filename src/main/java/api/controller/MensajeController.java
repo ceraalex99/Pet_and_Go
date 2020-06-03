@@ -30,7 +30,10 @@ public class MensajeController {
 
     @PostMapping(value="/mensajes")
     public ResponseEntity<Void> addMessage(@RequestBody MensajeDTO mensajeDTO){
-        Mensaje mensaje = new Mensaje(mensajeDTO.getSender(), mensajeDTO.getReceiver(), mensajeDTO.getData(), mensajeDTO.getCreated_at());
+        Usuario sender = usuarioServices.findByEmail(mensajeDTO.getSender());
+        Usuario receiver = usuarioServices.findByEmail(mensajeDTO.getReceiver());
+
+        Mensaje mensaje = new Mensaje(sender, receiver, mensajeDTO.getData(), mensajeDTO.getCreated_at());
 
         try {
             mensajeServices.altaMensaje(mensaje);
