@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -94,6 +95,10 @@ public class Usuario implements Serializable {
     }
 
     public Usuario() {
+        this.eventos = new HashSet<>();
+        this.mascotas = new HashSet<>();
+        this.mensajesEnviados = new HashSet<>();
+        this.mensajesRecibidos = new HashSet<>();
     }
 
     public Usuario(String nombre,String username,String password,String email) {

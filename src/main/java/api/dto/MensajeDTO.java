@@ -1,25 +1,32 @@
 package api.dto;
 
 
-import entities.Usuario;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class MensajeDTO {
 
     private int id;
-    private LocalDate created_at;
-    private Usuario sender;
-    private Usuario receiver;
-    private String data;
+    private LocalDateTime created_at;
+    private String sender;
+    private String receiver;
+    private String text;
 
     public MensajeDTO() {
     }
 
-    public MensajeDTO(Usuario sender, Usuario receiver, String data, LocalDate created_at) {
+    public MensajeDTO(String sender, String receiver, String text, LocalDateTime created_at) {
         this.sender  = sender;
         this.receiver = receiver;
-        this.data = data;
+        this.text = text;
+        this.created_at = created_at;
+    }
+
+    public MensajeDTO(int id, String sender, String receiver, String text, LocalDateTime created_at) {
+        this.id = id;
+        this.sender  = sender;
+        this.receiver = receiver;
+        this.text = text;
         this.created_at = created_at;
     }
 
@@ -27,36 +34,36 @@ public class MensajeDTO {
         return id;
     }
 
-    public LocalDate getCreated_at() {
+    public LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(LocalDate created_at) {
+    public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
 
-    public Usuario getSender() {
+    public String getSender() {
         return sender;
     }
 
-    public void setSender(Usuario sender) {
+    public void setSender(String sender) {
         this.sender = sender;
     }
 
-    public Usuario getReceiver() {
+    public String getReceiver() {
         return receiver;
     }
 
-    public void setReceiver(Usuario receiver) {
+    public void setReceiver(String receiver) {
         this.receiver = receiver;
     }
 
-    public String getData() {
-        return data;
+    public String getText() {
+        return text;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setText(String text) {
+        this.text = text;
     }
 
     @Override
@@ -66,7 +73,7 @@ public class MensajeDTO {
                 ", created_at='" + created_at + '\'' +
                 ", sender='" + sender + '\'' +
                 ", reciever='" + receiver + '\'' +
-                ", data='" + data + '\'' +
+                ", text='" + text + '\'' +
                 '}';
     }
 }

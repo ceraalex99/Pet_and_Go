@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ public class MensajeServicesImpl implements MensajeServices{
 
     @Override
     public List<Mensaje> findBySender(Usuario sender) {
-        List<Mensaje> mensaje = null;
+        List<Mensaje> mensaje = new ArrayList<>();
         Optional<List<Mensaje>> resultMensaje = mensajeDAO.findBySender(sender);
         if(resultMensaje.isPresent()) mensaje = resultMensaje.get();
         return mensaje;
@@ -33,7 +34,7 @@ public class MensajeServicesImpl implements MensajeServices{
 
     @Override
     public List<Mensaje> findByReceiver(Usuario receiver) {
-        List<Mensaje> mensaje = null;
+        List<Mensaje> mensaje = new ArrayList<>();
         Optional<List<Mensaje>> resultMensaje = mensajeDAO.findByReceiver(receiver);
         if(resultMensaje.isPresent()) mensaje = resultMensaje.get();
         return mensaje;

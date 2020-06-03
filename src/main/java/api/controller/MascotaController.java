@@ -139,12 +139,12 @@ public class MascotaController {
         }
 
         MascotaId id = new MascotaId(nombre,email);
-
-        if(mascotaServices.findById(id) == null){
+        Mascota mascota = mascotaServices.findById(id);
+        if(mascota == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Usuario user = usuarioServices.findByEmail(email);
-        user.removeMascota(mascotaServices.findById(id));
+        user.removeMascota(mascota);
         boolean deleted = mascotaServices.deleteMascotaById(id);
         if(deleted){
             return new ResponseEntity<>(HttpStatus.OK);
@@ -184,13 +184,9 @@ public class MascotaController {
     @GetMapping(value = "/{nombre}/image" )
     public ResponseEntity<byte[]> getImage(@PathVariable(name="email") String email,@PathVariable(name="nombre") String nombre,
                                    @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
         try {
-            if (!decodeJWT(token).equals(email)) {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
+            decodeJWT(token);
         }
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);

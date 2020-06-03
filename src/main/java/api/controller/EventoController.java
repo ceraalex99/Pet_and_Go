@@ -77,9 +77,6 @@ public class EventoController {
     public ResponseEntity<Void> deleteEvento(@PathVariable(name="email") String email, @PathVariable Integer id,
                                         @RequestHeader(name="Authorization",required = false) String token) {
 
-        if(email==null || email.isEmpty() || id == null ){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
         try{
             if(!decodeJWT(token).equals(email)){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -105,7 +102,7 @@ public class EventoController {
     }
     //UPDATE
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Evento> updatePerreParada(@PathVariable(name="email") String email,@RequestBody EventoDTO eventoDTO , @PathVariable(name="id") Integer id,
+    public ResponseEntity<Evento> updateEvento(@PathVariable(name="email") String email,@RequestBody EventoDTO eventoDTO , @PathVariable(name="id") Integer id,
                                             @RequestHeader(name="Authorization",required = false) String token) {
 
         if(email==null || email.isEmpty() || id == null ){

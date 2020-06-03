@@ -1,8 +1,10 @@
 package entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name= "mensajes"  )
@@ -13,14 +15,16 @@ public class Mensaje implements Serializable{
     private int id;
 
     @Column(name="created_at")
-    private LocalDate created_at;
+    private LocalDateTime created_at;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "sender")
     private Usuario sender;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "receiver")
     private Usuario receiver;
 
@@ -31,7 +35,7 @@ public class Mensaje implements Serializable{
     public Mensaje() {
     }
 
-    public Mensaje(Usuario sender, Usuario receiver, String text, LocalDate created_at) {
+    public Mensaje(Usuario sender, Usuario receiver, String text, LocalDateTime created_at) {
         this.sender  = sender;
         this.receiver = receiver;
         this.text = text;
@@ -42,11 +46,11 @@ public class Mensaje implements Serializable{
         return id;
     }
 
-    public LocalDate getCreated_at() {
+    public LocalDateTime getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(LocalDate created_at) {
+    public void setCreated_at(LocalDateTime created_at) {
         this.created_at = created_at;
     }
 
@@ -81,7 +85,7 @@ public class Mensaje implements Serializable{
                 ", created_at='" + created_at + '\'' +
                 ", sender='" + sender + '\'' +
                 ", reciever='" + receiver + '\'' +
-                ", data='" + text + '\'' +
+                ", text='" + text + '\'' +
                 '}';
     }
 }
