@@ -310,7 +310,7 @@ public class QuedadaController {
             long diffNovaHora = timeunit.HOURS.convert(diffNovaHoramilisec,TimeUnit.MILLISECONDS)-2;
 
             long diff = timeunit.HOURS.convert(diffInmilisec_FechaInicial,TimeUnit.MILLISECONDS)-2;
-            if(diff < 5 && diffNovaHora < 5 ){
+            if(diff < 5 || diffNovaHora < 5 ){
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             else{
