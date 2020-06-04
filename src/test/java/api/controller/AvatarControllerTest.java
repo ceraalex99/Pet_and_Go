@@ -90,8 +90,7 @@ public class AvatarControllerTest {
 
     @Test
     public void putAvatarDeOtroUsuario() throws Exception {
-        given(usuarioServices.findByEmail(Mockito.any(String.class))).willReturn(new Usuario());
 
-        mvc.perform(put("/api/avatares/pepe/avatar").content("hola").header("Authorization", "a")).andExpect(status().isForbidden());
+        mvc.perform(put("/api/avatares/pepe/avatar").content("hola").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA")).andExpect(status().isForbidden());
     }
 }

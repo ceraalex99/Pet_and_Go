@@ -1,10 +1,12 @@
 package api.controller;
 
+import api.dto.ConsejoDTO;
 import api.services.ConsejoServices;
-import entities.Avatar;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import entities.Consejo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -12,13 +14,13 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.persistence.PersistenceException;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -75,6 +77,26 @@ public class ConsejoControllerTest {
         given(consejoServices.findById(1)).willReturn(null);
 
         mvc.perform(delete("/api/consejos/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void postConsejo() throws Exception {
+        ConsejoDTO consejoDTO = new ConsejoDTO();
+        consejoDTO.setConsejo("a");
+
+        given(consejoServices.altaConsejo(Mockito.any(Consejo.class))).willReturn(true);
+
+        mvc.perform(post("/api/consejos").content(new ObjectMapper().writeValueAsString(consejoDTO)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+    }
+
+    @Test
+    public void postConsejoFallido() throws Exception {
+        ConsejoDTO consejoDTO = new ConsejoDTO();
+        consejoDTO.setConsejo("a");
+
+        given(consejoServices.altaConsejo(Mockito.any(Consejo.class))).willThrow(new PersistenceException());
+
+        mvc.perform(post("/api/consejos").content(new ObjectMapper().writeValueAsString(consejoDTO)).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 
 }
