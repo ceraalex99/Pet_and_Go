@@ -64,9 +64,9 @@ public class ActualizadorPuntos extends TimerTask {
                     actualizarPuntos(emailUser,puntos);
                 }
                 if (puntos > 0)
-                    actualizarPuntos(q.getAdmin(),(int) (puntos * 1.10));
-                q.setFinalizada(true);
+                    actualizarPuntos(q.getAdmin(),(int) (puntos * 0.10));
             }
+            q.setFinalizada(true);
         }
     }
 
@@ -104,7 +104,7 @@ public class ActualizadorPuntos extends TimerTask {
         evento.setTitulo(desc);
         evento.setUsuario(user.getEmail());
         evento.setFecha(today.getTime());
-        evento.setNotificaciones(true);
+        evento.setNotificaciones(false);
         evento.setFechaFin(nextDay.getTime());
         eventoServices.altaEvento(evento);
     }
