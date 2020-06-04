@@ -81,7 +81,7 @@ public class AvatarControllerTest {
         mvc.perform(put("/api/avatares/a@prueba.com/avatar").content("hola").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA")).andExpect(status().isOk());
     }
 
-    @Test
+    @Test 
     public void putAvatarUsuarioInexistente() throws Exception {
         given(usuarioServices.findByEmail(Mockito.any(String.class))).willReturn(null);
 
