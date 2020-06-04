@@ -31,10 +31,7 @@ public class MyFriendsId implements Serializable {
         if (!(other.getMeId().equals(getMeId())))
             return false;
 
-        if (!(other.getMyFriendId().equals(getMyFriendId())))
-            return false;
-
-        return true;
+        return other.getMyFriendId().equals(getMyFriendId());
     }
 
 

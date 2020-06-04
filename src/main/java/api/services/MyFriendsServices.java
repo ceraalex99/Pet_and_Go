@@ -5,7 +5,7 @@ import entities.MyFriendsId;
 
 public interface MyFriendsServices {
     void altaMyFriends(MyFriends myFriends);
-    boolean ExisteRelacion(MyFriendsId myFriendsId);
+    boolean existeRelacion(MyFriendsId myFriendsId);
     MyFriends getRelacion(MyFriendsId myFriendsId);
     void deleteMyFriends(MyFriends myFriends);
 }
