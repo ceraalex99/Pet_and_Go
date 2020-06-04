@@ -235,7 +235,7 @@ public class QuedadaController {
     //UPDATE QUEDADA
     @PutMapping(value = "/{id}")
     public ResponseEntity<Void> updatePerreParada(@RequestBody QuedadaDTO quedadaDTO , @PathVariable(name="id") Integer id,
-                                                @RequestHeader(name="Authorization",required = false) String token) {
+                                                  @RequestHeader(name="Authorization",required = false) String token) {
 
         try{
             if(!decodeJWT(token).equals(quedadaDTO.getAdmin())){
@@ -245,25 +245,36 @@ public class QuedadaController {
         catch (Exception e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
-        TimeUnit timeunit = TimeUnit.HOURS;
-        Date fechaactualmenos5h = new Date();
-        long diffInHours = quedadaDTO.getFechaQuedada().getTime() - fechaactualmenos5h.getTime();
-        if(timeunit.toHours(diffInHours) < 5 ){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        else{
-            Quedada quedada = quedadaServices.findById(id);
-            if (quedada == null){
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            quedada.setLugarInicio(quedadaDTO.getLugarInicio());
-            quedada.setLatitud(quedadaDTO.getLatitud());
-            quedada.setLongitud(quedadaDTO.getLongitud());
-            quedada.setIdImageGoogle(quedadaDTO.getIdImageGoogle());
-            quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
 
-            quedadaServices.updateQuedada(quedada);
-            return new ResponseEntity<>(HttpStatus.OK);
+        Quedada quedada = quedadaServices.findById(id);
+        if (quedada == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        /*if(quedada.getFechaQuedada().compareTo(quedadaDTO.getFechaQuedada()) >= 0){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }*/
+        else{
+            TimeUnit timeunit = TimeUnit.HOURS;
+            Date fechaactual = new Date();
+            long diffInmilisec_FechaInicial = quedada.getFechaQuedada().getTime() - fechaactual.getTime();
+
+            long diffNovaHoramilisec = quedadaDTO.getFechaQuedada().getTime() - fechaactual.getTime();
+            long diffNovaHora = timeunit.HOURS.convert(diffNovaHoramilisec,TimeUnit.MILLISECONDS)-2;
+
+            long diff = timeunit.HOURS.convert(diffInmilisec_FechaInicial,TimeUnit.MILLISECONDS)-2;
+            if(diff < 5 && diffNovaHora < 5 ){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            else{
+                quedada.setLugarInicio(quedadaDTO.getLugarInicio());
+                quedada.setLatitud(quedadaDTO.getLatitud());
+                quedada.setLongitud(quedadaDTO.getLongitud());
+                quedada.setIdImageGoogle(quedadaDTO.getIdImageGoogle());
+                quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
+
+                quedadaServices.updateQuedada(quedada);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
         }
     }
 
