@@ -28,18 +28,15 @@ public class EventoController {
     //READ ALL EVENTOS
     @GetMapping(value="")
     public ResponseEntity<Set<Evento>> getEventosUsuario(@PathVariable(name="email") String email){
-        if(email==null || email.isEmpty()){
+
+        Usuario usuario = usuarioServices.findByEmail(email);
+        if(usuario==null ) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        else{
-            Usuario usuario = usuarioServices.findByEmail(email);
-            if(usuario==null ) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-            else {
-                return new ResponseEntity<>(usuario.getEventos(), HttpStatus.OK);
-            }
+        else {
+            return new ResponseEntity<>(usuario.getEventos(), HttpStatus.OK);
         }
+
     }
     //CREATE
     @PostMapping(value="")
@@ -104,10 +101,7 @@ public class EventoController {
     @PutMapping(value = "/{id}")
     public ResponseEntity<Evento> updateEvento(@PathVariable(name="email") String email,@RequestBody EventoDTO eventoDTO , @PathVariable(name="id") Integer id,
                                             @RequestHeader(name="Authorization",required = false) String token) {
-
-        if(email==null || email.isEmpty() || id == null ){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        
         try{
             if(!decodeJWT(token).equals(email)){
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
