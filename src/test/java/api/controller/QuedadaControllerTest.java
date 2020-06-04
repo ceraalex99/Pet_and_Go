@@ -3,6 +3,7 @@ package api.controller;
 import api.dto.MascotaIdDTO;
 import api.dto.QuedadaDTO;
 import api.services.MascotaServices;
+import api.services.MyFriendsServices;
 import api.services.QuedadaServices;
 import api.services.UsuarioServices;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -44,6 +45,9 @@ public class QuedadaControllerTest {
 
     @MockBean
     private MascotaServices mascotaServices;
+
+    @MockBean
+    private MyFriendsServices myFriendsServices;
 
     @Test
     public void getQuedadasPart() throws Exception {
