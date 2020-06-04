@@ -73,6 +73,16 @@ public class ConsejoControllerTest {
     }
 
     @Test
+    public void deleteConsejoFallido() throws Exception {
+
+        given(consejoServices.findById(1)).willReturn(new Consejo());
+        given(consejoServices.deleteConsejoById(1)).willReturn(false);
+
+        mvc.perform(delete("/api/consejos/1").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isInternalServerError());
+
+    }
+
+    @Test
     public void deleteConsejoInexistente() throws Exception {
         given(consejoServices.findById(1)).willReturn(null);
 

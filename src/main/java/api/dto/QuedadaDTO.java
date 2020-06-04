@@ -17,7 +17,7 @@ public class QuedadaDTO {
 
     private String lugarInicio;
 
-    private String idIamgeGoogle;
+    private String idImageGoogle;
 
     private double latitud;
 
@@ -27,11 +27,11 @@ public class QuedadaDTO {
     public QuedadaDTO() {
     }
 
-    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, String idIamgeGoogle, double latitud, double longitud) {
+    public QuedadaDTO(String admin, Date fechaQuedada, String lugarInicio, String idImageGoogle, double latitud, double longitud) {
         this.admin = admin;
         this.fechaQuedada = fechaQuedada;
         this.lugarInicio = lugarInicio;
-        this.idIamgeGoogle = idIamgeGoogle;
+        this.idImageGoogle = idImageGoogle;
         this.latitud = latitud;
         this.longitud = longitud;
     }
@@ -60,12 +60,12 @@ public class QuedadaDTO {
         this.lugarInicio = lugarInicio;
     }
 
-    public String getIdIamgeGoogle() {
-        return idIamgeGoogle;
+    public String getIdImageGoogle() {
+        return idImageGoogle;
     }
 
-    public void setIdIamgeGoogle(String idIamgeGoogle) {
-        this.idIamgeGoogle = idIamgeGoogle;
+    public void setIdImageGoogle(String idImageGoogle) {
+        this.idImageGoogle = idImageGoogle;
     }
 
     public double getLatitud() {

@@ -102,33 +102,29 @@ public class QuedadaController {
                                                   @PathVariable(name="longitud") double lon,
                                                   @RequestHeader(name="Authorization",required = false) String token){
 
-        try{
-            if(decodeJWT(token).equals("")){
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }else{
-
-                Posicion p1 = new Posicion(lat,lon);
-                Posicion p2;
-                int distancia;
-
-                List<Quedada> quedadas = new ArrayList<>();
-                for (Quedada q: quedadaServices.findAllQuedada()){
-                    if (q.getFechaQuedada().compareTo(new Date()) >= 0){
-                        p2 = new Posicion(q);
-                        distancia = CalculadoraDistancia.getDistanciaMetros(p1,p2);
-                        if (distancia <= distanciaEnMetros) quedadas.add(q);
-                    }
-                }
-
-                quedadas.sort(Comparator.comparing(Quedada::getFechaQuedada));
-
-                return new ResponseEntity<>(quedadas, HttpStatus.OK);
-
-            }
+        try {
+            decodeJWT(token);
         }
-        catch (Exception e){
+        catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
+
+        Posicion p1 = new Posicion(lat,lon);
+        Posicion p2;
+        int distancia;
+
+        List<Quedada> quedadas = new ArrayList<>();
+        for (Quedada q: quedadaServices.findAllQuedada()){
+            if (q.getFechaQuedada().compareTo(new Date()) >= 0){
+                p2 = new Posicion(q);
+                distancia = CalculadoraDistancia.getDistanciaMetros(p1,p2);
+                if (distancia <= distanciaEnMetros) quedadas.add(q);
+            }
+        }
+
+        quedadas.sort(Comparator.comparing(Quedada::getFechaQuedada));
+
+        return new ResponseEntity<>(quedadas, HttpStatus.OK);
 
     }
 
@@ -198,7 +194,7 @@ public class QuedadaController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         mascota.removeQuedadaPart(quedada);
-        mascotaServices.altaMascota(mascota);
+        mascotaServices.updateMascota(mascota);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
@@ -225,14 +221,13 @@ public class QuedadaController {
         quedada.setLugarInicio(quedadaDTO.getLugarInicio());
         quedada.setLatitud(quedadaDTO.getLatitud());
         quedada.setLongitud(quedadaDTO.getLongitud());
-        quedada.setIdImageGoogle(quedadaDTO.getIdIamgeGoogle());
+        quedada.setIdImageGoogle(quedadaDTO.getIdImageGoogle());
 
         exito = quedadaServices.altaQuedada(quedada);
 
 
         if (exito != -1) return new ResponseEntity<>(quedada.getId(),HttpStatus.CREATED);
         else return new  ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-
 
     }
 
@@ -263,7 +258,7 @@ public class QuedadaController {
             quedada.setLugarInicio(quedadaDTO.getLugarInicio());
             quedada.setLatitud(quedadaDTO.getLatitud());
             quedada.setLongitud(quedadaDTO.getLongitud());
-            quedada.setIdImageGoogle(quedadaDTO.getIdIamgeGoogle());
+            quedada.setIdImageGoogle(quedadaDTO.getIdImageGoogle());
 
             quedadaServices.updateQuedada(quedada);
             return new ResponseEntity<>(HttpStatus.OK);

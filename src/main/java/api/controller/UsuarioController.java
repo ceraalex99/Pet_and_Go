@@ -152,9 +152,7 @@ public class UsuarioController {
     //DELETE USER
     @DeleteMapping(value = "/{email}")
     public ResponseEntity<Void> deleteUsuario(@PathVariable(name="email") String email, @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+
         try {
             if (!decodeJWT(token).equals(email)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -181,9 +179,7 @@ public class UsuarioController {
     @PutMapping(value = "/{email}/image" )
     public ResponseEntity<Void> addImage(@PathVariable(name="email") String email, @RequestBody byte[] image,
                                    @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
         try {
             if (!decodeJWT(token).equals(email)) {
                 return new ResponseEntity<>(HttpStatus.FORBIDDEN);

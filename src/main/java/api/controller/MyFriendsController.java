@@ -32,11 +32,8 @@ public class MyFriendsController {
     @PostMapping(value = "/{email}/Addamic" )
     public ResponseEntity<Void> addamic(@PathVariable(name="email") String email, @RequestBody String friend,
                                         @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
-        if(friend == null || friend.isEmpty()) {
+        if(friend == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 
@@ -81,9 +78,6 @@ public class MyFriendsController {
     @DeleteMapping(value = "/{email}/Removeamic" )
     public ResponseEntity<Void> removeamic(@PathVariable(name="email") String email, @RequestBody String friend,
                                         @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
         if(friend == null || friend.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -127,9 +121,6 @@ public class MyFriendsController {
     @DeleteMapping(value = "/{email}/Removebloqueado" )
     public ResponseEntity<Void> removebloqueado(@PathVariable(name="email") String email, @RequestBody String friend,
                                            @RequestHeader(name="Authorization", required = false) String token){
-        if(email == null || email.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
 
         if(friend == null || friend.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -209,15 +200,20 @@ public class MyFriendsController {
 
                 myfriendsServices.altaMyFriends(relacion);
                 myfriendsServices.altaMyFriends(relacion2);
-                return new ResponseEntity<>(HttpStatus.OK);
             }
             else {
                 amistat.setEstado(Relacion.BLOQUEADO);
                 amistatInversa.setEstado(Relacion.BLOQUEA);
                 myfriendsServices.altaMyFriends(amistat);
                 myfriendsServices.altaMyFriends(amistatInversa);
-                return new ResponseEntity<>(HttpStatus.OK);
             }
+            List<MyFriends> bloqueos = userAmic.getMyFriends();
+            bloqueos.removeIf(myFriends -> myFriends.getEstado()!=Relacion.BLOQUEADO);
+            if(bloqueos.size() >= 3){
+                usuarioServices.deleteUsuarioByEmail(friend);
+            }
+
+            return new ResponseEntity<>(HttpStatus.OK);
         }
     }
 
