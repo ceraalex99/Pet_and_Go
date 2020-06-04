@@ -205,7 +205,7 @@ public class QuedadaController {
 
     //CREATE QUEDADA
     @PostMapping(value= "")
-    public ResponseEntity<Void> addQuedada(@RequestBody QuedadaDTO quedadaDTO,
+    public ResponseEntity<Integer> addQuedada(@RequestBody QuedadaDTO quedadaDTO,
                                      @RequestHeader(name="Authorization",required = false) String token) {
 
         try{
@@ -230,7 +230,7 @@ public class QuedadaController {
         exito = quedadaServices.altaQuedada(quedada);
 
 
-        if (exito != -1) return new ResponseEntity<>(HttpStatus.CREATED);
+        if (exito != -1) return new ResponseEntity<>(quedada.getId(),HttpStatus.CREATED);
         else return new  ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 
