@@ -222,18 +222,9 @@ public class MyFriendsController {
     }
 
     @GetMapping(value = "/{email}/Bloqueados" )
-    public ResponseEntity<List<String>> bloqueados(@PathVariable(name="email") String email,
-                                                    @RequestHeader(name="Authorization", required = false) String token){
+    public ResponseEntity<List<String>> bloqueados(@PathVariable(name="email") String email){
         if(email == null || email.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-        try {
-            if (!decodeJWT(token).equals(email)) {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
 
         Usuario user = usuarioServices.findByEmail(email);
