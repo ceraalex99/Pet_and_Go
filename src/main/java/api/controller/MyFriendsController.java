@@ -78,7 +78,7 @@ public class MyFriendsController {
     }
 
 
-    @DeleteMapping(value = "/{email}/Removeamic" )
+    @PostMapping(value = "/{email}/Removeamic" )
     public ResponseEntity<Void> removeamic(@PathVariable(name="email") String email, @RequestBody String friend,
                                         @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
@@ -124,7 +124,7 @@ public class MyFriendsController {
         }
     }
 
-    @DeleteMapping(value = "/{email}/Removebloqueado" )
+    @PostMapping(value = "/{email}/Removebloqueado" )
     public ResponseEntity<Void> removebloqueado(@PathVariable(name="email") String email, @RequestBody String friend,
                                            @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
