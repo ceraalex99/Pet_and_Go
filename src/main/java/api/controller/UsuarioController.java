@@ -102,13 +102,15 @@ public class UsuarioController {
     }
     //READ USER 
     @GetMapping(value= "/{email}")
-    public ResponseEntity<Usuario> getUsuarioByEmail(@PathVariable(name="email") String email){
+    public ResponseEntity<UsuarioAmigoDTO> getUsuarioByEmail(@PathVariable(name="email") String email){
         Usuario usuario= usuarioServices.findByEmail(email);
         if(usuario==null ) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         else {
-            return new ResponseEntity<>(usuario, HttpStatus.OK);
+           UsuarioAmigoDTO usuarioAmigo = new UsuarioAmigoDTO(usuario);
+
+            return new ResponseEntity<>(usuarioAmigo, HttpStatus.OK);
         }
     }
     //CREATE USER
@@ -263,7 +265,4 @@ public class UsuarioController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
     }
-
-
-
 }

@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -38,6 +40,19 @@ public class Usuario implements Serializable {
 
     @Column(name="puntos", columnDefinition = "numeric default 0")
     private int puntos;
+
+    public List<MyFriends> getMyFriends() {
+        return myFriends;
+    }
+
+    public void setMyFriends(List<MyFriends> myFriends) {
+        this.myFriends = myFriends;
+    }
+
+    @OneToMany(mappedBy="me", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<MyFriends> myFriends = new ArrayList<>();
+
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "emailusuario", referencedColumnName = "email",nullable = false, insertable=false )
@@ -196,6 +211,7 @@ public class Usuario implements Serializable {
         this.mensajesRecibidos.remove(mensaje);
     }
 
+
     public String getFirebaseToken() {
         return firebaseToken;
     }
@@ -219,6 +235,18 @@ public class Usuario implements Serializable {
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
+
+    public void addFriend(Usuario friend) {
+        MyFriends amistad = new MyFriends(this, friend);
+        this.myFriends.add(amistad);
+    }
+
+    public void deleteFriend(Usuario friend) {
+        MyFriends amistad = new MyFriends(this, friend);
+        this.myFriends.add(amistad);
+    }
+
+
 
     @Override
     public String toString() {
