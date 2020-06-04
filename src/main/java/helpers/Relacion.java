@@ -4,5 +4,6 @@ public enum Relacion {
     SOLICITADA,
     PENDIENTEDEACEPTAR,
     ACEPTADA,
-    BLOQUEADO
+    BLOQUEADO,
+    BLOQUEA
 }

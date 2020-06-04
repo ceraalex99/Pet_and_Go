@@ -45,9 +45,9 @@ public class MensajeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @GetMapping(value="/usuarios/{email}/mensajes")
+    @GetMapping(value="/usuarios/{email}/mensajes/{amigo}")
     public ResponseEntity<List<MensajeDTO>> getMensajes(@PathVariable(name = "email") String email,
-                                      @RequestHeader(name="Authorization",required = false) String token){
+                                      @RequestHeader(name="Authorization",required = false) String token, @PathVariable(name="amigo") String amigo){
 
         try{
             if(!decodeJWT(token).equals(email)){
@@ -67,7 +67,7 @@ public class MensajeController {
         for (Mensaje mensaje : mensajes) {
             mensajeDTOList.add(new MensajeDTO(mensaje.getId(), mensaje.getSender().getEmail(), mensaje.getReceiver().getEmail(), mensaje.getText(), mensaje.getCreated_at()));
         }
-
+        mensajeDTOList.removeIf(mensajeDTO -> !mensajeDTO.getSender().equals(amigo) && !mensajeDTO.getReceiver().equals(amigo));
         mensajeDTOList.sort(Comparator.comparing(MensajeDTO::getCreated_at));
 
         return new ResponseEntity<>(mensajeDTOList, HttpStatus.OK);

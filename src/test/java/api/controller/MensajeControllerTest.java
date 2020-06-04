@@ -46,17 +46,23 @@ public class MensajeControllerTest {
 
     @Test
     public void getMensajesUsuario() throws Exception {
-        Mensaje m1 = new Mensaje(new Usuario(), new Usuario(), "a", LocalDateTime.now());
-        Mensaje m2 = new Mensaje(new Usuario(), new Usuario(), "a", LocalDateTime.now());
-        Mensaje m3 = new Mensaje(new Usuario(), new Usuario(), "a", LocalDateTime.now());
-        Mensaje m4 = new Mensaje(new Usuario(), new Usuario(), "a", LocalDateTime.now());
+        Usuario pepe = new Usuario();
+        Usuario yo = new Usuario();
+        Usuario pedro = new Usuario();
+        pedro.setEmail("pedro@a.com");
+        yo.setEmail("a@prueba.com");
+        pepe.setEmail("pepe");
+        Mensaje m1 = new Mensaje(yo, pepe, "a", LocalDateTime.now());
+        Mensaje m2 = new Mensaje(yo, pedro, "a", LocalDateTime.now());
+        Mensaje m3 = new Mensaje(pepe, yo, "a", LocalDateTime.now());
+        Mensaje m4 = new Mensaje(pedro, yo, "a", LocalDateTime.now());
         Usuario user = new Usuario();
 
         given(usuarioServices.findByEmail("a@prueba.com")).willReturn(user);
         given(mensajeServices.findBySender(user)).willReturn(new ArrayList<>(Arrays.asList(m1, m2))); 
         given(mensajeServices.findByReceiver(user)).willReturn(Arrays.asList(m3, m4));
 
-        mvc.perform(get("/api/usuarios/a@prueba.com/mensajes").contentType(MediaType.APPLICATION_JSON).header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(4)));
+        mvc.perform(get("/api/usuarios/a@prueba.com/mensajes/pepe").contentType(MediaType.APPLICATION_JSON).header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(2)));
 
     }
 }
