@@ -3,16 +3,16 @@ package api.controller;
 
 import api.dto.MascotaIdDTO;
 import api.dto.QuedadaDTO;
+import api.dto.UsuarioParticipanteDTO;
 import api.services.MascotaServices;
+import api.services.MyFriendsServices;
 import api.services.QuedadaServices;
 import api.services.UsuarioServices;
-import entities.Mascota;
-import entities.MascotaId;
-import entities.Quedada;
+import entities.*;
 
-import entities.Usuario;
 import helpers.CalculadoraDistancia;
 import helpers.Posicion;
+import helpers.Relacion;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static io.github.ceraalex99.petandgo.GestorUsuarios.decodeJWT;
 
@@ -37,6 +38,9 @@ public class QuedadaController {
 
     @Autowired
     private MascotaServices mascotaServices;
+
+    @Autowired
+    private MyFriendsServices myFriendsServices;
 
     // - READ QUEDADAS
     @GetMapping(value= "")
@@ -156,6 +160,50 @@ public class QuedadaController {
         mascotaServices.altaMascota(mascota);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    //READ PARTICIPANTES
+    @GetMapping(value="/{id}/participantes/relacion")
+    public ResponseEntity<List<UsuarioParticipanteDTO>> getParticipantesQuedada(@PathVariable(name="id") Integer id, @RequestHeader(name = "Authorization", required = false) String token){
+
+        String email = "";
+
+        try {
+            email = decodeJWT(token);
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+
+        Relacion tipoRelacion;
+        Quedada quedada = quedadaServices.findById(id);
+        if(quedada==null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Set<Mascota> mascotas = quedada.getParticipantes();
+        List<UsuarioParticipanteDTO> participantes = new ArrayList<>();
+        MyFriends relacion;
+        MyFriendsId idRelacion;
+        Usuario user;
+        
+        for (String emailParticipante: mascotas.stream().map(m -> m.getId().getAmo()).distinct().collect(Collectors.toList())){
+            user = usuarioServices.findByEmail(emailParticipante);
+            idRelacion = new MyFriendsId(email,user.getEmail());
+            relacion = myFriendsServices.getRelacion(idRelacion);
+            if(relacion == null)
+                tipoRelacion = null;
+            else tipoRelacion = relacion.getEstado();
+            if(user != null) participantes.add(new UsuarioParticipanteDTO(user,tipoRelacion));
+        }
+
+        if(participantes.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        else{
+            participantes.sort(Comparator.comparing(UsuarioParticipanteDTO::getEmail));
+            return new ResponseEntity<>(participantes,HttpStatus.OK);
+        }
     }
 
     //READ PARTICIPANTES
