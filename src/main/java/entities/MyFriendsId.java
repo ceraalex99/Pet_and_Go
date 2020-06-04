@@ -20,16 +20,8 @@ public class MyFriendsId implements Serializable {
     @Column(name = "MY_FRIEND_ID", nullable = false)
     private String myFriendId;
 
-    private String getMeId() {
-        return meId;
-    }
-
     private void setMeId(String meId) {
         this.meId = meId;
-    }
-
-    private String getMyFriendId() {
-        return myFriendId;
     }
 
     private void setMyFriendId(String myFriendId) {

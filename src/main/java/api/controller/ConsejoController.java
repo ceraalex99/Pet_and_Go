@@ -50,9 +50,7 @@ public class ConsejoController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteConsejo(@PathVariable Integer id) {
 
-        if(id == null ){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+
         if(consejoServices.findById(id) == null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -141,7 +141,7 @@ public class MascotaControllerTest {
     }
 
     @Test
-    public void updateMascotaInconsistente() throws Exception {
+    public void updateMascotaUsuarioInconsistente() throws Exception {
         Mascota m = new Mascota();
         MascotaId mId = new MascotaId("Tobby","pepe");
         m.setId(mId);
@@ -150,6 +150,18 @@ public class MascotaControllerTest {
         given(mascotaServices.findById(mId)).willReturn(m);
 
         mvc.perform(put("/api/usuarios/a@prueba.com/mascotas/Tobby").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void updateMascotaNombreInconsistente() throws Exception {
+        Mascota m = new Mascota();
+        MascotaId mId = new MascotaId("Tobby","pepe");
+        m.setId(mId);
+
+        String json = new ObjectMapper().writeValueAsString(m);
+        given(mascotaServices.findById(mId)).willReturn(m);
+
+        mvc.perform(put("/api/usuarios/a@prueba.com/mascotas/Matias").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -162,6 +174,18 @@ public class MascotaControllerTest {
         given(mascotaServices.findById(mId)).willReturn(m);
 
         mvc.perform(put("/api/usuarios/e/mascotas/Tobby").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void updateMascotaSinAuth() throws Exception {
+        Mascota m = new Mascota();
+        MascotaId mId = new MascotaId("Tobby","e");
+        m.setId(mId);
+
+        String json = new ObjectMapper().writeValueAsString(m);
+        given(mascotaServices.findById(mId)).willReturn(m);
+
+        mvc.perform(put("/api/usuarios/e/mascotas/Tobby").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isForbidden());
     }
 
     @Test
@@ -186,6 +210,19 @@ public class MascotaControllerTest {
 
         mvc.perform(delete("/api/usuarios/a@prueba.com/mascotas/Tobby")
                 .header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+    }
+
+    @Test
+    public void deleteMascotaInexistente() throws Exception {
+        Usuario u = new Usuario();
+        u.addMascota(new Mascota());
+        given(mascotaServices.findById(new MascotaId("Tobby","a@prueba.com"))).willReturn(null);
+        given(usuarioServices.findByEmail("a@prueba.com")).willReturn(u);
+        given(mascotaServices.deleteMascotaById(new MascotaId("Tobby","a@prueba.com"))).willReturn(true);
+
+        mvc.perform(delete("/api/usuarios/a@prueba.com/mascotas/Tobby")
+                .header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isNotFound());
 
     }
 
@@ -305,5 +342,18 @@ public class MascotaControllerTest {
 
 
         mvc.perform(get("/api/usuarios/pepe/mascotas/Tobby/image")).andExpect(status().isForbidden());
+    }
+
+    @Test
+    public void getImageMascotaInexistente() throws Exception {
+        Mascota m = new Mascota();
+        MascotaId mId = new MascotaId("Tobby", "pepe");
+        m.setId(mId);
+        byte[] bArray = "Hola".getBytes();
+        m.setPetimage(bArray);
+        given(mascotaServices.findById(mId)).willReturn(null);
+
+
+        mvc.perform(get("/api/usuarios/pepe/mascotas/Tobby/image").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA")).andExpect(status().isNotFound());
     }
 }
