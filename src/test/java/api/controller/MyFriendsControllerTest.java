@@ -89,14 +89,14 @@ public class MyFriendsControllerTest {
         given(usuarioServices.findByEmail(Mockito.any(String.class))).willReturn(new Usuario());
         given(myfriendsServices.existeRelacion(Mockito.any(MyFriendsId.class))).willReturn(true);
 
-        mvc.perform(delete("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isOk());
+        mvc.perform(post("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isOk());
     }
 
     @Test
     public void borrarAmigoNoAmigo() throws Exception {
         given(usuarioServices.findByEmail(Mockito.any(String.class))).willReturn(new Usuario());
 
-        mvc.perform(delete("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isBadRequest());
+        mvc.perform(post("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isBadRequest());
     }
 
     @Test
@@ -105,7 +105,7 @@ public class MyFriendsControllerTest {
         given(usuarioServices.findByEmail("pepe")).willReturn(null);
         given(myfriendsServices.existeRelacion(Mockito.any(MyFriendsId.class))).willReturn(true);
 
-        mvc.perform(delete("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isNotFound());
+        mvc.perform(post("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -114,7 +114,7 @@ public class MyFriendsControllerTest {
         given(usuarioServices.findByEmail("pepe")).willReturn(new Usuario());
         given(myfriendsServices.existeRelacion(Mockito.any(MyFriendsId.class))).willReturn(true);
 
-        mvc.perform(delete("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isNotFound());
+        mvc.perform(post("/api/amigos/a@prueba.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isNotFound());
     }
 
     @Test
@@ -122,7 +122,7 @@ public class MyFriendsControllerTest {
         given(usuarioServices.findByEmail(Mockito.any(String.class))).willReturn(new Usuario());
         given(myfriendsServices.existeRelacion(Mockito.any(MyFriendsId.class))).willReturn(true);
 
-        mvc.perform(delete("/api/amigos/a@a.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isForbidden());
+        mvc.perform(post("/api/amigos/a@a.com/Removeamic").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").content("pepe")).andExpect(status().isForbidden());
     }
 
     @Test
@@ -130,6 +130,6 @@ public class MyFriendsControllerTest {
         given(usuarioServices.findByEmail(Mockito.any(String.class))).willReturn(new Usuario());
         given(myfriendsServices.existeRelacion(Mockito.any(MyFriendsId.class))).willReturn(true);
 
-        mvc.perform(delete("/api/amigos/a@prueba.com/Removeamic").content("pepe")).andExpect(status().isForbidden());
+        mvc.perform(post("/api/amigos/a@prueba.com/Removeamic").content("pepe")).andExpect(status().isForbidden());
     }
 }
