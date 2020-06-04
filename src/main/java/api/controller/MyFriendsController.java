@@ -79,7 +79,7 @@ public class MyFriendsController {
     }
 
 
-    @PostMapping(value = "/{email}/Removeamic" )
+    @DeleteMapping(value = "/{email}/Removeamic" )
     public ResponseEntity<Void> removeamic(@PathVariable(name="email") String email, @RequestBody String friend,
                                         @RequestHeader(name="Authorization", required = false) String token){
         if(email == null || email.isEmpty()) {
@@ -117,6 +117,55 @@ public class MyFriendsController {
             if(myfriendsServices.ExisteRelacion(amistat.getId())) {
                 myfriendsServices.deleteMyFriends(amistat);
                 myfriendsServices.deleteMyFriends(amistatInversa);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            else{
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        }
+    }
+
+    @DeleteMapping(value = "/{email}/Removebloqueado" )
+    public ResponseEntity<Void> removebloqueado(@PathVariable(name="email") String email, @RequestBody String friend,
+                                           @RequestHeader(name="Authorization", required = false) String token){
+        if(email == null || email.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(friend == null || friend.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if(friend.equals(email)) return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        try {
+            if (!decodeJWT(token).equals(email)) {
+                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+            }
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+        Usuario user = usuarioServices.findByEmail(email);
+        Usuario userAmic = usuarioServices.findByEmail(friend);
+        if (user == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        else if (userAmic == null){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        else {
+            MyFriends amistat = new MyFriends(user, userAmic);
+            MyFriends amistatInversa = new MyFriends(userAmic, user);
+
+            MyFriends relacion = myfriendsServices.getRelacion(amistat.getId());
+            MyFriends relacion2 = myfriendsServices.getRelacion(amistatInversa.getId());
+
+            if(relacion.getEstado()==Relacion.BLOQUEADO) {
+                myfriendsServices.deleteMyFriends(relacion);
+                myfriendsServices.deleteMyFriends(relacion2);
                 return new ResponseEntity<>(HttpStatus.OK);
             }
             else{
@@ -244,14 +293,8 @@ public class MyFriendsController {
             MyFriends relacion = myfriendsServices.getRelacion(amistat.getId());
             MyFriends relacion2 = myfriendsServices.getRelacion(amistatInversa.getId());
             if(relacion != null && relacion2 != null) {
-                if(relacion.getEstado() == Relacion.BLOQUEADO || relacion2.getEstado() == Relacion.BLOQUEADO){
-                    relacion.setEstado(Relacion.BLOQUEADO);
-                    relacion2.setEstado(Relacion.BLOQUEADO);
-                }
-                else {
-                    relacion.setEstado(Relacion.BLOQUEADO);
-                    relacion2.setEstado(Relacion.BLOQUEA);
-                }
+                relacion.setEstado(Relacion.BLOQUEADO);
+                relacion2.setEstado(Relacion.BLOQUEA);
 
                 myfriendsServices.altaMyFriends(relacion);
                 myfriendsServices.altaMyFriends(relacion2);
