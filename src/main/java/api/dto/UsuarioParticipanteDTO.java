@@ -18,6 +18,8 @@ public class UsuarioParticipanteDTO {
 
     private Relacion estado;
 
+    private String urlAvatar;
+
     public UsuarioParticipanteDTO() {
     }
 
@@ -27,6 +29,7 @@ public class UsuarioParticipanteDTO {
         this.email = user.getEmail();
         this.image = user.getImage();
         this.estado = estado;
+        this.urlAvatar = user.getAvatar();
 
     }
 
@@ -69,4 +72,13 @@ public class UsuarioParticipanteDTO {
     public void setImage(byte[] image) {
         this.image = image;
     }
+
+    public String getUrlAvatar() {
+        return urlAvatar;
+    }
+
+    public void setUrlAvatar(String urlAvatar) {
+        this.urlAvatar = urlAvatar;
+    }
+
 }
