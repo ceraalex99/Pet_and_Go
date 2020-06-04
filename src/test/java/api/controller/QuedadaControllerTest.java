@@ -271,7 +271,9 @@ public class QuedadaControllerTest {
     public void updateQuedada() throws Exception {
         QuedadaDTO quedadaDTO = new QuedadaDTO("a@prueba.com", new Date(Long.MAX_VALUE), "a", "a", 2.0, 1.0);
 
-        given(quedadaServices.findById(1)).willReturn(new Quedada());
+        Quedada quedada = new Quedada();
+        quedada.setFechaQuedada(new Date(Long.MAX_VALUE));
+        given(quedadaServices.findById(1)).willReturn(quedada);
 
         mvc.perform(put("/api/quedadas/1").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(quedadaDTO))).andExpect(status().isOk());
     }
@@ -307,7 +309,9 @@ public class QuedadaControllerTest {
     public void updateQuedadaReciente() throws Exception {
         QuedadaDTO quedadaDTO = new QuedadaDTO("a@prueba.com", new Date(), "a", "a", 2.0, 1.0);
 
-        given(quedadaServices.findById(1)).willReturn(new Quedada());
+        Quedada quedada = new Quedada();
+        quedada.setFechaQuedada(new Date());
+        given(quedadaServices.findById(1)).willReturn(quedada);
 
         mvc.perform(put("/api/quedadas/1").header("Authorization", "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRvcml6YWRvIGEgYUBwcnVlYmEuY29tIn0.-LUSfD27LzpSCy8RRBV5FBrtrhObgERJlAkO_8mk8E0JHVlabEjveloL3Al5g82n_7fHX1ciVazTj1YV9xrkJA").contentType(MediaType.APPLICATION_JSON).content(new ObjectMapper().writeValueAsString(quedadaDTO))).andExpect(status().isBadRequest());
     }
