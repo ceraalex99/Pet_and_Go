@@ -235,18 +235,7 @@ public class Usuario implements Serializable {
     public void setPuntos(int puntos) {
         this.puntos = puntos;
     }
-
-    public void addFriend(Usuario friend) {
-        MyFriends amistad = new MyFriends(this, friend);
-        this.myFriends.add(amistad);
-    }
-
-    public void deleteFriend(Usuario friend) {
-        MyFriends amistad = new MyFriends(this, friend);
-        this.myFriends.add(amistad);
-    }
-
-
+    
 
     @Override
     public String toString() {

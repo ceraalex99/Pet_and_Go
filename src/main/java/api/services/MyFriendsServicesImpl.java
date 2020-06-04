@@ -21,7 +21,7 @@ public class MyFriendsServicesImpl implements MyFriendsServices {
     }
 
     @Override
-    public boolean ExisteRelacion(MyFriendsId myFriendsId) {
+    public boolean existeRelacion(MyFriendsId myFriendsId) {
         return myFriendsDAO.findById(myFriendsId).isPresent();
     }
 

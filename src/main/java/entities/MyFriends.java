@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name= "myfriends")
-public class MyFriends {
+public class MyFriends implements Serializable {
 
     public MyFriendsId getId() {
         return id;
