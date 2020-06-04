@@ -229,6 +229,7 @@ public class QuedadaController {
         if (exito != -1) return new ResponseEntity<>(quedada.getId(),HttpStatus.CREATED);
         else return new  ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
+
     }
 
     //UPDATE QUEDADA
@@ -259,6 +260,7 @@ public class QuedadaController {
             quedada.setLatitud(quedadaDTO.getLatitud());
             quedada.setLongitud(quedadaDTO.getLongitud());
             quedada.setIdImageGoogle(quedadaDTO.getIdImageGoogle());
+            quedada.setFechaQuedada(quedadaDTO.getFechaQuedada());
 
             quedadaServices.updateQuedada(quedada);
             return new ResponseEntity<>(HttpStatus.OK);
