@@ -160,7 +160,7 @@ public class QuedadaController {
 
     //READ PARTICIPANTES
     @GetMapping(value="/{id}/participantes/relacion")
-    public ResponseEntity<List<UsuarioParticipanteDTO>> getParticipantesQuedada(@PathVariable(name="id") Integer id, @RequestHeader(name = "Authorization", required = false) String token){
+    public ResponseEntity<List<UsuarioParticipanteDTO>> getParticipantesQuedadaRelacion(@PathVariable(name="id") Integer id, @RequestHeader(name = "Authorization", required = false) String token){
 
         String email = "";
 
