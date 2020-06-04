@@ -32,4 +32,9 @@ public class MyFriendsServicesImpl implements MyFriendsServices {
         if (opmyfriend.isPresent()) myFriends = opmyfriend.get();
         return  myFriends;
     }
+
+    @Override
+    public void deleteMyFriends(MyFriends myFriends) {
+        myFriendsDAO.delete(myFriends);
+    }
 }
