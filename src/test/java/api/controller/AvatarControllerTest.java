@@ -37,7 +37,7 @@ public class AvatarControllerTest {
     private UsuarioServices usuarioServices;
 
 
-    @Test 
+    @Test
     public void getAvatares() throws Exception {
         Avatar a1 = new Avatar("a1", 1);
         Avatar a2 = new Avatar("a2", 2);
@@ -54,7 +54,7 @@ public class AvatarControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(a1);
 
-        mvc.perform(post("/api/avatares").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
+        mvc.perform(post("/api/avatares").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
     }
 
     @Test
