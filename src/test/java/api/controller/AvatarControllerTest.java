@@ -54,7 +54,7 @@ public class AvatarControllerTest {
 
         String json = new ObjectMapper().writeValueAsString(a1);
 
-        mvc.perform(post("/api/avatares").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+        mvc.perform(post("/api/avatares").content(json).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated());
     }
 
     @Test
