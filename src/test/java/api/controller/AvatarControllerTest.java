@@ -37,7 +37,7 @@ public class AvatarControllerTest {
     private UsuarioServices usuarioServices;
 
 
-    @Test
+    @Test 
     public void getAvatares() throws Exception {
         Avatar a1 = new Avatar("a1", 1);
         Avatar a2 = new Avatar("a2", 2);
