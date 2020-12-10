@@ -123,7 +123,7 @@
                     <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
-                            <mainClass>api.controller.MainController</mainClass>
+                            <mainClass>application.controller.MainController</mainClass>
                         </manifest>S
                     </archive>
                 </configuration>

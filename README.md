@@ -16,7 +16,7 @@
 
 ##### Login ✔
 
-- `POST /api/usuarios/login`
+- `POST /application/usuarios/login`
 
 **Request body:**
 ```json
@@ -44,7 +44,7 @@ HTTP 400
 
 ##### Create ✔
 
-- `POST /api/usuarios `
+- `POST /application/usuarios `
 
 **Request body:**
 ```json
@@ -76,7 +76,7 @@ HTTP 400
 
 ##### Read ✔
 
-- `GET /api/usuarios/<email>`
+- `GET /application/usuarios/<email>`
 
 **Response body and status:**
 
@@ -96,7 +96,7 @@ HTTP 404
 
 ##### Update Password ✔ 
 
-- `PUT /api/usuarios/<email>/forgot`
+- `PUT /application/usuarios/<email>/forgot`
 
 **Response body and status:**
 
@@ -123,7 +123,7 @@ HTTP 403
 
 ##### Update Campos ✔ 
 
-- `PUT /api/usuarios/<email>`
+- `PUT /application/usuarios/<email>`
 
 **Response body and status:**
 
@@ -146,7 +146,7 @@ HTTP 403
 
 ##### Delete ✔
 
-- `DELETE /api/usuarios/<email>`
+- `DELETE /application/usuarios/<email>`
 
 **Response body and status:**
 
@@ -171,7 +171,7 @@ HTTP 403
 
 ##### Create ✔
 
-- `POST /api/usuarios/<email>/mascotas`
+- `POST /application/usuarios/<email>/mascotas`
 
 **Request body:**
 ```json
@@ -193,7 +193,7 @@ HTTP 403
 
 ##### Read ✔
 
-- `GET /api/usuarios/<email>/mascotas/<nombre>`
+- `GET /application/usuarios/<email>/mascotas/<nombre>`
 
 **Response body:**
 Successful:
@@ -213,7 +213,7 @@ HTTP 404
 
 ##### Read (all) ✔
 
-- `GET /api/usuarios/<email>/mascotas`
+- `GET /application/usuarios/<email>/mascotas`
 
 **Response body:**
 Successful:
@@ -238,7 +238,7 @@ HTTP 404
 
 ##### Update ✔
 
-- `PUT /api/usuarios/<email>/mascotas/<nombre>`
+- `PUT /application/usuarios/<email>/mascotas/<nombre>`
 
 **Request body:**
 ```json
@@ -269,7 +269,7 @@ HTTP 403
 
 ##### Delete ✔
 
-- `DELETE /api/usuarios/<email>/mascotas/<nombre>`
+- `DELETE /application/usuarios/<email>/mascotas/<nombre>`
 
 **Response body and status:**
 
@@ -294,7 +294,7 @@ HTTP 403
 
 ##### Create ✔
 
-- `POST /api/quedadas`
+- `POST /application/quedadas`
 
 **Request body:**
 ```json
@@ -319,7 +319,7 @@ HTTP 403
 
 ##### Read ✔
 
-- `GET /api/quedadas/<id>`
+- `GET /application/quedadas/<id>`
 
 **Response body:**
 Successful:
@@ -342,11 +342,11 @@ HTTP 404
 
 ##### Read (all) ✔
 
-- `GET /api/quedadas?admin=<emailAdmin>` ✔
-- `GET /api/quedadas?participante=<emailPart>` ✔
-- `GET /api/quedadas?ubicacion=<ubicacion>` ❌
-- `GET /api/quedadas?order=time` ✔
-- `GET /api/quedadas`
+- `GET /application/quedadas?admin=<emailAdmin>` ✔
+- `GET /application/quedadas?participante=<emailPart>` ✔
+- `GET /application/quedadas?ubicacion=<ubicacion>` ❌
+- `GET /application/quedadas?order=time` ✔
+- `GET /application/quedadas`
 
 **Response body:**
 Successful:
@@ -370,11 +370,11 @@ HTTP 204
 
 ##### Update ❌
 
-- `PUT /api/quedadas/<id>`
+- `PUT /application/quedadas/<id>`
 
 ##### Delete ✔
 
-- `DELETE /api/quedadas/<id>`
+- `DELETE /application/quedadas/<id>`
 
 **Response body and status:**
 
@@ -400,7 +400,7 @@ HTTP 403
 
 ##### Create ✔
 
-- `POST /api/calendario/<email>/eventos`
+- `POST /application/calendario/<email>/eventos`
 
 **Request body:**
 ```json
@@ -424,7 +424,7 @@ HTTP 403
 ```
 ##### Read (all) ✔
 
-- `GET /api/calendario/<email>/mascotas`
+- `GET /application/calendario/<email>/mascotas`
 
 **Response body:**
 Successful:
@@ -449,7 +449,7 @@ HTTP 404
 
 ##### Delete ✔
 
-- `DELETE /api/calendario/<email>/eventos/<id>`
+- `DELETE /application/calendario/<email>/eventos/<id>`
 
 **Response body and status:**
 
@@ -472,7 +472,7 @@ HTTP 403
 
 ##### UPDATE ✔
 
-- `PUT /api/calendario/<email>/eventos/<id>`
+- `PUT /application/calendario/<email>/eventos/<id>`
 
 **Request body:**
 ```json
@@ -505,7 +505,7 @@ HTTP 403
 
 #### Consejos
 
-- `POST /api/consejos`
+- `POST /application/consejos`
 
 **Request body:**
 ```json
@@ -530,7 +530,7 @@ Sin permiso:
 HTTP 403
 ```
 
-- `GET /api/consejos`
+- `GET /application/consejos`
 
 **Response body:**
 Successful:
@@ -548,7 +548,7 @@ Consejo not found:
 HTTP 404
 ```
 
-- `GET /api/consejos/one`
+- `GET /application/consejos/one`
 
 **Response body:**
 Successful:
@@ -562,7 +562,7 @@ Successful:
 HTTP 200
 ```
 
-- `DELETE /api/consejos/<id>`
+- `DELETE /application/consejos/<id>`
 
 **Response body and status:**
 
@@ -584,7 +584,7 @@ HTTP 403
 ```
 #### avatares
 
-- `POST /api/avatares`
+- `POST /application/avatares`
 
 **Request body:**
 ```json
@@ -609,7 +609,7 @@ Sin permiso:
 HTTP 403
 ```
 
-- `GET /api/avatares`
+- `GET /application/avatares`
 
 **Response body:**
 Successful: HTTP 200
@@ -622,7 +622,7 @@ Successful: HTTP 200
     }
 ]
 ```
-- `PUT /api/avatares/{email}/avatar`
+- `PUT /application/avatares/{email}/avatar`
 
 **Request body:**
 ```text
